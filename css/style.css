@@ -1,0 +1,26 @@
+/* FILE PATH: css/style.css */
+
+/* Simple hover effect for the hero section background */
+header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://picsum.photos/1920/1080'); /* Replace with a relevant image URL */
+    background-size: cover;
+    background-position: center;
+    transition: background-position 0.5s ease-in-out;
+}
+
+header:hover {
+    background-position: 50% 100%;
+}
+
+/* Custom code block styling */
+pre.code {
+    border: 1px solid #111;
+    border-left: 5px solid #0077ff;
+    overflow-x: auto;
+    padding: 1rem;
+}
+
+/* Remove default link underline */
+a.link {
+    text-decoration: none;
+}

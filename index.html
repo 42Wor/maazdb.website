@@ -1,155 +1,175 @@
+<!-- FILE PATH: index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MaazDB v11.6 - Ultra Fast Columnar Database</title>
-    <!-- Tachyons (minimal, utility-first CSS) -->
-    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+    <title>MaazDB - The Red Dragon of Databases</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAYAgAAGAIADWJg+wAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8/O0AAABwSURBVDiTY/jPgBUwgK+AEwMDKABn9j/G/G8G/78jAwy+zI4Y/4+BM+v/f2bN/J/B9/n/F4j7/58wKfr/9z/Wd/7v/98wKfr/H33j//8HGAw/zIY4wMD6b8b0L9lQf//MhoqP/v/Fm7H/f+z9D/gYgQ9nCgAARjG9Qv/c5fQAAAAASUVORK5CYII=" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="images/maazdb.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
+<body>
 
-<body class="bg-dark-gray white sans-serif">
+    <!-- NAV -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="docs.html">Documentation</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#download" class="btn-nav">Download v11.6</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <!-- HEADER/HERO SECTION -->
-    <header class="vh-75 dt w-100 bg-black-60">
-        <div class="dtc v-mid tc white ph3 ph4-l">
-            <h1 class="f1 f-headline-l fw9 ttu tracked-tight ma0 mb3">MaazDB v11.6</h1>
-            <h2 class="f3 f2-l fw2 ttu tracked-tight ma0 mb4">Ultra Fast Columnar Database</h2>
-            <p class="f5 f4-l fw2 white-70 measure-wide-l center">
-                Experience high-performance, crash-safe data management powered by **Rust**, **LSM Trees**, and **Columnar Storage**. Ready for Windows, Linux, and macOS.
-            </p>
-
-            <!-- DOWNLOAD BUTTONS -->
-            <div class="mt5">
-                <h3 class="f4 fw6 mb3">Select Your Platform:</h3>
-                <div class="flex flex-wrap justify-center items-center">
-                    <a href="installers/MaazDB_Setup_Windows_x64.exe" download class="f4 link dim br2 ph4 pv3 mb2 mr3 dib white bg-blue fw7 hover-bg-light-blue shadow-5">
-                        <span class="mr2">&#x1F4BB;</span> Download for Windows
-                    </a>
-                    <a href="installers/maazdb_11.6.0_linux_amd64.deb" download class="f4 link dim br2 ph4 pv3 mb2 mr3 dib white bg-green fw7 hover-bg-light-green shadow-5">
-                        <span class="mr2">&#x2699;</span> Download for Linux (.deb)
-                    </a>
-                    <a href="installers/MaazDB_11.6.0_macOS.dmg" download class="f4 link dim br2 ph4 pv3 mb2 dib white bg-red fw7 hover-bg-light-red shadow-5">
-                        <span class="mr2">&#x1F34E;</span> Download for macOS
-                    </a>
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <span class="badge">v11.6.0 Stable Release</span>
+                <h1>The <span class="text-gradient">Red Dragon</span><br>of Databases</h1>
+                <p>
+                    An ultra-fast, crash-safe relational database engine powered by Rust.
+                    Features LSM Trees, Columnar Storage, and native Windows/Linux service integration.
+                </p>
+                <p id="os-message" style="color:var(--accent-red); font-size:0.9rem; font-weight:600; margin-top:10px;"></p>
+                <div class="hero-btns">
+                    <a href="#download" class="btn-nav" style="padding:15px 30px; font-size:1.1rem;">Download Now</a>
+                    <a href="docs.html" style="margin-left:20px; color:white; font-weight:600; text-decoration:underline;">Read Documentation</a>
                 </div>
+            </div>
+            <!-- FLOATING DRAGON LOGO -->
+            <div class="hero-image">
+                <img src="images/maazdb-logo.png" class="floating-logo" alt="MaazDB Dragon">
             </div>
         </div>
     </header>
 
-    <!-- GET STARTED SECTION -->
-    <section class="mw8 center pt5 pb5 ph3 ph5-l bg-near-black">
-        <h2 class="f2 tc fw6 mb4 bb b--white-10 pb3">Getting Started</h2>
-
-        <div class="flex flex-wrap justify-between">
-            <!-- STEP 1 -->
-            <div class="w-100 w-30-l mb4 bg-dark-gray pa4 br3 shadow-3">
-                <h3 class="f3 fw6 mt0 mb3 flex items-center"><span class="f-subheadline white-50 mr3">1.</span> Install & Launch</h3>
-                <p>Run the installer for your OS. MaazDB automatically sets itself up as a **background service** (Windows/Linux/macOS) and is ready for use immediately.</p>
-                <p class="f6 i">No Rust or dependencies required!</p>
-            </div>
-
-            <!-- STEP 2 -->
-            <div class="w-100 w-30-l mb4 bg-dark-gray pa4 br3 shadow-3">
-                <h3 class="f3 fw6 mt0 mb3 flex items-center"><span class="f-subheadline white-50 mr3">2.</span> Connect with CLI</h3>
-                <p>Open your terminal (CMD, PowerShell, Bash) and connect to the server using the bundled command-line client.</p>
-                <pre class="bg-black pa2 f6 code">maazdb-cli</pre>
-                <p>The default host is `127.0.0.1:8888` (configurable in `maazdb.toml`).</p>
-            </div>
-
-            <!-- STEP 3 -->
-            <div class="w-100 w-30-l mb4 bg-dark-gray pa4 br3 shadow-3">
-                <h3 class="f3 fw6 mt0 mb3 flex items-center"><span class="f-subheadline white-50 mr3">3.</span> Authenticate & Use</h3>
-                <p>Log in, create a database, and switch to it before running any queries.</p>
-                <pre class="bg-black pa2 f6 code">LOGIN admin admin;
-CREATE DATABASE sales;
-USE sales;
-</pre>
+    <!-- FEATURES -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">Engineered for Performance</h2>
+            <div class="download-grid" style="gap:30px;">
+                <div class="dl-card" style="cursor:default; width:300px;">
+                    <i class="fas fa-bolt" style="color:#ef4444;"></i>
+                    <h3>LSM Trees</h3>
+                    <p>Log-Structured Merge-Trees and MemTable architecture ensure writes happen at RAM speed before flushing to disk.</p>
+                </div>
+                <div class="dl-card" style="cursor:default; width:300px;">
+                    <i class="fas fa-shield-alt" style="color:#ef4444;"></i>
+                    <h3>Crash Safe</h3>
+                    <p>WAL (Write Ahead Log) replay mechanism guarantees zero data loss in event of power failure or crash.</p>
+                </div>
+                <div class="dl-card" style="cursor:default; width:300px;">
+                    <i class="fas fa-chart-bar" style="color:#ef4444;"></i>
+                    <h3>Columnar Storage</h3>
+                    <p>Data stored in separate binary columns. Ideal for analytics and aggregations with Strict SQL typing.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- KEY FEATURES SECTION -->
-    <section class="mw8 center pt5 pb5 ph3 ph5-l">
-        <h2 class="f2 tc fw6 mb4 bb b--white-10 pb3">Key Features</h2>
-        <div class="cf">
-            <dl class="fl fn-l w-50-l pa2">
-                <dt class="f4 b">LSM-Tree + Columnar</dt>
-                <dd class="ml0 f6 i">High write throughput (LSM) combined with highly optimized analytical read speeds (Columnar). The best of both worlds.</dd>
-            </dl>
-            <dl class="fl fn-l w-50-l pa2">
-                <dt class="f4 b">Crash-Safe & Self-Healing</dt>
-                <dd class="ml0 f6 i">Full WAL (Write Ahead Log) ensures **Zero Data Loss**. The server automatically replays the log and restarts if it crashes.</dd>
-            </dl>
-            <dl class="fl fn-l w-50-l pa2">
-                <dt class="f4 b">Strict SQL & Indices</dt>
-                <dd class="ml0 f6 i">Robust support for complex SQL commands including `WHERE`, `ORDER BY`, `LIMIT`, and auto-handling of Primary and Secondary Indices.</dd>
-            </dl>
-            <dl class="fl fn-l w-50-l pa2">
-                <dt class="f4 b">Cross-Platform Daemon</dt>
-                <dd class="ml0 f6 i">Installed as a native system service/daemon on all major platforms for reliable, continuous background operation.</dd>
-            </dl>
+    <!-- DOWNLOADS -->
+    <section id="download" class="section bg-light">
+        <div class="container" style="text-align:center;">
+            <h2 class="section-title">Select Your Platform</h2>
+            <div class="download-grid">
+                <a href="downloads/MaazDB_Setup_Windows_x64.exe" class="dl-card windows">
+                    <i class="fab fa-windows"></i>
+                    <h3>Windows</h3>
+                    <p>Installer (.exe)</p>
+                </a>
+                <a href="downloads/maazdb_11.6.0_linux_amd64.deb" class="dl-card linux">
+                    <i class="fab fa-linux"></i>
+                    <h3>Linux</h3>
+                    <p>Debian/Ubuntu (.deb)</p>
+                </a>
+                 <a href="downloads/MaazDB_11.6.0_macOS.dmg" class="dl-card mac">
+                    <i class="fab fa-apple"></i>
+                    <h3>macOS</h3>
+                    <p>Installer (.dmg)</p>
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- SYNTAX GUIDE SECTION -->
-    <section class="mw8 center pt5 pb5 ph3 ph5-l bg-near-black">
-        <h2 class="f2 tc fw6 mb4 bb b--white-10 pb3">SQL Syntax Quick Reference</h2>
-        <div class="overflow-auto">
-            <table class="f6 w-100 mw8 center" cellspacing="0">
-                <thead>
-                    <tr class="stripe-dark">
-                        <th class="fw6 tl pa3 bg-black">Category</th>
-                        <th class="fw6 tl pa3 bg-black">Command</th>
-                        <th class="fw6 tl pa3 bg-black">Example</th>
-                    </tr>
-                </thead>
-                <tbody class="lh-copy">
-                    <tr class="stripe-dark">
-                        <td class="pa3 b">Auth</td>
-                        <td class="pa3">LOGIN &lt;user&gt; &lt;pass&gt;</td>
-                        <td class="pa3 code">LOGIN admin admin;</td>
-                    </tr>
-                    <tr class="stripe-dark">
-                        <td class="pa3 b">DB</td>
-                        <td class="pa3">CREATE DATABASE &lt;name&gt;</td>
-                        <td class="pa3 code">CREATE DATABASE my_db;</td>
-                    </tr>
-                    <tr class="stripe-dark">
-                        <td class="pa3 b">Session</td>
-                        <td class="pa3">USE &lt;db_name&gt;</td>
-                        <td class="pa3 code">USE my_db;</td>
-                    </tr>
-                    <tr class="stripe-dark">
-                        <td class="pa3 b">DDL</td>
-                        <td class="pa3">CREATE TABLE...</td>
-                        <td class="pa3 code">CREATE TABLE users id SERIAL PRIMARY name TEXT;</td>
-                    </tr>
-                    <tr class="stripe-dark">
-                        <td class="pa3 b">DML</td>
-                        <td class="pa3">INSERT INTO &lt;table&gt; (...) VALUES (...)</td>
-                        <td class="pa3 code">INSERT INTO users (name) VALUES ('Maaz');</td>
-                    </tr>
-                    <tr class="stripe-dark">
-                        <td class="pa3 b">Query</td>
-                        <td class="pa3">SELECT &lt;table&gt; WHERE ...</td>
-                        <td class="pa3 code">SELECT users WHERE name = 'Maaz' LIMIT 1;</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- ROADMAP (Restored) -->
+    <section id="roadmap" class="section">
+        <div class="container">
+            <h2 class="section-title">Future Roadmap</h2>
+            <div class="timeline">
+                <div class="timeline-item done">
+                    <div class="date">v11.5</div>
+                    <h4>Core Engine</h4>
+                    <p>LSM Trees, MemTable, and Basic SQL support.</p>
+                </div>
+                <div class="timeline-item done">
+                    <div class="date">v11.6 (Current)</div>
+                    <h4>Professional Release</h4>
+                    <p>Windows Service, Auto-Restart, Installers, Proprietary License.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="date">v12.0 (Planned)</div>
+                    <h4>Clustering & Replication</h4>
+                    <p>Master-Slave replication for high availability.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="date">v13.0 (Planned)</div>
+                    <h4>Web Admin UI</h4>
+                    <p>A GUI dashboard to manage databases via browser.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="pv4 ph3 ph5-m ph6-l tc white-70 bg-black">
-      <small class="f6 db tc">MaazDB v11.6 - Made with <span class="red">❤</span> and Rust.</small>
-      <div class="tc mt3">
-        <a href="https://github.com/maaz-waheed" title="GitHub" class="f6 dib ph2 link white-80 dim">GitHub</a>
-      </div>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <div class="logo" style="margin-bottom:15px;">
+                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB</span>
+                    </div>
+                    <p>A high-performance, proprietary database engine built for reliability and speed.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#download">Downloads</a></li>
+                        <li><a href="docs.html">Documentation</a></li>
+                        <li><a href="LICENSE.txt">License</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Developer</h4>
+                    <ul>
+                        <li><a href="https://maaz-dev.vercel.app/" target="_blank">Portfolio</a></li>
+                        <li><a href="https://portal.mbktech.org/maaz.waheed" target="_blank">MBK Portal</a></li>
+                        <li><a href="https://github.com/42Wor" target="_blank">Source Repos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61550243033527" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/maa.zwaheed" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Maaz Waheed. MaazDB is proprietary software.</p>
+            </div>
+        </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

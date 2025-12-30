@@ -1,0 +1,227 @@
+<!-- FILE PATH: docs.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaazDB Documentation v11.6</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="images/maazdb.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#download" class="btn-nav">Download</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- LAYOUT -->
+    <div class="docs-layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="docs-sidebar">
+            <h3>Getting Started</h3>
+            <ul>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#install">Installation & Config</a></li>
+                <li><a href="#cli">Using the CLI</a></li>
+            </ul>
+
+            <h3>Core Concepts</h3>
+            <ul>
+                <li><a href="#auth">Authentication</a></li>
+                <li><a href="#db-mgmt">Database Management</a></li>
+                <li><a href="#types">Data Types</a></li>
+            </ul>
+
+            <h3>SQL Reference</h3>
+            <ul>
+                <li><a href="#ddl">DDL (Schema)</a></li>
+                <li><a href="#dml-insert">INSERT Data</a></li>
+                <li><a href="#dml-select">SELECT Data</a></li>
+                <li><a href="#dml-update">UPDATE Data</a></li>
+                <li><a href="#dml-delete">DELETE Data</a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="docs-content">
+            <section id="intro">
+                <h1>MaazDB v11.6 Documentation</h1>
+                <p>MaazDB v11.6 is an ultra-high-performance, columnar, disk-based relational database engine written in Rust. It utilizes <strong>LSM Trees (Log-Structured Merge-Trees)</strong> for fast writes, <strong>Columnar Storage</strong> for analytical reads, and <strong>XOR Encryption</strong> for data security.</p>
+            </section>
+
+            <section id="install">
+                <h2>1. Installation & Configuration</h2>
+                <h3>Configuration File (`maazdb.toml`)</h3>
+                <p>The configuration file is generated automatically on first launch if it does not exist.</p>
+                <ul>
+                    <li><strong>Linux:</strong> <code>/etc/maazdb/maazdb.toml</code></li>
+                    <li><strong>Windows:</strong> <code>C:\Program Files\MaazDB\maazdb.toml</code></li>
+                </ul>
+                <pre><code>[server]
+host = "0.0.0.0"
+port = 8888
+
+[storage]
+data_dir = "data"</code></pre>
+            </section>
+
+            <section id="auth">
+                <h2>2. Authentication</h2>
+                <p>Security is mandatory. You must login before running queries.</p>
+                <pre><code>LOGIN admin admin;</code></pre>
+                
+                <h3>Manage Users</h3>
+                <pre><code>CREATE USER maaz WITH PASSWORD 'secure';
+DROP USER maaz;</code></pre>
+            </section>
+
+            <section id="db-mgmt">
+                <h2>3. Database Management</h2>
+                <p>MaazDB is a multi-tenant system. You must Create and Use a database.</p>
+                <pre><code>CREATE DATABASE inventory_system;
+USE inventory_system;
+BACKUP snapshot_v1; -- Creates a backup folder</code></pre>
+            </section>
+
+            <section id="types">
+                <h2>4. Data Types</h2>
+                <p>MaazDB uses Strict Static Typing.</p>
+                <table>
+                    <thead>
+                        <tr><th>Type</th><th>Storage</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>SERIAL</td><td>Int32</td><td>Auto-increment Primary Key</td></tr>
+                        <tr><td>TEXT</td><td>UTF-8</td><td>String values</td></tr>
+                        <tr><td>INT</td><td>Int32</td><td>Whole numbers</td></tr>
+                        <tr><td>DOUBLE</td><td>Float64</td><td>Decimal numbers (Prices)</td></tr>
+                        <tr><td>BOOL</td><td>Byte</td><td>true/false</td></tr>
+                        <tr><td>TIMESTAMP</td><td>ISO-8601</td><td>Date and Time</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="ddl">
+                <h2>5. DDL - Create Table</h2>
+                <pre><code>CREATE TABLE products (
+    pid SERIAL PRIMARY,
+    title TEXT,
+    price DOUBLE,
+    in_stock BOOL
+);
+
+DROP TABLE products;</code></pre>
+            </section>
+
+            <section id="dml-insert">
+                <h2>6. INSERT Data</h2>
+                <p>Add new rows to a table. You can specify columns explicitly.</p>
+                <pre><code>-- Explicit Insert
+INSERT INTO products (title, price, in_stock) VALUES ('Gaming Mouse', 49.99, true);
+
+-- Auto-Defaults (ID generates automatically)
+INSERT INTO products (title, price) VALUES ('Keyboard', 89.99);</code></pre>
+            </section>
+
+            <section id="dml-select">
+                <h2>7. SELECT Data</h2>
+                <p>Retrieve data with powerful filtering and sorting.</p>
+                
+                <h3>Basic Select</h3>
+                <pre><code>SELECT products;</code></pre>
+
+                <h3>Filtering (WHERE)</h3>
+                <pre><code>-- Find items cheaper than $50
+SELECT products WHERE price < 50.0;
+
+-- Find items that are in stock AND expensive
+SELECT products WHERE in_stock = true AND price > 100.0;</code></pre>
+
+                <h3>Sorting (ORDER BY)</h3>
+                <pre><code>-- Sort by Price (High to Low)
+SELECT products ORDER BY price DESC;
+
+-- Sort by Title (A-Z)
+SELECT products ORDER BY title ASC;</code></pre>
+
+                <h3>Limiting Results</h3>
+                <pre><code>-- Get top 5 most expensive items
+SELECT products ORDER BY price DESC LIMIT 5;</code></pre>
+            </section>
+
+            <section id="dml-update">
+                <h2>8. UPDATE Data</h2>
+                <p>Modify existing records based on a condition.</p>
+                <pre><code>-- Update price for a specific item
+UPDATE products SET price = 45.00 WHERE title = 'Gaming Mouse';
+
+-- Mark all items as out of stock (Dangerous!)
+UPDATE products SET in_stock = false WHERE price < 10.0;</code></pre>
+            </section>
+
+            <section id="dml-delete">
+                <h2>9. DELETE Data</h2>
+                <p>Remove records permanently.</p>
+                <pre><code>-- Delete a specific item by ID
+DELETE FROM products WHERE pid = 5;
+
+-- Delete all out of stock items
+DELETE FROM products WHERE in_stock = false;</code></pre>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col footer-about">
+                    <div class="logo" style="margin-bottom:15px;">
+                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs</span>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#download">Downloads</a></li>
+                        <li><a href="https://github.com/42Wor" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Developer</h4>
+                    <ul>
+                        <li><a href="https://maaz-dev.vercel.app/" target="_blank">Portfolio</a></li>
+                        <li><a href="https://portal.mbktech.org/maaz.waheed" target="_blank">Portal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61550243033527" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/maa.zwaheed" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Maaz Waheed. Proprietary License.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

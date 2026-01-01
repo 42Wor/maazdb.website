@@ -3,7 +3,7 @@
 Official website and documentation for MaazDB v11.6 - The Red Dragon Database Engine.
 
 ## 🚀 Live Website
-Visit: [maazdb.website](https://maazdb.website)
+Visit: [maazdb.website](https://maazdb.vercel.app/)
 
 ## 📁 Project Structure
 

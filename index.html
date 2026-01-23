@@ -8,6 +8,60 @@
     <link rel="icon" type="image/x-icon" href="images/maazdb.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .new-feature-badge {
+            display: inline-block;
+            background: linear-gradient(to right, #ef4444, #f87171);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        
+        .test-suite-card {
+            background: var(--primary-blue);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .test-suite-card h3 {
+            color: var(--accent-red);
+            margin-bottom: 1rem;
+        }
+        
+        .test-suite-card pre {
+            background: #050911;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+        
+        .sql-keyword {
+            color: #f87171;
+            font-weight: bold;
+        }
+        
+        .sql-string {
+            color: #7dd3fc;
+        }
+        
+        .sql-number {
+            color: #bbf7d0;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,12 +69,12 @@
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
-                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB</span>
+                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB v11.9</span>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="docs.html">Documentation</a></li>
-                <li><a href="#download" class="btn-nav">Download v11.6</a></li>
+                <li><a href="#download" class="btn-nav">Download v11.9</a></li>
             </ul>
         </div>
     </nav>
@@ -29,15 +83,15 @@
     <header class="hero">
         <div class="container hero-content">
             <div class="hero-text">
-                <span class="badge">v11.6.0 Stable Release</span>
+                <span class="badge">v11.9 Stable Release <span class="new-feature-badge">NEW</span></span>
                 <h1>The <span class="text-gradient">Red Dragon</span><br>of Databases</h1>
                 <p>
                     An ultra-fast, crash-safe relational database engine powered by Rust.
-                    Features LSM Trees, Columnar Storage, and native Windows/Linux service integration.
+                    Features LSM Trees, Columnar Storage, Foreign Key support, and enhanced backup system.
                 </p>
                 <p id="os-message" style="color:var(--accent-red); font-size:0.9rem; font-weight:600; margin-top:10px;"></p>
                 <div class="hero-btns">
-                    <a href="#download" class="btn-nav" style="padding:15px 30px; font-size:1.1rem;">Download Now</a>
+                    <a href="#download" class="btn-nav" style="padding:15px 30px; font-size:1.1rem;">Download v11.9</a>
                     <a href="docs.html" style="margin-left:20px; color:white; font-weight:600; text-decoration:underline;">Read Documentation</a>
                 </div>
             </div>
@@ -55,71 +109,104 @@
             <div class="download-grid" style="gap:30px;">
                 <div class="dl-card" style="cursor:default; width:300px;">
                     <i class="fas fa-bolt" style="color:#ef4444;"></i>
-                    <h3>LSM Trees</h3>
+                    <h3>LSM Trees <span class="new-feature-badge" style="font-size:0.7rem;">ENHANCED</span></h3>
                     <p>Log-Structured Merge-Trees and MemTable architecture ensure writes happen at RAM speed before flushing to disk.</p>
                 </div>
                 <div class="dl-card" style="cursor:default; width:300px;">
-                    <i class="fas fa-shield-alt" style="color:#ef4444;"></i>
-                    <h3>Crash Safe</h3>
-                    <p>WAL (Write Ahead Log) replay mechanism guarantees zero data loss in event of power failure or crash.</p>
+                    <i class="fas fa-key" style="color:#ef4444;"></i>
+                    <h3>Foreign Keys <span class="new-feature-badge" style="font-size:0.7rem;">NEW</span></h3>
+                    <p>Full foreign key constraint support for referential integrity between tables.</p>
                 </div>
                 <div class="dl-card" style="cursor:default; width:300px;">
-                    <i class="fas fa-chart-bar" style="color:#ef4444;"></i>
-                    <h3>Columnar Storage</h3>
-                    <p>Data stored in separate binary columns. Ideal for analytics and aggregations with Strict SQL typing.</p>
+                    <i class="fas fa-shield-alt" style="color:#ef4444;"></i>
+                    <h3>Enhanced Backup <span class="new-feature-badge" style="font-size:0.7rem;">NEW</span></h3>
+                    <p>Complete backup and restore system with full database recovery capabilities.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEST SUITE PREVIEW -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Comprehensive Test Suite</h2>
+            <div class="test-suite-card">
+                <h3>Try the Complete MaazDB v11.9 Test Suite</h3>
+                <p>MaazDB v11.9 includes a comprehensive test suite that validates all features:</p>
+                <pre><code>LOGIN admin PASSWORD 'admin';
+CREATE DATABASE full_test_db;
+USE full_test_db;
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    role TEXT,
+    salary DOUBLE,
+    is_active BOOL,
+    joined_at TIMESTAMP
+);
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
+SELECT * FROM employees;
+BACKUP 'full_backup_test';</code></pre>
+                <p style="margin-top: 1rem;">The test suite covers authentication, DDL, DML, foreign keys, backup/restore, and more.</p>
+                <a href="docs.html#test-suite" style="display: inline-block; margin-top: 1rem; color: var(--accent-red); font-weight: 600; text-decoration: none;">
+                    <i class="fas fa-code"></i> View Complete Test Suite
+                </a>
             </div>
         </div>
     </section>
 
     <!-- DOWNLOADS -->
-    <section id="download" class="section bg-light">
+    <section id="download" class="section">
         <div class="container" style="text-align:center;">
-            <h2 class="section-title">Select Your Platform</h2>
+            <h2 class="section-title">Download MaazDB v11.9</h2>
+            <p style="margin-bottom: 2rem; color: var(--text-muted); max-width: 800px; margin-left: auto; margin-right: auto;">
+                Choose your platform to download MaazDB v11.9 with foreign key support, enhanced backup system, and comprehensive test suite.
+            </p>
             <div class="download-grid">
-                <a href="downloads/MaazDB_Setup_Windows_x64.exe" class="dl-card windows">
+                <a href="downloads/MaazDB_Setup_Windows_x64_v11.9.exe" class="dl-card windows">
                     <i class="fab fa-windows"></i>
                     <h3>Windows</h3>
-                    <p>Installer (.exe)</p>
+                    <p>Installer (.exe) <span class="new-feature-badge" style="font-size:0.7rem;">v11.9</span></p>
                 </a>
-                <a href="downloads/maazdb_11.6.0_linux_amd64.deb" class="dl-card linux">
+                <a href="downloads/maazdb_11.9.0_linux_amd64.deb" class="dl-card linux">
                     <i class="fab fa-linux"></i>
                     <h3>Linux</h3>
-                    <p>Debian/Ubuntu (.deb)</p>
+                    <p>Debian/Ubuntu (.deb) <span class="new-feature-badge" style="font-size:0.7rem;">v11.9</span></p>
                 </a>
-                 <a href="downloads/MaazDB_11.6.0_macOS.dmg" class="dl-card mac">
+                 <a href="downloads/MaazDB_11.9.0_macOS.dmg" class="dl-card mac">
                     <i class="fab fa-apple"></i>
                     <h3>macOS</h3>
-                    <p>Installer (.dmg)</p>
+                    <p>Installer (.dmg) <span class="new-feature-badge" style="font-size:0.7rem;">v11.9</span></p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- ROADMAP (Restored) -->
-    <section id="roadmap" class="section">
+    <!-- ROADMAP -->
+    <section id="roadmap" class="section bg-light">
         <div class="container">
-            <h2 class="section-title">Future Roadmap</h2>
+            <h2 class="section-title">Development Roadmap</h2>
             <div class="timeline">
                 <div class="timeline-item done">
-                    <div class="date">v11.5</div>
-                    <h4>Core Engine</h4>
-                    <p>LSM Trees, MemTable, and Basic SQL support.</p>
+                    <div class="date">v11.6</div>
+                    <h4>Professional Release</h4>
+                    <p>Windows Service, Auto-Restart, Installers.</p>
                 </div>
                 <div class="timeline-item done">
-                    <div class="date">v11.6 (Current)</div>
-                    <h4>Professional Release</h4>
-                    <p>Windows Service, Auto-Restart, Installers, Proprietary License.</p>
+                    <div class="date">v11.9 <span class="new-feature-badge" style="font-size:0.6rem; padding: 2px 5px; margin-left: 5px;">CURRENT</span></div>
+                    <h4>Foreign Key Support</h4>
+                    <p>Foreign key constraints, enhanced backup system, comprehensive test suite.</p>
                 </div>
                 <div class="timeline-item">
-                    <div class="date">v12.0 (Planned)</div>
+                    <div class="date">v12.0</div>
                     <h4>Clustering & Replication</h4>
-                    <p>Master-Slave replication for high availability.</p>
+                    <p>Master-Slave replication for high availability and load balancing.</p>
                 </div>
                 <div class="timeline-item">
-                    <div class="date">v13.0 (Planned)</div>
+                    <div class="date">v13.0</div>
                     <h4>Web Admin UI</h4>
-                    <p>A GUI dashboard to manage databases via browser.</p>
+                    <p>A GUI dashboard to manage databases via browser with real-time monitoring.</p>
                 </div>
             </div>
         </div>
@@ -131,15 +218,15 @@
             <div class="footer-grid">
                 <div class="footer-col footer-about">
                     <div class="logo" style="margin-bottom:15px;">
-                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB</span>
+                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB v11.9</span>
                     </div>
-                    <p>A high-performance, proprietary database engine built for reliability and speed.</p>
+                    <p>A high-performance database engine with LSM Trees, Columnar Storage, and Foreign Key support.</p>
                 </div>
                 <div class="footer-col">
                     <h4>Product</h4>
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="#download">Downloads</a></li>
+                        <li><a href="#download">Download v11.9</a></li>
                         <li><a href="docs.html">Documentation</a></li>
                         <li><a href="LICENSE.txt">License</a></li>
                     </ul>
@@ -163,11 +250,80 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Maaz Waheed. MaazDB is proprietary software.</p>
+                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - Proprietary Software.</p>
             </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+        // Enhance the existing main.js functionality
+        document.addEventListener("DOMContentLoaded", () => {
+            // Update OS detection for v11.9
+            const osMessage = document.getElementById('os-message');
+            const platform = navigator.platform.toLowerCase();
+            let os = "Unknown";
+
+            if (platform.includes('win')) os = "Windows";
+            else if (platform.includes('linux')) os = "Linux";
+            else if (platform.includes('mac')) os = "macOS";
+
+            // Update message for v11.9
+            if(osMessage && os !== "Unknown") {
+                osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected ${os} - Download v11.9 highlighted below`;
+                
+                // Update download links for v11.9
+                document.querySelectorAll('.dl-card').forEach(card => {
+                    if (os === "Windows" && card.classList.contains('windows')) {
+                        card.style.borderColor = '#dc2626';
+                        card.style.background = '#1e293b';
+                    } else if (os === "Linux" && card.classList.contains('linux')) {
+                        card.style.borderColor = '#dc2626';
+                        card.style.background = '#1e293b';
+                    } else if (os === "macOS" && card.classList.contains('mac')) {
+                        card.style.borderColor = '#dc2626';
+                        card.style.background = '#1e293b';
+                    }
+                });
+            }
+            
+            // Add SQL syntax highlighting to the test suite preview
+            const codeBlock = document.querySelector('.test-suite-card pre code');
+            if (codeBlock) {
+                let html = codeBlock.innerHTML;
+                
+                // Highlight SQL keywords
+                const keywords = ['LOGIN', 'CREATE', 'DATABASE', 'USE', 'TABLE', 
+                                 'INSERT', 'INTO', 'VALUES', 'SELECT', 'FROM', 
+                                 'BACKUP', 'SERIAL', 'PRIMARY', 'KEY', 'TEXT', 
+                                 'DOUBLE', 'BOOL', 'TIMESTAMP', 'TRUE', 'PASSWORD'];
+                
+                keywords.forEach(keyword => {
+                    const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+                    html = html.replace(regex, `<span class="sql-keyword">${keyword}</span>`);
+                });
+                
+                // Highlight strings
+                html = html.replace(/'([^']+)'/g, `<span class="sql-string">'$1'</span>`);
+                
+                // Highlight numbers
+                html = html.replace(/\b(\d+\.?\d*)\b/g, `<span class="sql-number">$1</span>`);
+                
+                codeBlock.innerHTML = html;
+            }
+            
+            // Update download button text
+            const downloadBtn = document.querySelector('.btn-nav[href="#download"]');
+            if (downloadBtn) {
+                downloadBtn.textContent = 'Download v11.9';
+            }
+            
+            // Update nav button
+            const navBtn = document.querySelector('.nav-links .btn-nav');
+            if (navBtn) {
+                navBtn.textContent = 'Download v11.9';
+            }
+        });
+    </script>
 </body>
 </html>

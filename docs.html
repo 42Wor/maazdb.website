@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MaazDB Documentation v11.6</title>
+    <title>MaazDB Documentation v11.9</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="images/maazdb.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -15,11 +15,11 @@
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
-                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs</span>
+                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs v11.9</span>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#download" class="btn-nav">Download</a></li>
+                <li><a href="index.html#download" class="btn-nav">Download v11.9</a></li>
             </ul>
         </div>
     </nav>
@@ -31,7 +31,8 @@
         <aside class="docs-sidebar">
             <h3>Getting Started</h3>
             <ul>
-                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#intro" class="active">Introduction</a></li>
+                <li><a href="#test-suite">Full Test Suite</a></li>
                 <li><a href="#install">Installation & Config</a></li>
                 <li><a href="#cli">Using the CLI</a></li>
             </ul>
@@ -50,14 +51,125 @@
                 <li><a href="#dml-select">SELECT Data</a></li>
                 <li><a href="#dml-update">UPDATE Data</a></li>
                 <li><a href="#dml-delete">DELETE Data</a></li>
+                <li><a href="#foreign-keys">Foreign Keys</a></li>
+                <li><a href="#backup-restore">Backup & Restore</a></li>
+                <li><a href="#best-practices">Best Practices</a></li>
             </ul>
         </aside>
 
         <!-- MAIN CONTENT -->
         <main class="docs-content">
             <section id="intro">
-                <h1>MaazDB v11.6 Documentation</h1>
-                <p>MaazDB v11.6 is an ultra-high-performance, columnar, disk-based relational database engine written in Rust. It utilizes <strong>LSM Trees (Log-Structured Merge-Trees)</strong> for fast writes, <strong>Columnar Storage</strong> for analytical reads, and <strong>XOR Encryption</strong> for data security.</p>
+                <h1>MaazDB v11.9 Documentation</h1>
+                <p>MaazDB v11.9 is an ultra-high-performance, columnar, disk-based relational database engine written in Rust. It utilizes <strong>LSM Trees (Log-Structured Merge-Trees)</strong> for fast writes, <strong>Columnar Storage</strong> for analytical reads, and now features <strong>FOREIGN KEY constraints</strong> and <strong>enhanced backup/restore</strong> capabilities.</p>
+                
+                <div class="feature-badges" style="margin: 1.5rem 0;">
+                    <span class="new-feature-badge">New in v11.9: Foreign Key Support</span>
+                    <span class="new-feature-badge">Enhanced: Backup & Restore System</span>
+                </div>
+            </section>
+
+            <section id="test-suite">
+                <h2>Complete Test Suite Example</h2>
+                <p>Below is a comprehensive test suite demonstrating all major features of MaazDB v11.9:</p>
+                
+                <div class="code-tabs">
+                    <div class="tab active" onclick="showTab('tab1')">Full Test SQL</div>
+                    <div class="tab" onclick="showTab('tab2')">File Test SQL</div>
+                </div>
+
+                <div id="tab1" class="tab-content active">
+                    <pre><code>-- MaazDB v11.9 Comprehensive Test Suite
+-- Demonstrates all major features
+
+-- 1. Authentication
+LOGIN admin PASSWORD 'admin';
+
+-- 2. Database Management
+CREATE DATABASE full_test_db;
+USE full_test_db;
+
+-- 3. DDL with Foreign Keys
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    role TEXT,
+    salary DOUBLE,
+    is_active BOOL,
+    joined_at TIMESTAMP
+);
+
+-- 4. INSERT with various data types
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
+
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Bob', 'Manager', 95000.50, TRUE, '2022-05-20 10:30:00');
+
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Charlie', 'Intern', 30000.00, FALSE, '2024-01-10 08:15:00');
+
+-- 5. SELECT queries
+SELECT * FROM employees;
+SELECT name, salary FROM employees WHERE salary > 50000;
+
+-- 6. UPDATE operations
+UPDATE employees SET salary = 90000.00 WHERE name = 'Alice';
+SELECT name, salary FROM employees WHERE name = 'Alice';
+
+-- 7. DELETE operations
+DELETE FROM employees WHERE name = 'Charlie';
+SELECT COUNT(*) FROM employees;
+
+-- 8. Foreign Key relationships
+CREATE TABLE projects (
+    pid SERIAL PRIMARY KEY,
+    title TEXT,
+    lead_id INT,
+    FOREIGN KEY (lead_id) REFERENCES employees(id)
+);
+
+INSERT INTO projects (title, lead_id) VALUES ('Project X', 1);
+SELECT * FROM projects;
+
+-- 9. Backup & Restore
+BACKUP 'full_backup_test';
+DROP TABLE projects;
+DROP TABLE employees;
+RESTORE 'full_backup_test';
+SELECT COUNT(*) FROM employees;
+
+-- 10. Cleanup
+USE system;
+DROP DATABASE full_test_db;</code></pre>
+                </div>
+
+                <div id="tab2" class="tab-content">
+                    <pre><code>-- File System Test Suite
+LOGIN admin PASSWORD 'admin';
+CREATE DATABASE file_test_db;
+USE file_test_db;
+
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    price DOUBLE
+);
+
+INSERT INTO products (name, price) VALUES ('Laptop', 999.99);
+INSERT INTO products (name, price) VALUES ('Mouse', 25.50);
+INSERT INTO products (name, price) VALUES ('Keyboard', 45.00);
+
+SELECT * FROM products;
+UPDATE products SET price = 899.99 WHERE name = 'Laptop';
+DELETE FROM products WHERE name = 'Mouse';
+
+BACKUP 'file_test_backup';
+SELECT COUNT(*) FROM products;
+
+USE system;
+DROP DATABASE file_test_db;</code></pre>
+                </div>
             </section>
 
             <section id="install">
@@ -73,7 +185,11 @@ host = "0.0.0.0"
 port = 8888
 
 [storage]
-data_dir = "data"</code></pre>
+data_dir = "data"
+
+[security]
+require_ssl = false
+max_login_attempts = 3</code></pre>
             </section>
 
             <section id="cli">
@@ -83,13 +199,16 @@ data_dir = "data"</code></pre>
 maazdb-server
 
 # In another terminal, connect
-maazdb-cli</code></pre>
+maazdb-cli
+
+# You'll be prompted for authentication
+LOGIN admin PASSWORD 'admin';</code></pre>
             </section>
 
             <section id="auth">
                 <h2>3. Authentication</h2>
                 <p>Security is mandatory. You must login before running queries.</p>
-                <pre><code>LOGIN admin admin;</code></pre>
+                <pre><code>LOGIN admin PASSWORD 'admin';</code></pre>
                 
                 <h3>Manage Users</h3>
                 <pre><code>CREATE USER maaz WITH PASSWORD 'secure';
@@ -101,7 +220,8 @@ DROP USER maaz;</code></pre>
                 <p>MaazDB is a multi-tenant system. You must Create and Use a database.</p>
                 <pre><code>CREATE DATABASE inventory_system;
 USE inventory_system;
-BACKUP snapshot_v1; -- Creates a backup folder</code></pre>
+BACKUP snapshot_v1; -- Creates a backup folder
+RESTORE snapshot_v1; -- Restores from backup</code></pre>
             </section>
 
             <section id="types">
@@ -109,85 +229,172 @@ BACKUP snapshot_v1; -- Creates a backup folder</code></pre>
                 <p>MaazDB uses Strict Static Typing.</p>
                 <table>
                     <thead>
-                        <tr><th>Type</th><th>Storage</th><th>Description</th></tr>
+                        <tr><th>Type</th><th>Storage</th><th>Description</th><th>Example</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>SERIAL</td><td>Int32</td><td>Auto-increment Primary Key</td></tr>
-                        <tr><td>TEXT</td><td>UTF-8</td><td>String values</td></tr>
-                        <tr><td>INT</td><td>Int32</td><td>Whole numbers</td></tr>
-                        <tr><td>DOUBLE</td><td>Float64</td><td>Decimal numbers (Prices)</td></tr>
-                        <tr><td>BOOL</td><td>Byte</td><td>true/false</td></tr>
-                        <tr><td>TIMESTAMP</td><td>ISO-8601</td><td>Date and Time</td></tr>
+                        <tr><td>SERIAL</td><td>Int32</td><td>Auto-increment Primary Key</td><td>1, 2, 3...</td></tr>
+                        <tr><td>TEXT</td><td>UTF-8</td><td>String values</td><td>'Alice'</td></tr>
+                        <tr><td>INT</td><td>Int32</td><td>Whole numbers</td><td>42</td></tr>
+                        <tr><td>DOUBLE</td><td>Float64</td><td>Decimal numbers</td><td>85000.50</td></tr>
+                        <tr><td>BOOL</td><td>Byte</td><td>true/false</td><td>TRUE, FALSE</td></tr>
+                        <tr><td>TIMESTAMP</td><td>ISO-8601</td><td>Date and Time</td><td>'2023-01-15 09:00:00'</td></tr>
                     </tbody>
                 </table>
             </section>
 
             <section id="ddl">
-                <h2>6. DDL - Create Table</h2>
-                <pre><code>CREATE TABLE products (
-    pid SERIAL PRIMARY,
-    title TEXT,
-    price DOUBLE,
-    in_stock BOOL
+                <h2>6. DDL - Schema Definition</h2>
+                <h3>Basic Table Creation</h3>
+                <pre><code>CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    role TEXT,
+    salary DOUBLE,
+    is_active BOOL,
+    joined_at TIMESTAMP
 );
 
-DROP TABLE products;</code></pre>
+DROP TABLE employees;</code></pre>
+
+                <h3>Foreign Key Constraints (New in v11.9)</h3>
+                <pre><code>CREATE TABLE projects (
+    pid SERIAL PRIMARY KEY,
+    title TEXT,
+    lead_id INT,
+    FOREIGN KEY (lead_id) REFERENCES employees(id)
+);</code></pre>
             </section>
 
             <section id="dml-insert">
                 <h2>7. INSERT Data</h2>
-                <p>Add new rows to a table. You can specify columns explicitly.</p>
-                <pre><code>-- Explicit Insert
-INSERT INTO products (title, price, in_stock) VALUES ('Gaming Mouse', 49.99, true);
+                <p>Add new rows to a table. All data types are supported.</p>
+                <pre><code>-- Complete INSERT with all data types
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
 
 -- Auto-Defaults (ID generates automatically)
-INSERT INTO products (title, price) VALUES ('Keyboard', 89.99);</code></pre>
+INSERT INTO employees (name, role, salary) VALUES ('Bob', 'Manager', 95000.50);</code></pre>
             </section>
 
             <section id="dml-select">
                 <h2>8. SELECT Data</h2>
-                <p>Retrieve data with powerful filtering and sorting.</p>
+                <p>Retrieve data with powerful filtering and aggregation.</p>
                 
                 <h3>Basic Select</h3>
-                <pre><code>SELECT products;</code></pre>
+                <pre><code>SELECT * FROM employees;</code></pre>
 
                 <h3>Filtering (WHERE)</h3>
-                <pre><code>-- Find items cheaper than $50
-SELECT products WHERE price < 50.0;
+                <pre><code>-- Find employees with salary > 50000
+SELECT name, salary FROM employees WHERE salary > 50000;
 
--- Find items that are in stock AND expensive
-SELECT products WHERE in_stock = true AND price > 100.0;</code></pre>
+-- Find active managers
+SELECT * FROM employees WHERE role = 'Manager' AND is_active = TRUE;</code></pre>
 
-                <h3>Sorting (ORDER BY)</h3>
-                <pre><code>-- Sort by Price (High to Low)
-SELECT products ORDER BY price DESC;
+                <h3>Aggregation</h3>
+                <pre><code>-- Count total employees
+SELECT COUNT(*) FROM employees;
 
--- Sort by Title (A-Z)
-SELECT products ORDER BY title ASC;</code></pre>
-
-                <h3>Limiting Results</h3>
-                <pre><code>-- Get top 5 most expensive items
-SELECT products ORDER BY price DESC LIMIT 5;</code></pre>
+-- Get average salary
+SELECT AVG(salary) FROM employees;</code></pre>
             </section>
 
             <section id="dml-update">
                 <h2>9. UPDATE Data</h2>
-                <p>Modify existing records based on a condition.</p>
-                <pre><code>-- Update price for a specific item
-UPDATE products SET price = 45.00 WHERE title = 'Gaming Mouse';
+                <p>Modify existing records based on conditions.</p>
+                <pre><code>-- Update salary for a specific employee
+UPDATE employees SET salary = 90000.00 WHERE name = 'Alice';
 
--- Mark all items as out of stock (Dangerous!)
-UPDATE products SET in_stock = false WHERE price < 10.0;</code></pre>
+-- Deactivate all interns
+UPDATE employees SET is_active = FALSE WHERE role = 'Intern';</code></pre>
             </section>
 
             <section id="dml-delete">
                 <h2>10. DELETE Data</h2>
-                <p>Remove records permanently.</p>
-                <pre><code>-- Delete a specific item by ID
-DELETE FROM products WHERE pid = 5;
+                <p>Remove records permanently with conditions.</p>
+                <pre><code>-- Delete a specific employee by name
+DELETE FROM employees WHERE name = 'Charlie';
 
--- Delete all out of stock items
-DELETE FROM products WHERE in_stock = false;</code></pre>
+-- Delete all inactive employees
+DELETE FROM employees WHERE is_active = FALSE;</code></pre>
+            </section>
+
+            <section id="foreign-keys">
+                <h2>11. Foreign Key Relationships</h2>
+                <p>New in v11.9: Enforce referential integrity between tables.</p>
+                <pre><code>-- Create parent table
+CREATE TABLE departments (
+    dept_id SERIAL PRIMARY KEY,
+    dept_name TEXT
+);
+
+-- Create child table with foreign key
+CREATE TABLE employees (
+    emp_id SERIAL PRIMARY KEY,
+    name TEXT,
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
+
+-- Insert data with valid foreign key
+INSERT INTO departments (dept_name) VALUES ('Engineering');
+INSERT INTO employees (name, dept_id) VALUES ('Alice', 1); -- Valid
+
+-- This would fail if dept_id 99 doesn't exist
+-- INSERT INTO employees (name, dept_id) VALUES ('Bob', 99);</code></pre>
+            </section>
+
+            <section id="backup-restore">
+                <h2>12. Backup & Restore System</h2>
+                <p>Full database backup and restore functionality.</p>
+                
+                <h3>Creating Backups</h3>
+                <pre><code>-- Backup current database
+BACKUP 'monthly_backup_june';
+
+-- Backup with timestamp
+BACKUP 'emergency_backup_2025_01_23';</code></pre>
+
+                <h3>Restoring Backups</h3>
+                <pre><code>-- Restore from backup
+RESTORE 'monthly_backup_june';
+
+-- Verify restoration
+SELECT COUNT(*) FROM employees;</code></pre>
+
+                <h3>Complete Backup/Restore Workflow</h3>
+                <pre><code>-- 1. Create backup
+BACKUP 'pre_update_backup';
+
+-- 2. Perform risky operations
+DELETE FROM sensitive_table;
+
+-- 3. Restore if needed
+RESTORE 'pre_update_backup';</code></pre>
+            </section>
+
+            <section id="best-practices">
+                <h2>13. Best Practices</h2>
+                
+                <h3>Transaction Safety</h3>
+                <pre><code>-- Always backup before major changes
+BACKUP 'pre_migration';
+
+-- Test your changes
+UPDATE employees SET salary = salary * 1.1 WHERE role = 'Engineer';
+SELECT * FROM employees WHERE role = 'Engineer';
+
+-- Restore if results are unexpected
+RESTORE 'pre_migration';</code></pre>
+
+                <h3>Performance Tips</h3>
+                <ul>
+                    <li>Use <code>SERIAL</code> for primary keys</li>
+                    <li>Create foreign key relationships for data integrity</li>
+                    <li>Use <code>WHERE</code> clauses to limit UPDATE/DELETE operations</li>
+                    <li>Regularly backup important databases</li>
+                    <li>Use appropriate data types for each column</li>
+                    <li>Test complex queries with the test suite first</li>
+                </ul>
             </section>
 
         </main>
@@ -199,14 +406,15 @@ DELETE FROM products WHERE in_stock = false;</code></pre>
             <div class="footer-grid">
                 <div class="footer-col footer-about">
                     <div class="logo" style="margin-bottom:15px;">
-                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs</span>
+                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs v11.9</span>
                     </div>
+                    <p>High-performance database engine with LSM Trees, Columnar Storage, and Foreign Key support.</p>
                 </div>
                 <div class="footer-col">
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="index.html#download">Downloads</a></li>
+                        <li><a href="index.html#download">Download v11.9</a></li>
                         <li><a href="https://github.com/42Wor" target="_blank">GitHub</a></li>
                     </ul>
                 </div>
@@ -228,9 +436,252 @@ DELETE FROM products WHERE in_stock = false;</code></pre>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Maaz Waheed. Proprietary License.</p>
+                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - Proprietary License.</p>
             </div>
         </div>
     </footer>
+
+    <style>
+        .feature-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .new-feature-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(to right, #ef4444, #f87171);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .code-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: -1px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            background: var(--secondary-blue);
+            border: 1px solid var(--border-light);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -1px;
+        }
+        
+        .tab:hover {
+            color: white;
+            background: rgba(30, 41, 59, 0.8);
+        }
+        
+        .tab.active {
+            background: var(--code-bg);
+            color: white;
+            border-color: var(--border-light);
+            border-bottom: 1px solid var(--code-bg);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { 
+                opacity: 0.8; 
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            50% { 
+                opacity: 1; 
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% { 
+                opacity: 0.8; 
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .sql-keyword {
+            color: #f87171;
+            font-weight: bold;
+        }
+        
+        .sql-string {
+            color: #7dd3fc;
+        }
+        
+        .sql-number {
+            color: #bbf7d0;
+        }
+        
+        .sql-comment {
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        pre code {
+            display: block;
+            line-height: 1.5;
+        }
+        
+        /* Ensure pre blocks are properly formatted */
+        pre {
+            position: relative;
+            background: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        pre::before {
+            content: 'SQL';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent-red);
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 0 12px 0 12px;
+        }
+    </style>
+    
+    <script>
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Add syntax highlighting for SQL keywords
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                let html = block.innerHTML;
+                
+                // Highlight SQL keywords
+                const keywords = [
+                    'LOGIN', 'CREATE', 'DATABASE', 'USE', 'TABLE', 
+                    'INSERT', 'INTO', 'VALUES', 'SELECT', 'FROM', 
+                    'WHERE', 'UPDATE', 'SET', 'DELETE', 'COUNT', 
+                    'BACKUP', 'RESTORE', 'DROP', 'FOREIGN', 'KEY', 
+                    'REFERENCES', 'PRIMARY', 'SERIAL', 'TEXT', 
+                    'DOUBLE', 'BOOL', 'TIMESTAMP', 'INT', 'TRUE', 
+                    'FALSE', 'PASSWORD', 'AND', 'OR', 'NOT',
+                    'AVG', 'SUM', 'MIN', 'MAX'
+                ];
+                
+                keywords.forEach(keyword => {
+                    const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+                    html = html.replace(regex, `<span class="sql-keyword">${keyword}</span>`);
+                });
+                
+                // Highlight strings
+                html = html.replace(/'([^']+)'/g, `<span class="sql-string">'$1'</span>`);
+                
+                // Highlight numbers
+                html = html.replace(/\b(\d+\.?\d*)\b/g, `<span class="sql-number">$1</span>`);
+                
+                // Highlight comments
+                html = html.replace(/-- .+/g, `<span class="sql-comment">$&</span>`);
+                
+                block.innerHTML = html;
+            });
+            
+            // Add smooth scrolling for sidebar links
+            document.querySelectorAll('.docs-sidebar a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            // Update active state in sidebar
+                            document.querySelectorAll('.docs-sidebar a').forEach(link => {
+                                link.classList.remove('active');
+                            });
+                            this.classList.add('active');
+                            
+                            // Smooth scroll to target
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 100,
+                                behavior: 'smooth'
+                            });
+                            
+                            // Update URL without page reload
+                            history.pushState(null, null, href);
+                        }
+                    }
+                });
+            });
+            
+            // Highlight current section in sidebar on scroll
+            function highlightCurrentSection() {
+                const sections = document.querySelectorAll('section[id]');
+                const scrollPosition = window.scrollY + 150;
+                
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                // Update active link in sidebar
+                document.querySelectorAll('.docs-sidebar a').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            // Initial highlight
+            highlightCurrentSection();
+            
+            // Update on scroll
+            window.addEventListener('scroll', highlightCurrentSection);
+        });
+    </script>
 </body>
 </html>

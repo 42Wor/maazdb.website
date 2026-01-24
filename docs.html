@@ -4,10 +4,298 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MaazDB Documentation v11.9</title>
-    <link rel="stylesheet" href="css/style.css">
+     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="images/maazdb.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CORE VARIABLES & RESET --- */
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary-red: #ef4444;
+            --primary-hover: #dc2626;
+            --border-light: #334155;
+            --code-bg: #1e293b; /* Matches bg-card */
+            --secondary-blue: #334155;
+            --accent-red: #ef4444;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+  
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover { color: white; }
+
+        .btn-nav {
+            background: var(--primary-red);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .btn-nav:hover { background: var(--primary-hover); }
+
+        /* --- LAYOUT --- */
+        .docs-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: var(--nav-height);
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
+        .docs-sidebar {
+            width: 280px;
+            position: sticky;
+            top: var(--nav-height);
+            height: calc(100vh - var(--nav-height));
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            border-right: 1px solid var(--border-light);
+            background: var(--bg-dark);
+        }
+
+        .docs-sidebar h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        .docs-sidebar h3:first-child { margin-top: 0; }
+
+        .docs-sidebar ul li { margin-bottom: 4px; }
+
+        .docs-sidebar a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .docs-sidebar a:hover {
+            background: var(--bg-card);
+            color: white;
+        }
+
+        .docs-sidebar a.active {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .docs-content {
+            flex: 1;
+            padding: 3rem 4rem;
+            max-width: 900px;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px; /* For sticky header offset */
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.8rem; margin-bottom: 1rem; margin-top: 2rem; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
+        h3 { font-size: 1.3rem; margin-bottom: 0.8rem; margin-top: 1.5rem; color: white; }
+        p { margin-bottom: 1rem; color: var(--text-muted); }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        th { background: rgba(255,255,255,0.05); color: white; }
+        td { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; }
+
+        /* --- CODE BLOCKS & TABS --- */
+        .feature-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .new-feature-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(to right, #ef4444, #f87171);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .code-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: -1px;
+            border-bottom: 1px solid var(--border-light);
+            margin-top: 1.5rem;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: var(--secondary-blue);
+            border: 1px solid var(--border-light);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .tab:hover {
+            color: white;
+            background: rgba(30, 41, 59, 0.8);
+        }
+        
+        .tab.active {
+            background: var(--bg-dark); /* Match body bg to look connected */
+            color: var(--primary-red);
+            border-color: var(--border-light);
+            border-bottom: 1px solid var(--bg-dark);
+            z-index: 2;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        pre {
+            position: relative;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 8px; /* Rounded corners except top-left */
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-light);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Fix for pre blocks that aren't part of tabs */
+        section > pre {
+            border-radius: 8px;
+        }
+        
+        pre::before {
+            content: 'SQL';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent-red);
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0 8px 0 8px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e2e8f0;
+        }
+
+        p > code, li > code {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #f87171;
+        }
+
+        /* --- SYNTAX HIGHLIGHTING COLORS --- */
+        .sql-keyword { color: #f87171; font-weight: bold; }
+        .sql-string { color: #7dd3fc; }
+        .sql-number { color: #bbf7d0; }
+        .sql-comment { color: #64748b; font-style: italic; }
+
+
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { opacity: 1; box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { opacity: 0.8; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .docs-sidebar { display: none; } /* Hide sidebar on small screens for simplicity */
+            .docs-content { padding: 2rem; max-width: 100%; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
 </head>
 <body>
 
@@ -15,7 +303,9 @@
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
-                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs v11.9</span>
+                <!-- Placeholder image if file missing -->
+                <img src="images/maazdb-logo.png" alt="MaazDB Logo"> <span>MaazDB v11.9</span>
+                <span>MaazDB Docs v11.9</span>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -63,7 +353,7 @@
                 <h1>MaazDB v11.9 Documentation</h1>
                 <p>MaazDB v11.9 is an ultra-high-performance, columnar, disk-based relational database engine written in Rust. It utilizes <strong>LSM Trees (Log-Structured Merge-Trees)</strong> for fast writes, <strong>Columnar Storage</strong> for analytical reads, and now features <strong>FOREIGN KEY constraints</strong> and <strong>enhanced backup/restore</strong> capabilities.</p>
                 
-                <div class="feature-badges" style="margin: 1.5rem 0;">
+                <div class="feature-badges">
                     <span class="new-feature-badge">New in v11.9: Foreign Key Support</span>
                     <span class="new-feature-badge">Enhanced: Backup & Restore System</span>
                 </div>
@@ -400,22 +690,27 @@ RESTORE 'pre_migration';</code></pre>
         </main>
     </div>
 
+ 
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col footer-about">
-                    <div class="logo" style="margin-bottom:15px;">
-                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs v11.9</span>
+                    <div class="logo" style="margin-bottom:20px;">
+                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB v11.9</span>
                     </div>
-                    <p>High-performance database engine with LSM Trees, Columnar Storage, and Foreign Key support.</p>
+                    <p>The "Red Dragon" database engine: High-performance LSM storage meet relational integrity.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
                 </div>
                 <div class="footer-col">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="index.html#download">Download v11.9</a></li>
-                        <li><a href="https://github.com/42Wor" target="_blank">GitHub</a></li>
+                        <li><a href="docs.html">Documentation</a></li>
+                        <li><a href="docs.html#test-suite">Test Suite</a></li>
+                        <li><a href="#download">Downloads</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -426,153 +721,20 @@ RESTORE 'pre_migration';</code></pre>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Connect</h4>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/profile.php?id=61550243033527" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com/maa.zwaheed" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="mailto:support@maazdb.org">Contact Support</a></li>
+                        <li><a href="#">License Details</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - Proprietary License.</p>
+                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <style>
-        .feature-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 1.5rem 0;
-        }
-        
-        .new-feature-badge {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(to right, #ef4444, #f87171);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            animation: pulse 2s infinite;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .code-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: -1px;
-            border-bottom: 1px solid var(--border-light);
-        }
-        
-        .tab {
-            padding: 12px 24px;
-            background: var(--secondary-blue);
-            border: 1px solid var(--border-light);
-            border-bottom: none;
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            bottom: -1px;
-        }
-        
-        .tab:hover {
-            color: white;
-            background: rgba(30, 41, 59, 0.8);
-        }
-        
-        .tab.active {
-            background: var(--code-bg);
-            color: white;
-            border-color: var(--border-light);
-            border-bottom: 1px solid var(--code-bg);
-        }
-        
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes pulse {
-            0% { 
-                opacity: 0.8; 
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-            }
-            50% { 
-                opacity: 1; 
-                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
-            }
-            100% { 
-                opacity: 0.8; 
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-            }
-        }
-        
-        .sql-keyword {
-            color: #f87171;
-            font-weight: bold;
-        }
-        
-        .sql-string {
-            color: #7dd3fc;
-        }
-        
-        .sql-number {
-            color: #bbf7d0;
-        }
-        
-        .sql-comment {
-            color: #64748b;
-            font-style: italic;
-        }
-        
-        pre code {
-            display: block;
-            line-height: 1.5;
-        }
-        
-        /* Ensure pre blocks are properly formatted */
-        pre {
-            position: relative;
-            background: var(--code-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            overflow-x: auto;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-light);
-        }
-        
-        pre::before {
-            content: 'SQL';
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--accent-red);
-            color: white;
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 0 12px 0 12px;
-        }
-    </style>
-    
+
     <script>
         function showTab(tabId) {
             // Hide all tabs
@@ -585,7 +747,9 @@ RESTORE 'pre_migration';</code></pre>
             
             // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            // Find the tab element that was clicked (or corresponds to the ID)
+            const clickedTab = Array.from(document.querySelectorAll('.tab')).find(t => t.getAttribute('onclick').includes(tabId));
+            if(clickedTab) clickedTab.classList.add('active');
         }
         
         // Add syntax highlighting for SQL keywords
@@ -640,8 +804,9 @@ RESTORE 'pre_migration';</code></pre>
                             this.classList.add('active');
                             
                             // Smooth scroll to target
+                            const navHeight = 80; // Approximate header height
                             window.scrollTo({
-                                top: targetElement.offsetTop - 100,
+                                top: targetElement.offsetTop - navHeight,
                                 behavior: 'smooth'
                             });
                             
@@ -668,12 +833,14 @@ RESTORE 'pre_migration';</code></pre>
                 });
                 
                 // Update active link in sidebar
-                document.querySelectorAll('.docs-sidebar a').forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${currentSection}`) {
-                        link.classList.add('active');
-                    }
-                });
+                if (currentSection) {
+                    document.querySelectorAll('.docs-sidebar a').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${currentSection}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
             }
             
             // Initial highlight

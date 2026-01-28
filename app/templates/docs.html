@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/docs.css') }}">
-{% endblock %}
+ {% endblock %}
 
 {% block content %}
 <div class="docs-layout">
@@ -36,17 +35,23 @@
         <ul>
             <li><a href="#backup">Backup & Restore</a></li>
         </ul>
+        <h3>Test Suite</h3>
+        <ul>
+            <li><a href="#test-suite" >Complete Example</a></li>
+            <li><a href="#tab1" class="tab-link" onclick="event.preventDefault(); showTab('tab1', event);">Full Test SQL</a></li>
+            <li><a href="#tab2" class="tab-link" onclick="event.preventDefault(); showTab('tab2', event);">File Test SQL</a></li>
+        </ul>
     </aside>
 
     <!-- MAIN DOCUMENTATION CONTENT -->
     <main class="docs-content">
-        
+
         <section id="intro">
             <h1>MaazDB Documentation</h1>
             <p><strong>Version:</strong> {{ version }}<br>
             <strong>Default Port:</strong> 8888<br>
             <strong>Protocol:</strong> TCP / Binary Length-Prefixed</p>
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 2rem 0;">
+            <hr class="docs-divider">
         </section>
 
         <!-- 1. PROTOCOL -->
@@ -252,13 +257,137 @@ LIMIT 10;</code></pre>
             <span class="code-label">Example</span>
             <pre><code>RESTORE 'snapshot_v1';</code></pre>
         </section>
+                    <section id="test-suite">
+                        <h2>Complete Test Suite Example</h2>
+                        <p>Below is a comprehensive test suite demonstrating all major features of MaazDB v11.9:</p>
+                        
+                        <div class="code-tabs">
+                            <button class="tab active" data-tab="tab1" type="button" onclick="showTab('tab1', event)">Full Test SQL</button>
+                            <button class="tab" data-tab="tab2" type="button" onclick="showTab('tab2', event)">File Test SQL</button>
+                        </div>
 
+                        <div id="tab1" class="tab-content active">
+                            <pre><code>-- MaazDB v11.9 Comprehensive Test Suite
+                    -- Demonstrates all major features
+
+                    -- 1. Authentication
+                    LOGIN admin PASSWORD 'admin';
+
+                    -- 2. Database Management
+                    CREATE DATABASE full_test_db;
+                    USE full_test_db;
+
+                    -- 3. DDL with Foreign Keys
+                    CREATE TABLE employees (
+                        id SERIAL PRIMARY KEY,
+                        name TEXT,
+                        role TEXT,
+                        salary DOUBLE,
+                        is_active BOOL,
+                        joined_at TIMESTAMP
+                    );
+
+                    -- 4. INSERT with various data types
+                    INSERT INTO employees (name, role, salary, is_active, joined_at) 
+                    VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
+
+                    INSERT INTO employees (name, role, salary, is_active, joined_at) 
+                    VALUES ('Bob', 'Manager', 95000.50, TRUE, '2022-05-20 10:30:00');
+
+                    INSERT INTO employees (name, role, salary, is_active, joined_at) 
+                    VALUES ('Charlie', 'Intern', 30000.00, FALSE, '2024-01-10 08:15:00');
+
+                    -- 5. SELECT queries
+                    SELECT * FROM employees;
+                    SELECT name, salary FROM employees WHERE salary > 50000;
+
+                    -- 6. UPDATE operations
+                    UPDATE employees SET salary = 90000.00 WHERE name = 'Alice';
+                    SELECT name, salary FROM employees WHERE name = 'Alice';
+
+                    -- 7. DELETE operations
+                    DELETE FROM employees WHERE name = 'Charlie';
+                    SELECT COUNT(*) FROM employees;
+
+                    -- 8. Foreign Key relationships
+                    CREATE TABLE projects (
+                        pid SERIAL PRIMARY KEY,
+                        title TEXT,
+                        lead_id INT,
+                        FOREIGN KEY (lead_id) REFERENCES employees(id)
+                    );
+
+                    INSERT INTO projects (title, lead_id) VALUES ('Project X', 1);
+                    SELECT * FROM projects;
+
+                    -- 9. Backup & Restore
+                    BACKUP 'full_backup_test';
+                    DROP TABLE projects;
+                    DROP TABLE employees;
+                    RESTORE 'full_backup_test';
+                    SELECT COUNT(*) FROM employees;
+
+                    -- 10. Cleanup
+                    USE system;
+                    DROP DATABASE full_test_db;</code></pre>
+                        </div>
+
+                        <div id="tab2" class="tab-content">
+                            <pre><code>-- File System Test Suite
+                    LOGIN admin PASSWORD 'admin';
+                    CREATE DATABASE file_test_db;
+                    USE file_test_db;
+
+                    CREATE TABLE products (
+                        id SERIAL PRIMARY KEY,
+                        name TEXT,
+                        price DOUBLE
+                    );
+
+                    INSERT INTO products (name, price) VALUES ('Laptop', 999.99);
+                    INSERT INTO products (name, price) VALUES ('Mouse', 25.50);
+                    INSERT INTO products (name, price) VALUES ('Keyboard', 45.00);
+
+                    SELECT * FROM products;
+                    UPDATE products SET price = 899.99 WHERE name = 'Laptop';
+                    DELETE FROM products WHERE name = 'Mouse';
+
+                    BACKUP 'file_test_backup';
+                    SELECT COUNT(*) FROM products;
+
+                    USE system;
+                    DROP DATABASE file_test_db;</code></pre>
+                        </div>
+                    </section>
     </main>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+    function showTab(tabId, event) {
+        // Hide all tab contents
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        // Remove active class from all tabs
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Show selected tab content and mark tab as active
+        const selectedTab = document.getElementById(tabId);
+        if (selectedTab) {
+            selectedTab.classList.add('active');
+        }
+        
+        // Mark the clicked tab as active
+        event.target.classList.add('active');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // 1. Syntax Highlighting Logic
         const codeBlocks = document.querySelectorAll('pre code');
@@ -305,6 +434,30 @@ LIMIT 10;</code></pre>
                 }
             });
         });
+});
+
+// 3. Copy to Clipboard functionality
+const blocks = document.querySelectorAll('pre');
+blocks.forEach(block => {
+    const button = document.createElement('button');
+    button.className = 'copy-btn';
+    button.innerHTML = '<i class="far fa-copy"></i>';
+    button.style.position = 'absolute';
+    button.style.top = '10px';
+    button.style.right = '10px';
+    block.style.position = 'relative';
+    block.appendChild(button);
+
+    button.addEventListener('click', () => {
+        const code = block.querySelector('code').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+                button.innerHTML = '<i class="far fa-copy"></i>';
+            }, 2000);
+        });
     });
+});
+});
 </script>
 {% endblock %}

@@ -869,3 +869,65 @@ p code, td code, li code {
     pre { font-size: 0.85rem; padding: 1rem; }
     table { display: block; overflow-x: auto; }
 }
+/* Test Suite Section Styles */
+.code-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.code-tabs .tab {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    bottom: -1px;
+}
+
+.code-tabs .tab:hover {
+    color: var(--text-main);
+}
+
+.code-tabs .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#test-suite {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin: 3rem 0;
+}
+
+#test-suite h2 {
+    border: none;
+    padding-bottom: 0;
+    margin-bottom: 1rem;
+}
+
+#test-suite > p {
+    margin-bottom: 2rem;
+}

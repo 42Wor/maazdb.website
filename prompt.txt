@@ -9,10 +9,298 @@ FILE PATH: docs.html
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MaazDB Documentation v11.9</title>
-    <link rel="stylesheet" href="css/style.css">
+     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="images/maazdb.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CORE VARIABLES & RESET --- */
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary-red: #ef4444;
+            --primary-hover: #dc2626;
+            --border-light: #334155;
+            --code-bg: #1e293b; /* Matches bg-card */
+            --secondary-blue: #334155;
+            --accent-red: #ef4444;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+  
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover { color: white; }
+
+        .btn-nav {
+            background: var(--primary-red);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .btn-nav:hover { background: var(--primary-hover); }
+
+        /* --- LAYOUT --- */
+        .docs-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: var(--nav-height);
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
+        .docs-sidebar {
+            width: 280px;
+            position: sticky;
+            top: var(--nav-height);
+            height: calc(100vh - var(--nav-height));
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            border-right: 1px solid var(--border-light);
+            background: var(--bg-dark);
+        }
+
+        .docs-sidebar h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        .docs-sidebar h3:first-child { margin-top: 0; }
+
+        .docs-sidebar ul li { margin-bottom: 4px; }
+
+        .docs-sidebar a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .docs-sidebar a:hover {
+            background: var(--bg-card);
+            color: white;
+        }
+
+        .docs-sidebar a.active {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .docs-content {
+            flex: 1;
+            padding: 3rem 4rem;
+            max-width: 900px;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px; /* For sticky header offset */
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.8rem; margin-bottom: 1rem; margin-top: 2rem; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
+        h3 { font-size: 1.3rem; margin-bottom: 0.8rem; margin-top: 1.5rem; color: white; }
+        p { margin-bottom: 1rem; color: var(--text-muted); }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        th { background: rgba(255,255,255,0.05); color: white; }
+        td { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; }
+
+        /* --- CODE BLOCKS & TABS --- */
+        .feature-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .new-feature-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(to right, #ef4444, #f87171);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .code-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: -1px;
+            border-bottom: 1px solid var(--border-light);
+            margin-top: 1.5rem;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: var(--secondary-blue);
+            border: 1px solid var(--border-light);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .tab:hover {
+            color: white;
+            background: rgba(30, 41, 59, 0.8);
+        }
+        
+        .tab.active {
+            background: var(--bg-dark); /* Match body bg to look connected */
+            color: var(--primary-red);
+            border-color: var(--border-light);
+            border-bottom: 1px solid var(--bg-dark);
+            z-index: 2;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        pre {
+            position: relative;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 8px; /* Rounded corners except top-left */
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-light);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Fix for pre blocks that aren't part of tabs */
+        section > pre {
+            border-radius: 8px;
+        }
+        
+        pre::before {
+            content: 'SQL';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent-red);
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0 8px 0 8px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e2e8f0;
+        }
+
+        p > code, li > code {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #f87171;
+        }
+
+        /* --- SYNTAX HIGHLIGHTING COLORS --- */
+        .sql-keyword { color: #f87171; font-weight: bold; }
+        .sql-string { color: #7dd3fc; }
+        .sql-number { color: #bbf7d0; }
+        .sql-comment { color: #64748b; font-style: italic; }
+
+
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { opacity: 1; box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { opacity: 0.8; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .docs-sidebar { display: none; } /* Hide sidebar on small screens for simplicity */
+            .docs-content { padding: 2rem; max-width: 100%; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
 </head>
 <body>
 
@@ -20,7 +308,9 @@ FILE PATH: docs.html
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
-                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs v11.9</span>
+                <!-- Placeholder image if file missing -->
+                <img src="images/maazdb-logo.png" alt="MaazDB Logo"> <span>MaazDB v11.9</span>
+                <span>MaazDB Docs v11.9</span>
             </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -68,7 +358,7 @@ FILE PATH: docs.html
                 <h1>MaazDB v11.9 Documentation</h1>
                 <p>MaazDB v11.9 is an ultra-high-performance, columnar, disk-based relational database engine written in Rust. It utilizes <strong>LSM Trees (Log-Structured Merge-Trees)</strong> for fast writes, <strong>Columnar Storage</strong> for analytical reads, and now features <strong>FOREIGN KEY constraints</strong> and <strong>enhanced backup/restore</strong> capabilities.</p>
                 
-                <div class="feature-badges" style="margin: 1.5rem 0;">
+                <div class="feature-badges">
                     <span class="new-feature-badge">New in v11.9: Foreign Key Support</span>
                     <span class="new-feature-badge">Enhanced: Backup & Restore System</span>
                 </div>
@@ -405,22 +695,27 @@ RESTORE 'pre_migration';</code></pre>
         </main>
     </div>
 
+ 
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col footer-about">
-                    <div class="logo" style="margin-bottom:15px;">
-                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB Docs v11.9</span>
+                    <div class="logo" style="margin-bottom:20px;">
+                        <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB v11.9</span>
                     </div>
-                    <p>High-performance database engine with LSM Trees, Columnar Storage, and Foreign Key support.</p>
+                    <p>The "Red Dragon" database engine: High-performance LSM storage meet relational integrity.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
                 </div>
                 <div class="footer-col">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="index.html#download">Download v11.9</a></li>
-                        <li><a href="https://github.com/42Wor" target="_blank">GitHub</a></li>
+                        <li><a href="docs.html">Documentation</a></li>
+                        <li><a href="docs.html#test-suite">Test Suite</a></li>
+                        <li><a href="#download">Downloads</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -431,153 +726,20 @@ RESTORE 'pre_migration';</code></pre>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Connect</h4>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/profile.php?id=61550243033527" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com/maa.zwaheed" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="mailto:support@maazdb.org">Contact Support</a></li>
+                        <li><a href="#">License Details</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - Proprietary License.</p>
+                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <style>
-        .feature-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 1.5rem 0;
-        }
-        
-        .new-feature-badge {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(to right, #ef4444, #f87171);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            animation: pulse 2s infinite;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .code-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: -1px;
-            border-bottom: 1px solid var(--border-light);
-        }
-        
-        .tab {
-            padding: 12px 24px;
-            background: var(--secondary-blue);
-            border: 1px solid var(--border-light);
-            border-bottom: none;
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            bottom: -1px;
-        }
-        
-        .tab:hover {
-            color: white;
-            background: rgba(30, 41, 59, 0.8);
-        }
-        
-        .tab.active {
-            background: var(--code-bg);
-            color: white;
-            border-color: var(--border-light);
-            border-bottom: 1px solid var(--code-bg);
-        }
-        
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes pulse {
-            0% { 
-                opacity: 0.8; 
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-            }
-            50% { 
-                opacity: 1; 
-                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
-            }
-            100% { 
-                opacity: 0.8; 
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-            }
-        }
-        
-        .sql-keyword {
-            color: #f87171;
-            font-weight: bold;
-        }
-        
-        .sql-string {
-            color: #7dd3fc;
-        }
-        
-        .sql-number {
-            color: #bbf7d0;
-        }
-        
-        .sql-comment {
-            color: #64748b;
-            font-style: italic;
-        }
-        
-        pre code {
-            display: block;
-            line-height: 1.5;
-        }
-        
-        /* Ensure pre blocks are properly formatted */
-        pre {
-            position: relative;
-            background: var(--code-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            overflow-x: auto;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-light);
-        }
-        
-        pre::before {
-            content: 'SQL';
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--accent-red);
-            color: white;
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 0 12px 0 12px;
-        }
-    </style>
-    
+
     <script>
         function showTab(tabId) {
             // Hide all tabs
@@ -590,7 +752,9 @@ RESTORE 'pre_migration';</code></pre>
             
             // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            // Find the tab element that was clicked (or corresponds to the ID)
+            const clickedTab = Array.from(document.querySelectorAll('.tab')).find(t => t.getAttribute('onclick').includes(tabId));
+            if(clickedTab) clickedTab.classList.add('active');
         }
         
         // Add syntax highlighting for SQL keywords
@@ -645,8 +809,9 @@ RESTORE 'pre_migration';</code></pre>
                             this.classList.add('active');
                             
                             // Smooth scroll to target
+                            const navHeight = 80; // Approximate header height
                             window.scrollTo({
-                                top: targetElement.offsetTop - 100,
+                                top: targetElement.offsetTop - navHeight,
                                 behavior: 'smooth'
                             });
                             
@@ -673,12 +838,14 @@ RESTORE 'pre_migration';</code></pre>
                 });
                 
                 // Update active link in sidebar
-                document.querySelectorAll('.docs-sidebar a').forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${currentSection}`) {
-                        link.classList.add('active');
-                    }
-                });
+                if (currentSection) {
+                    document.querySelectorAll('.docs-sidebar a').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${currentSection}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
             }
             
             // Initial highlight
@@ -701,77 +868,44 @@ FILE PATH: index.html
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MaazDB - The Red Dragon of Databases</title>
+    <!-- CSS & Fonts -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="images/maazdb.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .new-feature-badge {
-            display: inline-block;
-            background: linear-gradient(to right, #ef4444, #f87171);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 8px;
-            vertical-align: middle;
-            animation: pulse 2s infinite;
+        /* Unique Page Overrides */
+        .hero h1 {
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
         }
-        
-        @keyframes pulse {
-            0% { opacity: 0.8; }
-            50% { opacity: 1; }
-            100% { opacity: 0.8; }
-        }
-        
-        .test-suite-card {
-            background: var(--primary-blue);
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .test-suite-card h3 {
-            color: var(--accent-red);
-            margin-bottom: 1rem;
-        }
-        
-        .test-suite-card pre {
-            background: #050911;
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-size: 0.85rem;
-        }
-        
-        .sql-keyword {
+        .os-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(239, 68, 68, 0.1);
             color: #f87171;
-            font-weight: bold;
-        }
-        
-        .sql-string {
-            color: #7dd3fc;
-        }
-        
-        .sql-number {
-            color: #bbf7d0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
+    <!-- NAVIGATION -->
     <nav class="navbar">
         <div class="container nav-container">
-            <div class="logo">
-                <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB v11.9</span>
-            </div>
+            <a href="index.html" class="logo">
+                <img src="images/maazdb-logo.png" alt="MaazDB Logo"> <span>MaazDB v11.9</span>
+            </a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="docs.html">Documentation</a></li>
-                <li><a href="#download" class="btn-nav">Download v11.9</a></li>
+                <li><a href="#download" class="btn-nav">Get v11.9</a></li>
             </ul>
         </div>
     </nav>
@@ -780,50 +914,52 @@ FILE PATH: index.html
     <header class="hero">
         <div class="container hero-content">
             <div class="hero-text">
-                <span class="badge">v11.9 Stable Release <span class="new-feature-badge">NEW</span></span>
+                <span class="badge"><i class="fas fa-fire"></i> v11.9 Stable Release <span class="new-feature-badge">LATEST</span></span>
                 <h1>The <span class="text-gradient">Red Dragon</span><br>of Databases</h1>
                 <p>
-                    An ultra-fast, crash-safe relational database engine powered by Rust.
-                    Features LSM Trees, Columnar Storage, Foreign Key support, and enhanced backup system.
+                    An ultra-high-performance, columnar, disk-based relational engine written in Rust. 
+                    Experience the speed of <strong>LSM Trees</strong> with the reliability of <strong>Foreign Key</strong> constraints.
                 </p>
-                <p id="os-message" style="color:var(--accent-red); font-size:0.9rem; font-weight:600; margin-top:10px;"></p>
+                <div id="os-message" class="os-check" style="display: none;"></div>
                 <div class="hero-btns">
-                    <a href="#download" class="btn-nav" style="padding:15px 30px; font-size:1.1rem;">Download v11.9</a>
-                    <a href="docs.html" style="margin-left:20px; color:white; font-weight:600; text-decoration:underline;">Read Documentation</a>
+                    <a href="#download" class="btn-nav" style="padding:15px 35px; font-size:1.1rem;">Download Now</a>
+                    <a href="docs.html" style="margin-left:25px; color:white; font-weight:600; text-decoration:underline;">View Documentation</a>
                 </div>
             </div>
-            <!-- FLOATING DRAGON LOGO -->
             <div class="hero-image">
                 <img src="images/maazdb-logo.png" class="floating-logo" alt="MaazDB Dragon">
             </div>
         </div>
     </header>
 
-    <!-- FEATURES -->
+    <!-- CORE FEATURES -->
     <section id="features" class="section">
         <div class="container">
-            <h2 class="section-title">Engineered for Performance</h2>
-            <div class="download-grid" style="gap:30px;">
-                <div class="dl-card" style="cursor:default; width:300px;">
-                    <i class="fas fa-bolt" style="color:#ef4444;"></i>
-                    <h3>LSM Trees <span class="new-feature-badge" style="font-size:0.7rem;">ENHANCED</span></h3>
-                    <p>Log-Structured Merge-Trees and MemTable architecture ensure writes happen at RAM speed before flushing to disk.</p>
+            <h2 class="section-title">Engineered for the Modern Web</h2>
+            <div class="feature-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>RAM-Speed Writes</h3>
+                    <p>Utilizing LSM Trees and MemTables, MaazDB handles high-frequency writes in memory before flushing to optimized columnar storage.</p>
                 </div>
-                <div class="dl-card" style="cursor:default; width:300px;">
-                    <i class="fas fa-key" style="color:#ef4444;"></i>
-                    <h3>Foreign Keys <span class="new-feature-badge" style="font-size:0.7rem;">NEW</span></h3>
-                    <p>Full foreign key constraint support for referential integrity between tables.</p>
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <i class="fas fa-link"></i>
+                    <h3>Relational Integrity <span class="new-feature-badge">NEW</span></h3>
+                    <p>Version 11.9 introduces full <strong>Foreign Key</strong> support, ensuring your data relationships remain consistent and crash-safe.</p>
                 </div>
-                <div class="dl-card" style="cursor:default; width:300px;">
-                    <i class="fas fa-shield-alt" style="color:#ef4444;"></i>
-                    <h3>Enhanced Backup <span class="new-feature-badge" style="font-size:0.7rem;">NEW</span></h3>
-                    <p>Complete backup and restore system with full database recovery capabilities.</p>
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h3>Columnar Analytical Engine</h3>
+                    <p>Optimized for read-heavy workloads. Scan millions of rows in milliseconds using our specialized columnar data format.</p>
                 </div>
-                                <div class="dl-card" style="cursor:default; width:300px;">
-                    <i class="fa-etch fa-solid fa-code" style="color:#ef4444;"></i>
-                    <h3>
-                        SQL Query <span class="new-feature-badge" style="font-size:0.7rem;">NEW</span></h3>
-                    <p>Complete SQL query execution engine with full support for SELECT, INSERT, UPDATE, DELETE operations.</p>
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <i class="fas fa-shield-virus"></i>
+                    <h3>Disaster Recovery <span class="new-feature-badge">ENHANCED</span></h3>
+                    <p>Our new <code>BACKUP</code> and <code>RESTORE</code> system provides point-in-time recovery for your critical database snapshots.</p>
                 </div>
             </div>
         </div>
@@ -832,28 +968,31 @@ FILE PATH: index.html
     <!-- TEST SUITE PREVIEW -->
     <section class="section bg-light">
         <div class="container">
-            <h2 class="section-title">Comprehensive Test Suite</h2>
-            <div class="test-suite-card">
-                <h3>Try the Complete MaazDB v11.9 Test Suite</h3>
-                <p>MaazDB v11.9 includes a comprehensive test suite that validates all features:</p>
-                <pre><code>LOGIN admin PASSWORD 'admin';
-CREATE DATABASE full_test_db;
-USE full_test_db;
-CREATE TABLE employees (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    role TEXT,
+            <div class="test-suite-section">
+                <h2>Comprehensive SQL Suite</h2>
+                <p class="subtitle">Validate your installation with our professional test suite covering DDL, DML, and Referential Integrity.</p>
+                
+                <div class="test-suite-preview">
+                    <pre><code>LOGIN admin PASSWORD 'admin';
+CREATE DATABASE prod_verify;
+USE prod_verify;
+
+CREATE TABLE staff (
+    sid SERIAL PRIMARY KEY,
+    full_name TEXT,
     salary DOUBLE,
-    is_active BOOL,
-    joined_at TIMESTAMP
+    is_active BOOL
 );
-INSERT INTO employees (name, role, salary, is_active, joined_at) 
-VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
-SELECT * FROM employees;
-BACKUP 'full_backup_test';</code></pre>
-                <p style="margin-top: 1rem;">The test suite covers authentication, DDL, DML, foreign keys, backup/restore, and more.</p>
-                <a href="docs.html#test-suite" style="display: inline-block; margin-top: 1rem; color: var(--accent-red); font-weight: 600; text-decoration: none;">
-                    <i class="fas fa-code"></i> View Complete Test Suite
+
+INSERT INTO staff (full_name, salary, is_active) 
+VALUES ('Maaz Waheed', 125000.00, TRUE);
+
+SELECT * FROM staff WHERE salary > 100000;
+BACKUP 'stability_test';</code></pre>
+                </div>
+                
+                <a href="docs.html#test-suite" class="view-full-link">
+                    View Complete Test Suite <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -861,143 +1000,120 @@ BACKUP 'full_backup_test';</code></pre>
 
     <!-- DOWNLOADS -->
     <section id="download" class="section">
-        <div class="container" style="text-align:center;">
+        <div class="container">
             <h2 class="section-title">Download MaazDB v11.9</h2>
-            <p style="margin-bottom: 2rem; color: var(--text-muted); max-width: 800px; margin-left: auto; margin-right: auto;">
-                Choose your platform to download MaazDB v11.9 with foreign key support, enhanced backup system, and comprehensive test suite.
+            <p class="text-center mb-4" style="color: var(--text-muted); max-width: 700px; margin: 0 auto 3rem;">
+                Available for major platforms. Includes the MaazDB Server, CLI Client, and default configuration templates.
             </p>
             <div class="download-grid">
+                <!-- Windows -->
                 <a href="downloads/MaazDB_Setup_Windows_x64_v11.9.exe" class="dl-card windows">
                     <i class="fab fa-windows"></i>
                     <h3>Windows</h3>
-                    <p>Installer (.exe) <span class="new-feature-badge" style="font-size:0.7rem;">v11.9</span></p>
+                    <p>64-bit Installer (.exe)</p>
+                    <span class="new-feature-badge">v11.9 Stable</span>
                 </a>
+                <!-- Linux -->
                 <a href="downloads/maazdb_11.9.0_linux_amd64.deb" class="dl-card linux">
                     <i class="fab fa-linux"></i>
                     <h3>Linux</h3>
-                    <p>Debian/Ubuntu (.deb) <span class="new-feature-badge" style="font-size:0.7rem;">v11.9</span></p>
+                    <p>Debian/Ubuntu (.deb)</p>
+                    <span class="new-feature-badge">v11.9 Stable</span>
                 </a>
-                 <a href="downloads/MaazDB_11.9.0_macOS.dmg" class="dl-card mac">
+                <!-- macOS -->
+                <a href="downloads/MaazDB_11.9.0_macOS.dmg" class="dl-card mac">
                     <i class="fab fa-apple"></i>
                     <h3>macOS</h3>
-                    <p>Installer (.dmg) <span class="new-feature-badge" style="font-size:0.7rem;">v11.9</span></p>
+                    <p>Universal Installer (.dmg)</p>
+                    <span class="new-feature-badge">v11.9 Stable</span>
                 </a>
             </div>
         </div>
     </section>
-
-
 
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col footer-about">
-                    <div class="logo" style="margin-bottom:15px;">
+                    <div class="logo" style="margin-bottom:20px;">
                         <img src="images/maazdb-logo.png" alt="Logo"> <span>MaazDB v11.9</span>
                     </div>
-                    <p>A high-performance database engine with LSM Trees, Columnar Storage, and Foreign Key support.</p>
+                    <p>The "Red Dragon" database engine: High-performance LSM storage meet relational integrity.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
                 </div>
                 <div class="footer-col">
-                    <h4>Product</h4>
+                    <h4>Resources</h4>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="#download">Download v11.9</a></li>
                         <li><a href="docs.html">Documentation</a></li>
-                        <li><a href="LICENSE.txt">License</a></li>
+                        <li><a href="docs.html#test-suite">Test Suite</a></li>
+                        <li><a href="#download">Downloads</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Developer</h4>
                     <ul>
                         <li><a href="https://maaz-dev.vercel.app/" target="_blank">Portfolio</a></li>
-                        <li><a href="https://portal.mbktech.org/maaz.waheed" target="_blank">MBK Portal</a></li>
-                        <li><a href="https://github.com/42Wor" target="_blank">Source Repos</a></li>
+                        <li><a href="https://portal.mbktech.org/maaz.waheed" target="_blank">Portal</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Connect</h4>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/profile.php?id=61550243033527" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com/maa.zwaheed" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="mailto:support@maazdb.org">Contact Support</a></li>
+                        <li><a href="#">License Details</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - Proprietary Software.</p>
+                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- SCRIPTS -->
     <script src="js/main.js"></script>
     <script>
-        // Enhance the existing main.js functionality
         document.addEventListener("DOMContentLoaded", () => {
-            // Update OS detection for v11.9
+            // 1. OS Detection Logic
             const osMessage = document.getElementById('os-message');
-            const platform = navigator.platform.toLowerCase();
-            let os = "Unknown";
+            const platform = navigator.userAgent.toLowerCase();
+            let detected = "";
 
-            if (platform.includes('win')) os = "Windows";
-            else if (platform.includes('linux')) os = "Linux";
-            else if (platform.includes('mac')) os = "macOS";
+            if (platform.includes('win')) detected = 'windows';
+            else if (platform.includes('linux')) detected = 'linux';
+            else if (platform.includes('mac')) detected = 'mac';
 
-            // Update message for v11.9
-            if(osMessage && os !== "Unknown") {
-                osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected ${os} - Download v11.9 highlighted below`;
+            if (detected && osMessage) {
+                const osNames = { windows: 'Windows', linux: 'Linux', mac: 'macOS' };
+                osMessage.style.display = 'inline-flex';
+                osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected ${osNames[detected]} - Recommended version highlighted.`;
                 
-                // Update download links for v11.9
-                document.querySelectorAll('.dl-card').forEach(card => {
-                    if (os === "Windows" && card.classList.contains('windows')) {
-                        card.style.borderColor = '#dc2626';
-                        card.style.background = '#1e293b';
-                    } else if (os === "Linux" && card.classList.contains('linux')) {
-                        card.style.borderColor = '#dc2626';
-                        card.style.background = '#1e293b';
-                    } else if (os === "macOS" && card.classList.contains('mac')) {
-                        card.style.borderColor = '#dc2626';
-                        card.style.background = '#1e293b';
-                    }
-                });
+                const card = document.querySelector(`.dl-card.${detected}`);
+                if (card) {
+                    card.style.borderColor = "#ef4444";
+                    card.style.background = "rgba(239, 68, 68, 0.05)";
+                    card.style.transform = "scale(1.02)";
+                }
             }
-            
-            // Add SQL syntax highlighting to the test suite preview
-            const codeBlock = document.querySelector('.test-suite-card pre code');
+
+            // 2. Syntax Highlighting for the Preview
+            const codeBlock = document.querySelector('.test-suite-preview pre code');
             if (codeBlock) {
                 let html = codeBlock.innerHTML;
+                const keywords = ['LOGIN', 'CREATE', 'DATABASE', 'USE', 'TABLE', 'INSERT', 'INTO', 'VALUES', 'SELECT', 'FROM', 'WHERE', 'BACKUP', 'SERIAL', 'PRIMARY', 'KEY', 'TEXT', 'DOUBLE', 'BOOL'];
                 
-                // Highlight SQL keywords
-                const keywords = ['LOGIN', 'CREATE', 'DATABASE', 'USE', 'TABLE', 
-                                 'INSERT', 'INTO', 'VALUES', 'SELECT', 'FROM', 
-                                 'BACKUP', 'SERIAL', 'PRIMARY', 'KEY', 'TEXT', 
-                                 'DOUBLE', 'BOOL', 'TIMESTAMP', 'TRUE', 'PASSWORD'];
-                
-                keywords.forEach(keyword => {
-                    const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
-                    html = html.replace(regex, `<span class="sql-keyword">${keyword}</span>`);
+                keywords.forEach(kw => {
+                    const reg = new RegExp(`\\b${kw}\\b`, 'g');
+                    html = html.replace(reg, `<span class="sql-keyword">${kw}</span>`);
                 });
                 
-                // Highlight strings
                 html = html.replace(/'([^']+)'/g, `<span class="sql-string">'$1'</span>`);
-                
-                // Highlight numbers
                 html = html.replace(/\b(\d+\.?\d*)\b/g, `<span class="sql-number">$1</span>`);
-                
                 codeBlock.innerHTML = html;
-            }
-            
-            // Update download button text
-            const downloadBtn = document.querySelector('.btn-nav[href="#download"]');
-            if (downloadBtn) {
-                downloadBtn.textContent = 'Download v11.9';
-            }
-            
-            // Update nav button
-            const navBtn = document.querySelector('.nav-links .btn-nav');
-            if (navBtn) {
-                navBtn.textContent = 'Download v11.9';
             }
         });
     </script>
@@ -1014,450 +1130,314 @@ FILE PATH: README.md
 FILE PATH: css\style.css
 ====================
 
-/* FILE PATH: css/style.css */
+/* 
+    FILE PATH: css/style.css 
+    MaazDB v11.9 - The Red Dragon Theme
+*/
 
 :root {
-    --primary-blue: #0a0e1a;
-    --secondary-blue: #13182b;
-    --accent-red: #ff2e2e;
-    --accent-red-hover: #ff5252;
-    --accent-red-light: rgba(255, 46, 46, 0.15);
-    --accent-red-glow: rgba(255, 46, 46, 0.3);
-    --text-main: #ffffff;
-    --text-muted: #94a3b8;
-    --text-light: #e2e8f0;
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-light: #2d3748;
-    --code-bg: #0a0e1a;
-    --timeline-done: #ff2e2e;
-    --timeline-upcoming: #4a5568;
-    --font-main: 'Inter', sans-serif;
-    --font-code: 'JetBrains Mono', monospace;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.4);
-    --gradient-red: linear-gradient(135deg, #ff2e2e, #ff6b6b);
-    --gradient-blue: linear-gradient(135deg, #0a0e1a, #13182b);
-    --gradient-dark: linear-gradient(135deg, #050811, #0a0e1a);
-    --gradient-glow: radial-gradient(circle at center, rgba(255, 46, 46, 0.2), transparent 70%);
+    --bg-dark: #0f172a;        /* from 2 */
+    --bg-card: #1e293b;        /* from 2 */
+    --accent: #ef4444;         /* primary / accent red */
+    --accent-glow: rgba(239, 68, 68, 0.3);
+    --text-main: #f1f5f9;      /* from 2 */
+    --text-dim: #94a3b8;       /* text-muted */
+    --code-bg: #1e293b;        /* matches bg-card */
+    --border: #334155;         /* border-light */
+    --font-ui: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+/* --- Base Styles --- */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
 }
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
 }
 
 body {
-    font-family: var(--font-main);
-    background: var(--gradient-blue);
+    background-color: var(--bg-dark);
     color: var(--text-main);
+    font-family: var(--font-ui);
     line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+a { 
+    text-decoration: none; 
+    transition: 0.3s; 
+    color: inherit; 
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section {
+    padding: 80px 0;
+}
+
+.bg-light {
+    background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(13, 18, 31, 0.7) 100%);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
 }
 
 /* --- Navigation --- */
 .navbar {
-    background: rgba(10, 14, 26, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     position: fixed;
-    width: 100%;
-    top: 0;
+    top: 0; 
+    width: 100%; 
     z-index: 1000;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-    animation: slideDown 0.5s ease;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    background: rgba(5, 8, 17, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
 }
 
 .nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 2rem;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-weight: 800;
-    font-size: 1.4rem;
-    color: white;
-    position: relative;
+.logo { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    font-weight: 800; 
+    font-size: 1.2rem; 
+    color: var(--text-main);
 }
 
-.logo img {
-    height: 44px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: drop-shadow(0 0 10px var(--accent-red-glow));
+.logo img { 
+    height: 35px; 
+    filter: drop-shadow(0 0 5px var(--accent));
 }
 
-.logo:hover img {
-    transform: rotate(-15deg) scale(1.1);
-    filter: drop-shadow(0 0 20px var(--accent-red-glow));
-}
-
-.logo::after {
-    content: 'v11.9';
-    position: absolute;
-    top: -8px;
-    right: -40px;
-    font-size: 0.7rem;
-    color: var(--accent-red);
-    font-weight: 700;
-    background: var(--accent-red-light);
-    padding: 2px 8px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 46, 46, 0.3);
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 2.5rem;
+.nav-links { 
+    display: flex; 
+    gap: 2rem; 
     align-items: center;
 }
 
-.nav-links li a {
-    position: relative;
-    padding: 6px 0;
-    font-weight: 500;
+.nav-links a { 
+    font-weight: 600;
     font-size: 0.95rem;
+    padding: 8px 0;
+    position: relative;
 }
 
-.nav-links li a:not(.btn-nav)::after {
+.nav-links a:hover { 
+    color: var(--accent); 
+}
+
+.nav-links a::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--gradient-red);
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 2px;
+    background: var(--accent);
+    transition: width 0.3s ease;
 }
 
-.nav-links li a:hover:not(.btn-nav) {
-    color: var(--accent-red);
-}
-
-.nav-links li a:hover:not(.btn-nav)::after {
+.nav-links a:hover::after {
     width: 100%;
 }
 
 .btn-nav {
-    background: var(--gradient-red);
+    background: var(--accent);
     color: white !important;
-    padding: 0.8rem 1.8rem;
-    border-radius: 10px;
+    padding: 10px 24px;
+    border-radius: 6px;
     font-weight: 600;
+    box-shadow: 0 4px 15px var(--accent-glow);
     border: none;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(255, 46, 46, 0.3);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+    display: inline-block;
 }
 
-.btn-nav::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.7s ease;
+.btn-nav:hover { 
+    transform: translateY(-2px); 
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px var(--accent-glow);
 }
 
-.btn-nav:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(255, 46, 46, 0.4);
-}
-
-.btn-nav:hover::before {
-    left: 100%;
+.btn-nav::after {
+    display: none;
 }
 
 /* --- Hero Section --- */
 .hero {
-    padding: 180px 0 120px;
-    background: radial-gradient(ellipse at 80% 20%, rgba(255, 46, 46, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 20% 80%, rgba(255, 46, 46, 0.1) 0%, transparent 50%),
-                var(--gradient-blue);
+    padding: 160px 0 100px;
+    background: radial-gradient(circle at 80% 20%, rgba(255, 46, 46, 0.08) 0%, transparent 40%);
     position: relative;
     overflow: hidden;
-    animation: fadeIn 1s ease;
 }
 
 .hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ff2e2e' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
-    opacity: 0.3;
-    animation: float 20s linear infinite;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(255, 46, 46, 0.1) 0%, transparent 70%);
+    z-index: -1;
 }
 
-@keyframes float {
-    0% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-20px) translateX(20px); }
-    100% { transform: translateY(0) translateX(0); }
-}
-
-.hero-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    padding: 0 2rem;
+.hero-content { 
+    display: flex; 
+    align-items: center; 
+    gap: 80px; 
     position: relative;
     z-index: 1;
 }
 
-.hero-text {
-    flex: 1;
-    padding-right: 3rem;
-    animation: slideInLeft 0.8s ease;
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.hero-image {
-    flex: 1;
-    text-align: center;
-    animation: slideInRight 0.8s ease;
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.hero h1 {
-    font-size: 4.5rem;
-    font-weight: 900;
-    margin-bottom: 1.5rem;
-    line-height: 1.1;
-    background: linear-gradient(to right, #ffffff, #ff6b6b, #ff2e2e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 10px 30px rgba(255, 46, 46, 0.2);
-    animation: glow 3s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from {
-        text-shadow: 0 0 20px rgba(255, 46, 46, 0.2);
-    }
-    to {
-        text-shadow: 0 0 30px rgba(255, 46, 46, 0.4),
-                     0 0 40px rgba(255, 46, 46, 0.1);
-    }
-}
-
-.text-gradient {
-    background: var(--gradient-red);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.hero-text { 
+    flex: 1; 
 }
 
 .badge {
-    background: var(--accent-red-light);
-    color: #ff6b6b;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 0.95rem;
-    font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 2rem;
+    gap: 8px;
+    background: rgba(255, 46, 46, 0.15);
+    color: #ff6b6b;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
     border: 1px solid rgba(255, 46, 46, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    animation: pulse 2s ease-in-out infinite;
 }
 
-.badge i {
-    font-size: 0.9rem;
-    color: var(--accent-red);
-}
-
-.hero p {
-    font-size: 1.2rem;
-    color: var(--text-light);
-    margin-bottom: 2.5rem;
-    max-width: 650px;
-    line-height: 1.8;
-}
-
-.hero-btns {
-    margin-top: 3rem;
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-/* Floating Animation */
-.floating-logo {
-    max-width: 420px;
-    animation: floatLogo 6s ease-in-out infinite;
-    filter: drop-shadow(0 0 50px var(--accent-red-glow));
-    transition: all 0.4s ease;
-    position: relative;
-}
-
-.floating-logo::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--gradient-glow);
-    border-radius: 50%;
-    z-index: -1;
-    animation: pulseGlow 3s ease-in-out infinite alternate;
-}
-
-@keyframes floatLogo {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-25px) rotate(3deg); }
-}
-
-@keyframes pulseGlow {
-    from { opacity: 0.3; transform: scale(0.95); }
-    to { opacity: 0.6; transform: scale(1.05); }
-}
-
-.floating-logo:hover {
-    animation-play-state: paused;
-    transform: scale(1.05) rotate(5deg);
-    filter: drop-shadow(0 0 60px var(--accent-red-glow));
-}
-
-/* --- Sections --- */
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-.section {
-    padding: 120px 0;
-    position: relative;
-}
-
-.section-title {
-    font-size: 3.2rem;
-    text-align: center;
-    margin-bottom: 4rem;
-    font-weight: 800;
-    background: linear-gradient(to right, #ffffff, #ff6b6b);
+.text-gradient {
+    background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    position: relative;
 }
 
-.section-title::after {
-    content: '';
-    display: block;
-    width: 100px;
-    height: 5px;
-    background: var(--gradient-red);
-    margin: 1.5rem auto;
-    border-radius: 3px;
-    animation: widthPulse 2s ease-in-out infinite alternate;
+.hero h1 { 
+    font-size: 4rem; 
+    font-weight: 800; 
+    line-height: 1.1; 
+    margin-bottom: 20px; 
+    letter-spacing: -0.5px;
 }
 
-@keyframes widthPulse {
-    from { width: 100px; }
-    to { width: 150px; }
+.hero p { 
+    font-size: 1.2rem; 
+    color: var(--text-dim); 
+    margin-bottom: 30px; 
+    max-width: 600px;
+    line-height: 1.7;
 }
 
-.bg-light {
-    background: var(--secondary-blue);
-    position: relative;
+.hero strong {
+    color: var(--accent);
+    font-weight: 600;
 }
 
-.bg-light::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+.hero-btns {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 40px;
+    flex-wrap: wrap;
 }
 
-/* --- Feature Cards --- */
+.hero-image {
+    flex: 0 0 auto;
+}
+
+.floating-logo {
+    width: 380px;
+    animation: float 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px var(--accent-glow));
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.os-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 20px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    transition: all 0.3s ease;
+}
+
+.os-check i {
+    font-size: 1.1rem;
+}
+
+/* --- Features Grid --- */
+.section-title { 
+    text-align: center; 
+    font-size: 2.5rem; 
+    margin-bottom: 3rem; 
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+}
+
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
-    margin-top: 4rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
 }
 
 .feature-card {
-    background: linear-gradient(145deg, rgba(19, 24, 43, 0.9), rgba(10, 14, 26, 0.9));
-    padding: 3rem 2.5rem;
-    border-radius: 20px;
-    border: 1px solid var(--border-light);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
 .feature-card::before {
@@ -1465,85 +1445,166 @@ a {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-red);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.feature-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 46, 46, 0.1), transparent);
-    transition: left 0.7s ease;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-12px);
-    border-color: var(--accent-red);
-    box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .feature-card:hover::before {
-    opacity: 1;
+    transform: translateX(0);
 }
 
-.feature-card:hover::after {
-    left: 100%;
+.feature-card i { 
+    color: var(--accent); 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    display: inline-block;
 }
 
-.feature-card i {
-    font-size: 3rem;
-    margin-bottom: 1.8rem;
-    color: var(--accent-red);
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.feature-card:hover i {
-    transform: scale(1.2) rotate(10deg);
-}
-
-.feature-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1.2rem;
-    color: white;
+.feature-card h3 { 
+    font-size: 1.5rem; 
+    margin-bottom: 15px; 
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-.feature-card p {
-    color: var(--text-muted);
-    line-height: 1.8;
+.feature-card p { 
+    color: var(--text-dim); 
+    line-height: 1.7;
     font-size: 1rem;
 }
 
-/* --- Downloads Grid --- */
+.feature-card code {
+    background: rgba(255, 46, 46, 0.1);
+    color: #ff6b6b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+/* --- Test Suite Section --- */
+.test-suite-section {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 50px;
+    border: 1px solid var(--border);
+    position: relative;
+}
+
+.test-suite-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.test-suite-preview {
+    margin: 40px 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+pre {
+    background: var(--code-bg);
+    padding: 25px;
+    border-radius: 8px;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    position: relative;
+    line-height: 1.5;
+    margin: 0;
+}
+
+pre::before {
+    content: 'SQL';
+    position: absolute;
+    top: 0; 
+    right: 0;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 0 8px 0 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+code {
+    font-family: var(--font-mono);
+    color: var(--text-main);
+}
+
+.sql-keyword { 
+    color: #ff6b6b; 
+    font-weight: bold; 
+}
+.sql-string { 
+    color: #7dd3fc; 
+}
+.sql-number { 
+    color: #bbf7d0; 
+}
+.sql-comment { 
+    color: #64748b; 
+}
+
+.view-full-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+}
+
+.view-full-link:hover {
+    gap: 12px;
+    text-decoration: underline;
+}
+
+.view-full-link i {
+    transition: transform 0.3s ease;
+}
+
+.view-full-link:hover i {
+    transform: translateX(5px);
+}
+
+/* --- Downloads Section --- */
 .download-grid {
-    display: flex;
-    justify-content: center;
-    gap: 2.5rem;
-    flex-wrap: wrap;
-    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
 }
 
 .dl-card {
-    background: linear-gradient(145deg, rgba(19, 24, 43, 0.95), rgba(10, 14, 26, 0.95));
-    padding: 3rem 2.5rem;
-    border-radius: 20px;
-    border: 2px solid var(--border-light);
-    width: 320px;
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 40px 30px;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
     position: relative;
     overflow: hidden;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
 .dl-card::before {
@@ -1551,1065 +1612,286 @@ a {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--gradient-red);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-}
-
-.dl-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.7s ease;
-    z-index: 1;
-}
-
-.dl-card > * {
-    position: relative;
-    z-index: 2;
+    height: 5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
 }
 
 .dl-card:hover {
-    transform: translateY(-10px) scale(1.03);
-    border-color: var(--accent-red);
-    box-shadow: 0 25px 50px rgba(255, 46, 46, 0.3);
+    transform: translateY(-8px);
+    border-color: var(--accent);
+    box-shadow: 0 15px 30px rgba(255, 46, 46, 0.1);
 }
 
 .dl-card:hover::before {
-    opacity: 0.1;
-}
-
-.dl-card:hover::after {
-    left: 100%;
+    transform: scaleX(1);
 }
 
 .dl-card i {
-    font-size: 4.5rem;
-    margin-bottom: 1.8rem;
-    display: block;
-    transition: all 0.4s ease;
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
-.dl-card:hover i {
-    transform: scale(1.15) rotate(5deg);
-}
+.dl-card.windows i { color: #0078d4; }
+.dl-card.linux i { color: #f1502f; }
+.dl-card.mac i { color: #a2aaad; }
 
 .dl-card h3 {
-    font-size: 1.6rem;
-    color: white;
-    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
 
 .dl-card p {
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    margin-top: 0.5rem;
-}
-
-/* Platform-specific colors */
-.windows i { color: #0078d7; }
-.linux i { color: #f1502f; }
-.mac i { color: #a6a6a6; }
-
-/* --- Test Suite Section --- */
-.test-suite-section {
-    background: linear-gradient(135deg, rgba(10, 14, 26, 0.95), rgba(19, 24, 43, 0.95));
-    border-radius: 25px;
-    padding: 4rem;
-    margin: 4rem 0;
-    border: 1px solid var(--border-light);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.test-suite-section::before {
-    content: '';
-    position: absolute;
-    top: -100%;
-    left: -100%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, var(--accent-red-glow) 0%, transparent 70%);
-    animation: rotate 20s linear infinite;
-}
-
-.test-suite-section::after {
-    content: '';
-    position: absolute;
-    bottom: -100%;
-    right: -100%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, var(--accent-red-glow) 0%, transparent 70%);
-    animation: rotate 20s linear infinite reverse;
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.test-suite-section h2 {
-    color: white;
-    margin-bottom: 1.2rem;
-    font-size: 2.2rem;
-    font-weight: 700;
-    position: relative;
-    z-index: 1;
-}
-
-.test-suite-section .subtitle {
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
-    font-size: 1.15rem;
-    position: relative;
-    z-index: 1;
-}
-
-.test-suite-preview {
-    background: rgba(10, 14, 26, 0.8);
-    border-radius: 15px;
-    padding: 2.5rem;
-    margin: 2.5rem 0;
-    border: 1px solid var(--border-light);
-    overflow-x: auto;
-    position: relative;
-    z-index: 1;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.test-suite-preview pre {
-    margin: 0;
-    background: transparent;
-    border: none;
-    padding: 0;
-}
-
-.view-full-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--accent-red);
-    font-weight: 600;
-    font-size: 1.05rem;
-    text-decoration: none;
-    margin-top: 1.5rem;
-    padding: 12px 24px;
-    border-radius: 10px;
-    background: var(--accent-red-light);
-    border: 1px solid rgba(255, 46, 46, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-}
-
-.view-full-link:hover {
-    gap: 20px;
-    background: rgba(255, 46, 46, 0.2);
-    transform: translateX(5px);
-}
-
-/* --- Roadmap Timeline --- */
-.timeline {
-    max-width: 950px;
-    margin: 0 auto;
-    position: relative;
-    padding-left: 50px;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 25px;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, var(--accent-red), transparent);
-    border-radius: 2px;
-}
-
-.timeline-item {
-    margin-bottom: 3.5rem;
-    padding-left: 50px;
-    position: relative;
-    opacity: 0.5;
-    transition: all 0.4s ease;
-}
-
-.timeline-item.done {
-    opacity: 1;
-}
-
-.timeline-item:hover {
-    opacity: 1;
-    transform: translateX(10px);
-}
-
-.timeline-item::before {
-    content: '';
-    position: absolute;
-    left: 15px;
-    top: 10px;
-    width: 24px;
-    height: 24px;
-    background: var(--secondary-blue);
-    border: 4px solid var(--text-muted);
-    border-radius: 50%;
-    transition: all 0.4s ease;
-    z-index: 1;
-}
-
-.timeline-item.done::before {
-    background: var(--accent-red);
-    border-color: var(--accent-red);
-    box-shadow: 0 0 20px rgba(255, 46, 46, 0.4);
-}
-
-.timeline-item.current::before {
-    background: var(--accent-red);
-    border-color: var(--accent-red);
-    animation: pulse 2s infinite;
-}
-
-.timeline-item .date {
-    color: var(--accent-red);
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.timeline-item h4 {
-    color: white;
-    margin-bottom: 10px;
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-.timeline-item p {
-    color: var(--text-muted);
-    line-height: 1.8;
-    font-size: 1.05rem;
-}
-
-/* --- Docs Layout --- */
-.docs-layout {
-    display: flex;
-    min-height: calc(100vh - 80px);
-    margin-top: 80px;
-    position: relative;
-}
-
-.docs-sidebar {
-    width: 320px;
-    position: fixed;
-    top: 80px;
-    bottom: 0;
-    left: 0;
-    overflow-y: auto;
-    background: linear-gradient(180deg, var(--primary-blue) 0%, rgba(10, 14, 26, 0.98) 100%);
-    border-right: 1px solid var(--border-color);
-    padding: 3rem 2.5rem;
-    z-index: 900;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-}
-
-.docs-sidebar::-webkit-scrollbar {
-    width: 8px;
-}
-
-.docs-sidebar::-webkit-scrollbar-track {
-    background: var(--secondary-blue);
-}
-
-.docs-sidebar::-webkit-scrollbar-thumb {
-    background: var(--gradient-red);
-    border-radius: 4px;
-}
-
-.docs-sidebar::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-red-hover);
-}
-
-.docs-sidebar h3 {
+    color: var(--text-dim);
     font-size: 0.95rem;
-    text-transform: uppercase;
-    color: var(--accent-red);
-    margin-top: 2.5rem;
-    margin-bottom: 1.2rem;
-    letter-spacing: 1.5px;
-    font-weight: 700;
-    padding-bottom: 0.8rem;
-    border-bottom: 2px solid rgba(255, 46, 46, 0.2);
-    position: relative;
-}
-
-.docs-sidebar h3:first-child {
-    margin-top: 0;
-}
-
-.docs-sidebar h3::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: var(--gradient-red);
-}
-
-.docs-sidebar ul {
-    list-style: none;
-    margin-bottom: 2rem;
-}
-
-.docs-sidebar li {
-    margin-bottom: 0.6rem;
-}
-
-.docs-sidebar li a {
-    display: block;
-    padding: 10px 16px;
-    color: var(--text-light);
-    font-size: 0.97rem;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-left: 4px solid transparent;
-    font-weight: 500;
-}
-
-.docs-sidebar li a:hover,
-.docs-sidebar li a.active {
-    color: var(--accent-red);
-    background: var(--accent-red-light);
-    padding-left: 24px;
-    border-left-color: var(--accent-red);
-    transform: translateX(5px);
-}
-
-.docs-content {
-    margin-left: 320px;
-    padding: 4rem 5rem;
-    width: calc(100% - 320px);
-    max-width: 1400px;
-    background: var(--primary-blue);
-    position: relative;
-    min-height: 100vh;
-}
-
-.docs-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 80%, rgba(255, 46, 46, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-.docs-content h1 {
-    font-size: 3.5rem;
-    margin-bottom: 2rem;
-    border-bottom: 3px solid rgba(255, 46, 46, 0.2);
-    padding-bottom: 2rem;
-    background: linear-gradient(to right, #ffffff, #ff6b6b);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-}
-
-.docs-content h1::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 100px;
-    height: 3px;
-    background: var(--gradient-red);
-}
-
-.docs-content h2 {
-    font-size: 2.3rem;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-    color: #f8fafc;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid rgba(255, 46, 46, 0.1);
-    font-weight: 700;
-    position: relative;
-}
-
-.docs-content h2::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 60px;
-    height: 2px;
-    background: var(--gradient-red);
-}
-
-.docs-content h3 {
-    font-size: 1.6rem;
-    margin-top: 3rem;
-    margin-bottom: 1.2rem;
-    color: var(--text-light);
-    font-weight: 600;
-}
-
-.docs-content p,
-.docs-content ul li {
-    color: var(--text-light);
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
-    font-size: 1.05rem;
-}
-
-.docs-content ul {
-    margin-left: 2rem;
-    margin-bottom: 2rem;
-}
-
-.docs-content ul li {
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.docs-content ul li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--accent-red);
-    font-weight: bold;
-}
-
-/* Code Blocks & Tables */
-pre {
-    background: rgba(10, 14, 26, 0.9);
-    padding: 2rem;
-    border-radius: 15px;
-    overflow-x: auto;
-    margin-bottom: 2rem;
-    border: 1px solid var(--border-light);
-    position: relative;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-pre::before {
-    content: 'SQL';
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: var(--gradient-red);
-    color: white;
-    padding: 6px 16px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    border-radius: 0 15px 0 15px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-code {
-    font-family: var(--font-code);
-    font-size: 0.95rem;
-}
-
-pre code {
-    color: #e2e8f0;
-    display: block;
-    line-height: 1.6;
-}
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin: 3rem 0;
-    background: rgba(19, 24, 43, 0.9);
-    border-radius: 15px;
-    overflow: hidden;
-    border: 1px solid var(--border-light);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-th, td {
-    padding: 1.5rem 2rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-light);
-}
-
-th {
-    background: rgba(255, 46, 46, 0.1);
-    color: var(--accent-red);
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    border-bottom: 2px solid rgba(255, 46, 46, 0.2);
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-
-tr:hover {
-    background: rgba(255, 46, 46, 0.08);
-}
-
-/* New Feature Badge */
-.new-feature-badge {
-    display: inline-flex;
-    align-items: center;
-    background: var(--gradient-red);
-    color: white;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    margin-left: 10px;
-    vertical-align: middle;
-    animation: pulse 2s infinite;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(255, 46, 46, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.new-feature-badge::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.7s ease;
-}
-
-.new-feature-badge:hover::before {
-    left: 100%;
-}
-
-/* --- Tabs for Documentation --- */
-.code-tabs {
-    display: flex;
-    gap: 5px;
-    margin-bottom: -1px;
-    border-bottom: 2px solid var(--border-light);
-    position: relative;
-    z-index: 1;
-}
-
-.code-tabs::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 150px;
-    height: 2px;
-    background: var(--gradient-red);
-    transition: left 0.3s ease;
-}
-
-.tab {
-    padding: 14px 28px;
-    background: rgba(19, 24, 43, 0.9);
-    border: 2px solid var(--border-light);
-    border-bottom: none;
-    border-radius: 12px 12px 0 0;
-    cursor: pointer;
-    color: var(--text-muted);
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    bottom: -2px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.tab:hover {
-    color: white;
-    background: rgba(19, 24, 43, 0.95);
-    transform: translateY(-2px);
-}
-
-.tab.active {
-    background: rgba(10, 14, 26, 0.95);
-    color: white;
-    border-color: var(--border-light);
-    border-bottom: 2px solid rgba(10, 14, 26, 0.95);
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
-}
-
-.tab-content {
-    display: none;
-    animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.tab-content.active {
-    display: block;
-}
-
-/* --- SQL Syntax Highlighting --- */
-.sql-keyword {
-    color: #ff6b6b;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
-}
-
-.sql-string {
-    color: #7dd3fc;
-}
-
-.sql-number {
-    color: #bbf7d0;
-}
-
-.sql-comment {
-    color: #64748b;
-    font-style: italic;
-}
-
-.sql-function {
-    color: #c084fc;
 }
 
 /* --- Footer --- */
 .site-footer {
-    background: #050811;
-    padding: 5rem 0 3rem;
-    border-top: 1px solid var(--border-color);
-    margin-top: auto;
-    position: relative;
-    overflow: hidden;
-}
-
-.site-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+    padding: 60px 0 30px;
+    background: #020408;
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    gap: 4rem;
-    margin-bottom: 4rem;
-    position: relative;
-    z-index: 1;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    margin-bottom: 50px;
 }
 
 .footer-col h4 {
-    color: white;
-    margin-bottom: 2rem;
-    font-size: 1.2rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
     font-weight: 700;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.footer-col h4::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--gradient-red);
-}
-
-.footer-col ul {
-    list-style: none;
 }
 
 .footer-col ul li {
-    margin-bottom: 1rem;
+    margin-bottom: 12px;
 }
 
-.footer-col ul li a {
-    color: var(--text-muted);
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    transition: all 0.3s ease;
-    border-left: 3px solid transparent;
-    padding-left: 12px;
+.footer-col a {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
 }
 
-.footer-col ul li a:hover {
-    color: var(--accent-red);
-    padding-left: 20px;
-    border-left-color: var(--accent-red);
-    transform: translateX(5px);
+.footer-col a:hover {
+    color: var(--accent);
 }
 
-.footer-col ul li a i {
-    font-size: 0.9rem;
-    width: 18px;
-    color: var(--accent-red);
+.footer-about .logo {
+    margin-bottom: 20px;
+    font-size: 1.3rem;
 }
 
 .footer-about p {
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    font-size: 1rem;
-    max-width: 350px;
-    line-height: 1.8;
+    color: var(--text-dim);
+    margin-bottom: 25px;
+    line-height: 1.6;
 }
 
 .social-links {
     display: flex;
-    gap: 1.2rem;
+    gap: 15px;
 }
 
 .social-links a {
-    width: 45px;
-    height: 45px;
-    background: rgba(19, 24, 43, 0.8);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    color: white;
-    font-size: 1.2rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid var(--border-light);
-    position: relative;
-    overflow: hidden;
-}
-
-.social-links a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--gradient-red);
-    opacity: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-card);
+    border-radius: 50%;
+    color: var(--text-main);
     transition: all 0.3s ease;
-    z-index: 0;
-}
-
-.social-links a > * {
-    position: relative;
-    z-index: 1;
 }
 
 .social-links a:hover {
-    transform: translateY(-5px) scale(1.1);
-    border-color: var(--accent-red);
-    box-shadow: 0 10px 25px rgba(255, 46, 46, 0.3);
+    background: var(--accent);
+    transform: translateY(-3px);
 }
 
-.social-links a:hover::before {
-    left: 0;
-    opacity: 1;
+.footer-bottom { 
+    text-align: center; 
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim); 
+    font-size: 0.85rem; 
 }
 
-.footer-bottom {
-    text-align: center;
-    padding-top: 3rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    position: relative;
-    z-index: 1;
+/* --- New Feature Badge --- */
+.new-feature-badge {
+    font-size: 0.7rem;
+    background: var(--accent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 
-/* Responsive Design */
-@media (max-width: 1400px) {
-    .hero h1 { font-size: 4rem; }
-    .section-title { font-size: 2.8rem; }
-    .docs-content { padding: 3rem 4rem; }
+/* --- Docs Layout --- */
+.docs-layout { 
+    display: flex; 
+    margin-top: 70px;
+    min-height: calc(100vh - 70px);
 }
 
-@media (max-width: 1200px) {
-    .hero h1 { font-size: 3.5rem; }
-    .section-title { font-size: 2.5rem; }
-    .docs-content { padding: 3rem; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+.docs-sidebar {
+    width: 280px;
+    height: calc(100vh - 70px);
+    position: fixed;
+    background: #080c16;
+    border-right: 1px solid var(--border);
+    padding: 40px 20px;
+    overflow-y: auto;
 }
 
+.docs-sidebar h3 { 
+    color: var(--accent); 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    margin: 20px 0 10px; 
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.docs-sidebar ul { 
+    list-style: none; 
+}
+
+.docs-sidebar a { 
+    display: block; 
+    padding: 10px 15px; 
+    color: var(--text-dim); 
+    border-radius: 6px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.docs-sidebar a:hover, 
+.docs-sidebar a.active { 
+    color: white; 
+    background: rgba(255, 46, 46, 0.1);
+    padding-left: 20px;
+    border-left: 3px solid var(--accent);
+}
+
+.docs-content { 
+    margin-left: 280px; 
+    padding: 60px; 
+    width: 100%;
+    max-width: 900px;
+}
+
+/* --- Responsive Design --- */
 @media (max-width: 992px) {
-    .hero-content { flex-direction: column; text-align: center; }
-    .hero-text { padding-right: 0; margin-bottom: 4rem; }
-    .hero-image { margin-top: 3rem; }
-    .hero-btns { justify-content: center; }
-    
-    .docs-layout { flex-direction: column; }
-    .docs-sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        max-height: 500px;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding: 2rem;
+    .hero-content { 
+        flex-direction: column; 
+        text-align: center; 
+        gap: 50px;
     }
-    .docs-content {
-        margin-left: 0;
-        padding: 2.5rem;
-        width: 100%;
+    
+    .hero h1 { 
+        font-size: 2.8rem; 
+    }
+    
+    .hero-btns {
+        justify-content: center;
     }
     
     .floating-logo {
-        max-width: 350px;
+        width: 280px;
+    }
+    
+    .docs-sidebar { 
+        display: none; 
+    }
+    
+    .docs-content { 
+        margin-left: 0; 
+        padding: 30px; 
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .download-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    .nav-links { display: none; }
-    .hero { padding: 150px 0 80px; }
-    .hero h1 { font-size: 2.8rem; }
-    .section { padding: 80px 0; }
-    .section-title { font-size: 2.2rem; margin-bottom: 3rem; }
-    
-    .dl-card { width: 100%; max-width: 320px; }
-    
-    .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 2.5rem; }
-    .footer-about p { margin: 0 auto 2rem auto; }
-    .social-links { justify-content: center; }
-    
-    .test-suite-section { padding: 2.5rem; }
-    .docs-content { padding: 2rem; }
-    
-    .timeline { padding-left: 30px; }
-    .timeline::before { left: 15px; }
-    .timeline-item { padding-left: 30px; }
-    .timeline-item::before { left: 6px; }
-    
-    .feature-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 576px) {
-    .hero h1 { font-size: 2.4rem; }
-    .section-title { font-size: 1.9rem; }
-    .container { padding: 0 1.5rem; }
-    
-    .hero-btns {
-        flex-direction: column;
-        gap: 1.2rem;
+    .container {
+        padding: 0 1.5rem;
     }
     
-    .hero-btns a:first-child {
-        width: 100%;
-        text-align: center;
+    .nav-links {
+        display: none;
     }
     
-    .test-suite-section { padding: 2rem; }
-    .feature-card, .dl-card { padding: 2rem 1.5rem; }
-    
-    .code-tabs { flex-direction: column; }
-    .tab { width: 100%; text-align: center; border-radius: 10px; margin-bottom: 5px; }
-    .tab.active { border-radius: 10px 10px 0 0; }
-}
-
-@media (max-width: 480px) {
-    .hero h1 { font-size: 2rem; }
-    .section-title { font-size: 1.7rem; }
-    .container { padding: 0 1rem; }
-    
-    .nav-container { padding: 1rem; }
-    
-    .docs-sidebar,
-    .docs-content { padding: 1.5rem; }
-    
-    pre { padding: 1.5rem; }
-    
-    .floating-logo { max-width: 280px; }
-}
-
-/* Animations */
-@keyframes pulse {
-    0% {
-        opacity: 0.9;
-        box-shadow: 0 0 0 0 rgba(255, 46, 46, 0.4);
+    .hero {
+        padding: 140px 0 60px;
     }
-    70% {
-        opacity: 1;
-        box-shadow: 0 0 0 15px rgba(255, 46, 46, 0);
+    
+    .hero h1 {
+        font-size: 2.2rem;
     }
-    100% {
-        opacity: 0.9;
-        box-shadow: 0 0 0 0 rgba(255, 46, 46, 0);
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .section {
+        padding: 60px 0;
+    }
+    
+    .feature-card {
+        padding: 30px;
+    }
+    
+    .test-suite-section {
+        padding: 30px;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--secondary-blue);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--gradient-red);
-    border-radius: 6px;
-    border: 3px solid var(--secondary-blue);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-red-hover);
-}
-
-/* Selection Styling */
-::selection {
-    background: rgba(255, 46, 46, 0.3);
-    color: white;
-}
-
-::-moz-selection {
-    background: rgba(255, 46, 46, 0.3);
-    color: white;
-}
-
-/* Utility Classes */
-.text-center { text-align: center; }
-.mt-1 { margin-top: 1rem; }
-.mt-2 { margin-top: 2rem; }
-.mt-3 { margin-top: 3rem; }
-.mt-4 { margin-top: 4rem; }
-.mb-1 { margin-bottom: 1rem; }
-.mb-2 { margin-bottom: 2rem; }
-.mb-3 { margin-bottom: 3rem; }
-.mb-4 { margin-bottom: 4rem; }
-.p-1 { padding: 1rem; }
-.p-2 { padding: 2rem; }
-.p-3 { padding: 3rem; }
-.p-4 { padding: 4rem; }
-.hidden { display: none; }
-.fade-in { animation: fadeIn 0.5s ease; }
-
-/* Glass Effect */
-.glass {
-    background: rgba(19, 24, 43, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Gradient Text */
-.gradient-text {
-    background: var(--gradient-red);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Custom Scrollbar for Sidebar */
-.docs-sidebar::-webkit-scrollbar {
-    width: 6px;
-}
-
-.docs-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.docs-sidebar::-webkit-scrollbar-thumb {
-    background: rgba(255, 46, 46, 0.3);
-    border-radius: 3px;
-}
-
-.docs-sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 46, 46, 0.5);
-}
-
-/* Loading Animation */
-.loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 46, 46, 0.3);
-    border-radius: 50%;
-    border-top-color: var(--accent-red);
-    animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* Shine Effect */
-.shine {
-    position: relative;
-    overflow: hidden;
-}
-
-.shine::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        rgba(255, 255, 255, 0) 100%
-    );
-    transform: rotate(30deg);
-    transition: left 0.7s ease;
-}
-
-.shine:hover::after {
-    left: 100%;
-}
-
-/* Responsive fixes for very large screens */
-@media (min-width: 1600px) {
-    .docs-sidebar {
-        left: calc((100% - 1600px) / 2);
+/* --- Print Styles --- */
+@media print {
+    .navbar,
+    .hero-btns,
+    .download-grid,
+    .site-footer {
+        display: none;
     }
     
-    .docs-content {
-        margin-left: calc(320px + ((100% - 1600px) / 2));
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0;
     }
 }
 
@@ -2617,262 +1899,526 @@ tr:hover {
 FILE PATH: js\main.js
 ====================
 
-/* FILE PATH: js/main.js */
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Detect Operating System
-    const osMessage = document.getElementById('os-message');
-    const platform = navigator.platform.toLowerCase();
-    let os = "Unknown";
+/**
+ * MaazDB v11.9 Core Engine
+ * Handles UI logic, Syntax Highlighting, and OS Detection
+ */
 
-    if (platform.includes('win')) os = "Windows";
-    else if (platform.includes('linux')) os = "Linux";
-    else if (platform.includes('mac')) os = "macOS";
+(function() {
+    "use strict";
 
-    // 2. Highlight and display message
-    if(osMessage && os !== "Unknown") {
-        osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected OS: ${os} - Recommended Download Highlighted below.`;
+    const MaazDB = {
+        version: "11.9.0",
         
-        if (os === "Windows") {
-            document.querySelector('.dl-card.windows').style.borderColor = '#dc2626';
-            document.querySelector('.dl-card.windows').style.background = '#1e293b';
-        } else if (os === "Linux") {
-            document.querySelector('.dl-card.linux').style.borderColor = '#dc2626';
-             document.querySelector('.dl-card.linux').style.background = '#1e293b';
-        } else if (os === "macOS") {
-            document.querySelector('.dl-card.mac').style.borderColor = '#dc2626';
-             document.querySelector('.dl-card.mac').style.background = '#1e293b';
-        }
-    }
+        init() {
+            this.detectOS();
+            this.initSyntaxHighlighting();
+            this.initSmoothScroll();
+            this.initDocsNavigation();
+            this.initTabs();
+            this.initCopyButtons();
+            console.log(`MaazDB Engine v${this.version} initialized.`);
+        },
 
-    // 3. Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
+        /**
+         * Detects User OS to highlight correct download
+         */
+        detectOS() {
+            const platform = window.navigator.platform.toLowerCase();
+            const osMessage = document.getElementById('os-message');
+            let os = "Unknown";
+
+            if (platform.includes('win')) os = "Windows";
+            else if (platform.includes('linux')) os = "Linux";
+            else if (platform.includes('mac')) os = "macOS";
+
+            if (osMessage && os !== "Unknown") {
+                osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected ${os} - v11.9 Recommended.`;
+                
+                // Highlight specific card
+                const cards = document.querySelectorAll('.dl-card');
+                cards.forEach(card => {
+                    if (card.dataset.os === os) {
+                        card.classList.add('recommended');
+                    }
                 });
             }
-        });
-    });
+        },
 
-    // 4. Add active class to current page in navigation
-    const currentPage = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    navLinks.forEach(link => {
-        const linkHref = link.getAttribute('href');
-        if (linkHref === currentPage || 
-            (currentPage === '' && linkHref === 'index.html') ||
-            (currentPage === 'index.html' && linkHref === 'index.html')) {
-            link.classList.add('active');
+        /**
+         * Custom SQL Syntax Highlighter
+         */
+        initSyntaxHighlighting() {
+            const codeBlocks = document.querySelectorAll('pre code');
+            
+            const keywords = [
+                'SELECT', 'FROM', 'WHERE', 'INSERT', 'INTO', 'VALUES', 
+                'UPDATE', 'SET', 'DELETE', 'CREATE', 'TABLE', 'DATABASE', 
+                'USE', 'DROP', 'FOREIGN', 'KEY', 'REFERENCES', 'PRIMARY', 
+                'SERIAL', 'TEXT', 'DOUBLE', 'BOOL', 'TIMESTAMP', 'INT', 
+                'LOGIN', 'PASSWORD', 'BACKUP', 'RESTORE', 'COUNT', 'AVG', 'SUM'
+            ];
+
+            codeBlocks.forEach(block => {
+                let html = block.innerHTML;
+
+                // Highlight Keywords
+                keywords.forEach(kw => {
+                    const regex = new RegExp(`\\b${kw}\\b`, 'g');
+                    html = html.replace(regex, `<span class="sql-keyword">${kw}</span>`);
+                });
+
+                // Highlight Strings
+                html = html.replace(/'([^']+)'/g, `<span class="sql-string">'$1'</span>`);
+
+                // Highlight Numbers
+                html = html.replace(/\b(\d+\.?\d*)\b/g, `<span class="sql-number">$1</span>`);
+
+                // Highlight Comments
+                html = html.replace(/-- .+/g, `<span class="sql-comment">$&</span>`);
+
+                block.innerHTML = html;
+            });
+        },
+
+        /**
+         * Smooth scrolling for anchor links
+         */
+        initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        },
+
+        /**
+         * Documentation Sidebar Logic
+         */
+        initDocsNavigation() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+
+            window.addEventListener('scroll', () => {
+                let current = "";
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        },
+
+        /**
+         * Tab System for Code Examples
+         */
+        initTabs() {
+            const tabs = document.querySelectorAll('.tab-trigger');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const parent = tab.closest('.code-tabs');
+                    const target = tab.dataset.target;
+
+                    parent.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+                    parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+        },
+
+        /**
+         * Copy to Clipboard functionality
+         */
+        initCopyButtons() {
+            const blocks = document.querySelectorAll('pre');
+            blocks.forEach(block => {
+                const button = document.createElement('button');
+                button.className = 'copy-btn';
+                button.innerHTML = '<i class="far fa-copy"></i>';
+                block.appendChild(button);
+
+                button.addEventListener('click', () => {
+                    const code = block.querySelector('code').innerText;
+                    navigator.clipboard.writeText(code).then(() => {
+                        button.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="far fa-copy"></i>';
+                        }, 2000);
+                    });
+                });
+            });
         }
-    });
+    };
 
-    // 5. Add loading animation to download buttons
-    document.querySelectorAll('.dl-card[href*="downloads"]').forEach(card => {
-        card.addEventListener('click', function(e) {
-            const platform = this.classList.contains('windows') ? 'Windows' :
-                           this.classList.contains('linux') ? 'Linux' : 'macOS';
-            
-            // Optional: You could add analytics here
-            console.log(`Download initiated for ${platform}`);
-            
-            // Add a small visual feedback
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 200);
-        });
-    });
-});
+    // Start Engine
+    document.addEventListener('DOMContentLoaded', () => MaazDB.init());
+
+})();
 
 ====================
 FILE PATH: sql\sql.md
 ====================
 
-LOGIN admin PASSWORD 'admin';
-CREATE DATABASE full_test_db;
-USE full_test_db;
-CREATE TABLE employees (
-id SERIAL PRIMARY KEY,
-name TEXT,
-role TEXT,
-salary DOUBLE,
-is_active BOOL,
-joined_at TIMESTAMP
-);
-INSERT INTO employees (name, role, salary, is_active, joined_at)
-VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
-INSERT INTO employees (name, role, salary, is_active, joined_at)
-VALUES ('Bob', 'Manager', 95000.50, TRUE, '2022-05-20 10:30:00');
-INSERT INTO employees (name, role, salary, is_active, joined_at)
-VALUES ('Charlie', 'Intern', 30000.00, FALSE, '2024-01-10 08:15:00');
-SELECT * FROM employees;
-SELECT name, salary FROM employees WHERE salary > 50000;
-UPDATE employees SET salary = 90000.00 WHERE name = 'Alice';
-SELECT name, salary FROM employees WHERE name = 'Alice';
-DELETE FROM employees WHERE name = 'Charlie';
-SELECT COUNT(*) FROM employees;
-CREATE TABLE projects (
-pid SERIAL PRIMARY KEY,
-title TEXT,
-lead_id INT,
-FOREIGN KEY (lead_id) REFERENCES employees(id)
-);
-INSERT INTO projects (title, lead_id) VALUES ('Project X', 1);
-SELECT * FROM projects;
-BACKUP 'full_backup_test';
-DROP TABLE projects;
-DROP TABLE employees;
-RESTORE 'full_backup_test';
-SELECT COUNT(*) FROM employees;
-USE system;
-DROP DATABASE full_test_db;
-LOGIN admin PASSWORD 'admin';
-CREATE DATABASE file_test_db;
-USE file_test_db;
-CREATE TABLE products (
-id SERIAL PRIMARY KEY,
-name TEXT,
-price DOUBLE
-);
-INSERT INTO products (name, price) VALUES ('Laptop', 999.99);
-INSERT INTO products (name, price) VALUES ('Mouse', 25.50);
-INSERT INTO products (name, price) VALUES ('Keyboard', 45.00);
-SELECT * FROM products;
-UPDATE products SET price = 899.99 WHERE name = 'Laptop';
-DELETE FROM products WHERE name = 'Mouse';
-BACKUP 'file_test_backup';
-SELECT COUNT(*) FROM products;
-USE system;
-DROP DATABASE file_test_db;
+# MaazDB v11.9.0 — Official Technical Documentation
 
-1. Data Types
-MarsDB supports the following data types for column definitions and values:
-Type	SQL Keyword	Description
-Integer	INT	32-bit signed integer.
-Serial	SERIAL	Auto-incrementing integer.
-Float/Double	FLOAT, DOUBLE	Floating-point numbers.
-Boolean	BOOL, BOOLEAN	TRUE or FALSE.
-Text	TEXT, STRING	UTF-8 string literals.
-Timestamp	TIMESTAMP	Date and time (Formats: YYYY-MM-DD HH:MM:SS or YYYY-MM-DD).
-UUID	UUID	128-bit Universally Unique Identifier.
-2. Data Definition Language (DDL)
-Create Database
-Creates a new database container.
-code
-SQL
-CREATE DATABASE database_name;
-Create Table
-Defines a new table schema. Supports Primary Keys and Foreign Keys.
-code
-SQL
-CREATE TABLE table_name (
-    column_name DATA_TYPE PRIMARY KEY,
-    column_name DATA_TYPE,
-    FOREIGN KEY (local_col) REFERENCES foreign_table(foreign_col)
-);
-Note: Constraints can be defined inline or at the end of the column list.
-Drop Object
-Removes a database, table, or user.
-code
-SQL
-DROP DATABASE name;
-DROP TABLE name;
-DROP USER username;
-Use Database
-Sets the current active database.
-code
-SQL
-USE database_name;
-Show & Describe
-Inspect the system schema.
-code
-SQL
+**Version:** 11.9.0
+**Default Port:** 8888
+**Protocol:** TCP / Binary Length-Prefixed
+
+---
+
+## 1. Connection Protocol
+MaazDB uses a custom binary protocol over TCP. Clients must implement the following packet structure to communicate with the server.
+
+### Packet Structure
+Every packet sent to or received from the server follows this byte layout:
+1.  **Type (1 Byte):**
+    *   `0x01`: **Command** (Client -> Server)
+    *   `0x02`: **Response Message** (Server -> Client) - Used for success messages (e.g., "Rows affected: 1").
+    *   `0x03`: **Response Data** (Server -> Client) - Used for `SELECT` results.
+    *   `0xFF`: **Error** (Server -> Client) - Used for syntax errors or constraint violations.
+2.  **Length (4 Bytes):** Unsigned 32-bit Integer (**Big-Endian**). Represents the length of the payload.
+3.  **Payload (N Bytes):** The UTF-8 string (SQL query or Result data).
+
+---
+
+## 2. Authentication & Security
+All sessions must be authenticated immediately after connection.
+
+### Login
+Authenticates the current session.
+**Syntax:**
+```sql
+LOGIN <username> PASSWORD '<password>';
+```
+**Example:**
+```sql
+LOGIN admin PASSWORD 'admin';
+```
+
+### Create User
+Registers a new user in the system.
+**Syntax:**
+```sql
+CREATE USER <username> PASSWORD '<password>';
+```
+**Example:**
+```sql
+CREATE USER john PASSWORD 'secret123';
+```
+
+---
+
+## 3. Database Management
+MaazDB supports multi-tenancy via Databases.
+
+### Create Database
+**Syntax:**
+```sql
+CREATE DATABASE <db_name>;
+```
+**Example:**
+```sql
+CREATE DATABASE shop_db;
+```
+
+### Switch Database
+Selects the active database for subsequent queries.
+**Syntax:**
+```sql
+USE <db_name>;
+```
+**Example:**
+```sql
+USE shop_db;
+```
+
+### Show Databases
+Lists all databases currently existing in the system.
+**Syntax:**
+```sql
 SHOW DATABASES;
-SHOW TABLES;
-DESCRIBE table_name; -- or DESC table_name;
-3. Data Manipulation Language (DML)
-Insert
-Adds new rows to a table.
-code
-SQL
-INSERT INTO table_name (col1, col2) VALUES (val1, val2);
--- Or without column names (expects all columns)
-INSERT INTO table_name VALUES (val1, val2, val3);
-Update
-Modifies existing data.
-code
-SQL
-UPDATE table_name 
-SET column_name = value 
-WHERE condition;
-Current Limitation: The parser currently supports only one condition in the WHERE clause for UPDATE statements.
-Delete
-Removes rows from a table.
-code
-SQL
-DELETE FROM table_name WHERE condition;
-4. Data Query Language (DQL)
-Select
-The primary command for retrieving data.
-code
-SQL
-SELECT column1, column2, COUNT(*)
-FROM table_name
-WHERE condition AND/OR condition
-ORDER BY column_name [ASC | DESC]
-LIMIT number OFFSET number;
-Features:
-Wildcards: SELECT * FROM table;
-Expressions: SELECT 1 + 1; (Returns a virtual table _expr).
-Aggregates: Supports COUNT(*).
-Logic: Supports complex filtering with AND, OR, and parentheses ().
-5. Operators and Expressions
-Comparison Operators
-Used in WHERE clauses:
-=: Equal
-!= or <>: Not equal
-<: Less than
-<=: Less than or equal
->: Greater than
->=: Greater than or equal
-IS NULL / IS NOT NULL: Null checks
-Logical Operators
-AND
-OR
-NOT
-Arithmetic
-+, -, *, / (Basic support for constant expressions like 1 + 1).
-6. Authentication and System
-User Management
-code
-SQL
--- Create a user
-CREATE USER username WITH PASSWORD 'my_password';
--- or
-CREATE USER username PASSWORD password_ident;
+```
 
--- Authenticate
-LOGIN username PASSWORD 'my_password';
-Backup and Restore
-Administrative commands for data persistence.
-code
-SQL
-BACKUP "snapshot_v1";
-RESTORE "snapshot_v1";
-Note: If no filename is provided, the system uses default internal logic.
-7. Literal Syntax
-Strings: Enclosed in single (') or double (") quotes.
-Numbers: Digits (e.g., 42, 3.14).
-Booleans: TRUE, FALSE.
-Null: NULL.
-Comments:
-Single line: -- comment or // comment
-Multi-line: /* comment */
+### Drop Database
+Permanently deletes a database and all containing tables.
+**Syntax:**
+```sql
+DROP DATABASE <db_name>;
+```
+**Example:**
+```sql
+DROP DATABASE shop_db;
+```
+
+---
+
+## 4. Schema Definition (DDL)
+
+### Supported Data Types
+| Type | Description |
+| :--- | :--- |
+| `SERIAL` | Auto-incrementing Integer. **Must be used with PRIMARY KEY.** |
+| `INT` | Standard Integer. |
+| `DOUBLE` | Floating point number. |
+| `TEXT` | UTF-8 String. |
+| `BOOL` | Boolean (`TRUE` / `FALSE`). |
+| `TIMESTAMP` | Date string in format `'YYYY-MM-DD HH:MM:SS'`. |
+| `UUID` | Universally Unique Identifier string. |
+
+### Create Table
+Defines a new table structure.
+**Syntax:**
+```sql
+CREATE TABLE <table_name> (
+    <col_name> <type> [PRIMARY KEY],
+    <col_name> <type>,
+    ...
+);
+```
+**Example:**
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    age INT,
+    salary DOUBLE,
+    active BOOL,
+    created TIMESTAMP,
+    uuid UUID
+);
+```
+
+### Foreign Keys
+Enforces referential integrity. The target column in the parent table must exist.
+**Syntax:**
+```sql
+CREATE TABLE <table_name> (
+    ...
+    FOREIGN KEY (<local_col>) REFERENCES <parent_table>(<parent_col>)
+);
+```
+**Example:**
+```sql
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,
+    user_id INT,
+    amount DOUBLE,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+```
+
+### Table Maintenance
+*   **Show Tables:** Lists tables in the current database.
+    ```sql
+    SHOW TABLES;
+    ```
+*   **Describe Table:** Shows column definitions.
+    ```sql
+    DESCRIBE <table_name>;
+    ```
+*   **Drop Table:** Deletes a table.
+    ```sql
+    DROP TABLE <table_name>;
+    ```
+
+---
+
+## 5. Data Manipulation (DML)
+
+### Insert
+Adds new rows. **Note:** Do not include `SERIAL` columns in the column list; they are generated automatically.
+**Syntax:**
+```sql
+INSERT INTO <table_name> (<col1>, <col2>) VALUES (<val1>, <val2>);
+```
+**Example:**
+```sql
+INSERT INTO users (name, age, active) VALUES ('Alice', 30, TRUE);
+```
+
+### Update
+Modifies existing data based on a condition.
+**Syntax:**
+```sql
+UPDATE <table_name> SET <col> = <val> WHERE <condition>;
+```
+**Example:**
+```sql
+UPDATE users SET salary = 55000.00 WHERE name = 'Alice';
+```
+
+### Delete
+Removes rows based on a condition.
+**Syntax:**
+```sql
+DELETE FROM <table_name> WHERE <condition>;
+```
+**Example:**
+```sql
+DELETE FROM users WHERE name = 'Charlie';
+```
+
+---
+
+## 6. Querying (SELECT)
+
+### Basic Select
+**Syntax:**
+```sql
+SELECT * FROM <table_name>;
+SELECT <col1>, <col2> FROM <table_name>;
+```
+
+### Filtering (WHERE)
+Supports comparison operators (`=`, `>`, `<`), logical operators (`AND`, `OR`), and Null checks.
+**Examples:**
+```sql
+-- Equality
+SELECT * FROM users WHERE name = 'Alice';
+
+-- Range
+SELECT * FROM users WHERE age > 25;
+
+-- Logical AND
+SELECT * FROM users WHERE age > 25 AND active = TRUE;
+
+-- Logical OR with Grouping
+SELECT * FROM users WHERE (age > 20 AND active = TRUE) OR salary > 50000;
+
+-- Null Checks
+SELECT * FROM users WHERE uuid IS NULL;
+SELECT * FROM users WHERE uuid IS NOT NULL;
+```
+
+### Smart Select (Optimization)
+If a query filters by the **Primary Key** (e.g., `WHERE id = 1`), MaazDB uses an $O(1)$ lookup instead of scanning the table.
+```sql
+SELECT * FROM users WHERE id = 1;
+```
+
+### Sorting & Pagination
+**Syntax:**
+```sql
+SELECT ... ORDER BY <col> [ASC|DESC] LIMIT <num> OFFSET <num>;
+```
+**Example:**
+```sql
+SELECT name, age FROM users ORDER BY age DESC LIMIT 2 OFFSET 1;
+```
+
+### Expressions & Aggregates
+**Examples:**
+```sql
+-- Count total rows
+SELECT COUNT(*) FROM users;
+
+-- Evaluate expressions
+SELECT 1 + 1, 'Hello', TRUE;
+```
+
+---
+
+## 7. Disaster Recovery (Backup & Restore)
+
+MaazDB includes a snapshot engine to save and recover the entire state of the database.
+
+### Create Backup
+Creates a named snapshot of the *current* database state.
+**Syntax:**
+```sql
+BACKUP '<snapshot_name>';
+```
+**Example:**
+```sql
+BACKUP 'snapshot_v1';
+```
+
+### Show Backups
+Lists all available snapshots stored in the system with their metadata.
+**Syntax:**
+```sql
+SHOW BACKUPS;
+```
+
+### Restore Database
+Reverts the database to the exact state of the specified snapshot.
+**Warning:** This overwrites current data.
+**Syntax:**
+```sql
+RESTORE '<snapshot_name>';
+```
+**Example:**
+```sql
+RESTORE 'snapshot_v1';
+```
+
+## 8. Literal Syntax
+
+MaazDB supports standard SQL literal formats for values and comments.
+
+### Strings
+Strings can be enclosed in either single (`'`) or double (`"`) quotes.
+```sql
+'Hello World'
+"MaazDB"
+```
+
+### Numbers
+Standard numeric digits for Integers and Floating points.
+```sql
+42
+3.14
+-100
+```
+
+### Booleans
+Boolean literals are case-insensitive.
+```sql
+TRUE
+FALSE
+```
+
+### Null
+Represents missing or undefined data.
+```sql
+NULL
+```
+
+### Comments
+MaazDB supports three styles of comments:
+
+**Single Line:**
+```sql
+-- This is a comment
+SELECT * FROM users; // This is also a comment
+```
+
+**Multi-line:**
+```sql
+/* 
+   This is a multi-line
+   comment block 
+*/
+SELECT * FROM users;
+```
+
+---
+

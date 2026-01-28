@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<header class="hero">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <span class="badge"><i class="fas fa-fire"></i> v{{ version }} Stable <span class="new-feature-badge">LATEST</span></span>
+            <h1>The <span class="text-gradient">Red Dragon</span><br>of Databases</h1>
+            <p>
+                An ultra-high-performance, columnar, disk-based relational engine written in Rust. 
+                Experience the speed of <strong>LSM Trees</strong> with the reliability of <strong>Foreign Keys</strong>.
+            </p>
+            <div id="os-message" class="os-check" style="display: none;"></div>
+            <div class="hero-btns">
+                <a href="#download" class="btn-nav" style="padding:15px 35px; font-size:1.1rem;">Download Now</a>
+                <a href="{{ url_for('main.docs') }}" style="margin-left:25px; font-weight:600; text-decoration:underline;">View Documentation</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" class="floating-logo" alt="MaazDB Dragon">
+        </div>
+    </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features" class="section">
+    <div class="container">
+        <h2 class="section-title">Engineered for Speed</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>RAM-Speed Writes</h3>
+                <p>Utilizing LSM Trees and MemTables, MaazDB handles high-frequency writes in memory before flushing.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-link"></i>
+                <h3>Relational Integrity</h3>
+                <p>Full <strong>Foreign Key</strong> support ensures your data relationships remain consistent and crash-safe.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-virus"></i>
+                <h3>Disaster Recovery</h3>
+                <p>Native <code>BACKUP</code> and <code>RESTORE</code> commands for point-in-time recovery.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DOWNLOADS -->
+<section id="download" class="section bg-light">
+    <div class="container">
+        <h2 class="section-title">Download MaazDB v{{ version }}</h2>
+        <div class="download-grid">
+            <!-- Windows -->
+            <a href="{{ url_for('static', filename='installers/' + win_file) }}" class="dl-card windows">
+                <i class="fab fa-windows"></i>
+                <h3>Windows</h3>
+                <p>64-bit Installer (.exe)</p>
+            </a>
+            <!-- Linux -->
+            <a href="{{ url_for('static', filename='installers/' + linux_file) }}" class="dl-card linux">
+                <i class="fab fa-linux"></i>
+                <h3>Linux</h3>
+                <p>Debian/Ubuntu (.deb)</p>
+            </a>
+            <!-- macOS -->
+            <a href="{{ url_for('static', filename='installers/' + mac_file) }}" class="dl-card mac">
+                <i class="fab fa-apple"></i>
+                <h3>macOS</h3>
+                <p>Universal Installer (.dmg)</p>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Simple OS Detection for the Hero section
+    document.addEventListener("DOMContentLoaded", () => {
+        const osMessage = document.getElementById('os-message');
+        const platform = navigator.userAgent.toLowerCase();
+        let detected = "";
+        if (platform.includes('win')) detected = 'Windows';
+        else if (platform.includes('linux')) detected = 'Linux';
+        else if (platform.includes('mac')) detected = 'macOS';
+
+        if (detected && osMessage) {
+            osMessage.style.display = 'inline-flex';
+            osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected ${detected} - Download below.`;
+        }
+    });
+</script>
+{% endblock %}

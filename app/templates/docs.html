@@ -1,45 +1,366 @@
 {% extends "base.html" %}
 
 {% block head %}
- {% endblock %}
+<style>
+/* Documentation specific styles */
+.docs-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Sidebar */
+.docs-sidebar {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.docs-sidebar h3 {
+    color: var(--primary-color);
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.docs-sidebar h3:first-child {
+    margin-top: 0;
+}
+
+.docs-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.docs-sidebar li {
+    margin: 0.4rem 0;
+}
+
+.docs-sidebar a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.docs-sidebar a:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+.docs-sidebar a.active {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.15);
+    font-weight: 500;
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Main content */
+.docs-content {
+    max-width: 900px;
+}
+
+.docs-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content h2 {
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--heading-color);
+}
+
+.docs-content h3 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content h4 {
+    font-size: 1.1rem;
+    margin: 1.5rem 0 0.75rem;
+    color: var(--heading-color);
+}
+
+.docs-content p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.docs-divider {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Tables */
+.docs-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.docs-content th {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+}
+
+.docs-content td {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.docs-content tr:hover {
+    background: rgba(var(--primary-rgb), 0.03);
+}
+
+/* Code blocks */
+.code-label {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px 4px 0 0;
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+}
+
+.docs-content pre {
+    position: relative;
+    background: #1a1b26;
+    color: #c0caf5;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 8px;
+    overflow-x: auto;
+    margin: 0 0 2rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 1px solid #24283b;
+}
+
+.docs-content code {
+    font-family: 'Courier New', monospace;
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--primary-color);
+}
+
+/* Syntax highlighting */
+.sql-keyword {
+    color: #7dcfff;
+    font-weight: bold;
+}
+
+.sql-string {
+    color: #9ece6a;
+}
+
+.sql-number {
+    color: #ff9e64;
+}
+
+.sql-comment {
+    color: #565f89;
+    font-style: italic;
+}
+
+.sql-function {
+    color: #bb9af7;
+}
+
+/* Tabs */
+.code-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0;
+}
+
+.code-tabs .tab {
+    padding: 0.75rem 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 6px 6px 0 0;
+}
+
+.code-tabs .tab:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.05);
+}
+
+.code-tabs .tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Copy button */
+.copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #c0caf5;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.copy-btn i {
+    margin-right: 0.25rem;
+}
+
+/* Installation badges */
+.install-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin: 0.5rem;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.install-badge i {
+    font-size: 1.2rem;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .docs-sidebar {
+        position: static;
+        height: auto;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .docs-layout {
+        padding: 1rem;
+    }
+    
+    .docs-content h1 {
+        font-size: 2rem;
+    }
+    
+    .docs-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .docs-content table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="docs-layout">
     
     <!-- SIDEBAR NAVIGATION -->
     <aside class="docs-sidebar">
-        <h3>General</h3>
+        <h3>Quick Start</h3>
         <ul>
-            <li><a href="#protocol" class="active">Protocol</a></li>
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#protocol">Protocol</a></li>
             <li><a href="#auth">Authentication</a></li>
-            <li><a href="#db-mgmt">Database Mgmt</a></li>
         </ul>
 
-        <h3>Schema (DDL)</h3>
+        <h3>Database Management</h3>
         <ul>
+            <li><a href="#db-mgmt">Databases</a></li>
             <li><a href="#types">Data Types</a></li>
             <li><a href="#create-table">Create Table</a></li>
             <li><a href="#foreign-keys">Foreign Keys</a></li>
-            <li><a href="#drop-table">Drop Table</a></li>
+            <li><a href="#table-mgmt">Table Management</a></li>
         </ul>
 
-        <h3>Data (DML)</h3>
+        <h3>Data Operations</h3>
         <ul>
             <li><a href="#insert">Insert</a></li>
+            <li><a href="#select">Select</a></li>
             <li><a href="#update">Update</a></li>
             <li><a href="#delete">Delete</a></li>
-            <li><a href="#select">Select</a></li>
         </ul>
 
-        <h3>System</h3>
+        <h3>System Operations</h3>
         <ul>
             <li><a href="#backup">Backup & Restore</a></li>
+            <li><a href="#comments">Comments & Literals</a></li>
         </ul>
-        <h3>Test Suite</h3>
+
+        <h3>Examples</h3>
         <ul>
-            <li><a href="#test-suite" >Complete Example</a></li>
-            <li><a href="#tab1" class="tab-link" onclick="event.preventDefault(); showTab('tab1', event);">Full Test SQL</a></li>
-            <li><a href="#tab2" class="tab-link" onclick="event.preventDefault(); showTab('tab2', event);">File Test SQL</a></li>
+            <li><a href="#test-suite">Complete Test Suite</a></li>
+            <li><a href="#tab1" class="tab-link">Full Test SQL</a></li>
+            <li><a href="#tab2" class="tab-link">File Test SQL</a></li>
         </ul>
     </aside>
 
@@ -48,16 +369,42 @@
 
         <section id="intro">
             <h1>MaazDB Documentation</h1>
-            <p><strong>Version:</strong> {{ version }}<br>
+            <p><strong>Version:</strong> {{ version or '11.9.0' }}<br>
             <strong>Default Port:</strong> 8888<br>
             <strong>Protocol:</strong> TCP / Binary Length-Prefixed</p>
             <hr class="docs-divider">
+            
+            <h3>What is MaazDB?</h3>
+            <p>MaazDB is a lightweight, high-performance database management system built with modern development workflows in mind. It features a custom binary protocol, full ACID compliance, and an intuitive SQL-like query language.</p>
+        </section>
+
+        <!-- INSTALLATION -->
+        <section id="installation">
+            <h2>Installation</h2>
+            
+            <h3>Linux (Debian/Ubuntu/Kali)</h3>
+            <div class="install-badge">
+                <i class="fab fa-linux"></i>
+                <code>sudo dpkg -i maazdb_11.9.0_linux_amd64.deb</code>
+            </div>
+            
+            <h3>macOS</h3>
+            <div class="install-badge">
+                <i class="fab fa-apple"></i>
+                <code>Open MaazDB_11.9.0_macOS.dmg</code>
+            </div>
+            
+            <h3>Windows</h3>
+            <div class="install-badge">
+                <i class="fab fa-windows"></i>
+                <code>Run MaazDB_Setup_Windows_x64_1190.exe</code>
+            </div>
         </section>
 
         <!-- 1. PROTOCOL -->
         <section id="protocol">
             <h2>1. Connection Protocol</h2>
-            <p>MaazDB uses a custom binary protocol. Every packet follows this structure:</p>
+            <p>MaazDB uses a custom binary protocol over TCP. Every packet follows this structure:</p>
             <table>
                 <thead><tr><th>Byte</th><th>Field</th><th>Description</th></tr></thead>
                 <tbody>
@@ -110,6 +457,10 @@
             <span class="code-label">Example</span>
             <pre><code>USE shop_db;</code></pre>
 
+            <h3>Show Databases</h3>
+            <span class="code-label">Syntax</span>
+            <pre><code>SHOW DATABASES;</code></pre>
+
             <h3>Drop Database</h3>
             <span class="code-label">Syntax</span>
             <pre><code>DROP DATABASE &lt;db_name&gt;;</code></pre>
@@ -120,17 +471,17 @@
 
         <!-- 4. SCHEMA (DDL) -->
         <section id="types">
-            <h2>4. Schema Definition (DDL)</h2>
-            <h3>Supported Data Types</h3>
+            <h2>4. Data Types</h2>
             <table>
-                <thead><tr><th>Type</th><th>Description</th></tr></thead>
+                <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
                 <tbody>
-                    <tr><td><code>SERIAL</code></td><td>Auto-incrementing Integer (Primary Key only)</td></tr>
-                    <tr><td><code>INT</code></td><td>Standard 32-bit Integer</td></tr>
-                    <tr><td><code>DOUBLE</code></td><td>64-bit Floating point</td></tr>
-                    <tr><td><code>TEXT</code></td><td>UTF-8 String</td></tr>
-                    <tr><td><code>BOOL</code></td><td>Boolean (TRUE/FALSE)</td></tr>
-                    <tr><td><code>TIMESTAMP</code></td><td>Format: 'YYYY-MM-DD HH:MM:SS'</td></tr>
+                    <tr><td><code>SERIAL</code></td><td>Auto-incrementing Integer (Primary Key only)</td><td><code>id SERIAL PRIMARY KEY</code></td></tr>
+                    <tr><td><code>INT</code></td><td>Standard 32-bit Integer</td><td><code>age INT</code></td></tr>
+                    <tr><td><code>DOUBLE</code></td><td>64-bit Floating point</td><td><code>price DOUBLE</code></td></tr>
+                    <tr><td><code>TEXT</code></td><td>UTF-8 String</td><td><code>name TEXT</code></td></tr>
+                    <tr><td><code>BOOL</code></td><td>Boolean (TRUE/FALSE)</td><td><code>active BOOL</code></td></tr>
+                    <tr><td><code>TIMESTAMP</code></td><td>Date and time</td><td><code>'2024-01-29 14:30:00'</code></td></tr>
+                    <tr><td><code>UUID</code></td><td>Universally Unique Identifier</td><td><code>uuid UUID</code></td></tr>
                 </tbody>
             </table>
         </section>
@@ -152,7 +503,9 @@
     name TEXT,
     age INT,
     salary DOUBLE,
-    active BOOL
+    active BOOL,
+    created TIMESTAMP,
+    uuid UUID
 );</code></pre>
         </section>
 
@@ -175,8 +528,18 @@
 );</code></pre>
         </section>
 
-        <section id="drop-table">
-            <h3>Drop Table</h3>
+        <section id="table-mgmt">
+            <h3>Table Management</h3>
+            
+            <h4>Show Tables</h4>
+            <span class="code-label">Syntax</span>
+            <pre><code>SHOW TABLES;</code></pre>
+            
+            <h4>Describe Table</h4>
+            <span class="code-label">Syntax</span>
+            <pre><code>DESCRIBE &lt;table_name&gt;;</code></pre>
+            
+            <h4>Drop Table</h4>
             <span class="code-label">Syntax</span>
             <pre><code>DROP TABLE &lt;table_name&gt;;</code></pre>
             
@@ -196,6 +559,33 @@
             
             <span class="code-label">Example</span>
             <pre><code>INSERT INTO users (name, age, active) VALUES ('Alice', 30, TRUE);</code></pre>
+            <p>Learn more <a href="{{ url_for('main.insert') }}">here</a></p>
+        </section>
+
+        <section id="select">
+            <h3>Select</h3>
+            <p>Retrieves data with powerful filtering capabilities.</p>
+            
+            <h4>Basic Select</h4>
+            <span class="code-label">Syntax</span>
+            <pre><code>SELECT &lt;cols&gt; FROM &lt;table_name&gt; [WHERE condition];</code></pre>
+            
+            <span class="code-label">Example 1 (Basic)</span>
+            <pre><code>SELECT * FROM users WHERE age > 25;</code></pre>
+            
+            <span class="code-label">Example 2 (Smart Select - O(1) lookup)</span>
+            <pre><code>SELECT * FROM users WHERE id = 1;</code></pre>
+            
+            <span class="code-label">Example 3 (Complex)</span>
+            <pre><code>SELECT name, salary FROM users 
+WHERE active = TRUE 
+ORDER BY salary DESC 
+LIMIT 10 OFFSET 5;</code></pre>
+            
+            <h4>Expressions & Aggregates</h4>
+            <span class="code-label">Example</span>
+            <pre><code>SELECT COUNT(*) as total_users FROM users;
+SELECT 1 + 1 as result, 'Hello' as greeting, TRUE as flag;</code></pre>
         </section>
 
         <section id="update">
@@ -220,23 +610,6 @@
             <pre><code>DELETE FROM users WHERE name = 'Charlie';</code></pre>
         </section>
 
-        <section id="select">
-            <h3>Select</h3>
-            <p>Retrieves data. Supports <code>WHERE</code>, <code>ORDER BY</code>, <code>LIMIT</code>, and <code>OFFSET</code>.</p>
-            
-            <span class="code-label">Syntax</span>
-            <pre><code>SELECT &lt;cols&gt; FROM &lt;table_name&gt; [WHERE condition] [ORDER BY col] [LIMIT n];</code></pre>
-            
-            <span class="code-label">Example 1 (Basic)</span>
-            <pre><code>SELECT * FROM users WHERE age > 25;</code></pre>
-            
-            <span class="code-label">Example 2 (Complex)</span>
-            <pre><code>SELECT name, salary FROM users 
-WHERE active = TRUE 
-ORDER BY salary DESC 
-LIMIT 10;</code></pre>
-        </section>
-
         <!-- 6. BACKUP & RESTORE -->
         <section id="backup">
             <h2>6. Disaster Recovery</h2>
@@ -249,6 +622,10 @@ LIMIT 10;</code></pre>
             <span class="code-label">Example</span>
             <pre><code>BACKUP 'snapshot_v1';</code></pre>
 
+            <h3>Show Backups</h3>
+            <span class="code-label">Syntax</span>
+            <pre><code>SHOW BACKUPS;</code></pre>
+
             <h3>Restore</h3>
             <p>Reverts database to a snapshot. <strong>Overwrites current data.</strong></p>
             <span class="code-label">Syntax</span>
@@ -257,207 +634,253 @@ LIMIT 10;</code></pre>
             <span class="code-label">Example</span>
             <pre><code>RESTORE 'snapshot_v1';</code></pre>
         </section>
-                    <section id="test-suite">
-                        <h2>Complete Test Suite Example</h2>
-                        <p>Below is a comprehensive test suite demonstrating all major features of MaazDB v11.9:</p>
-                        
-                        <div class="code-tabs">
-                            <button class="tab active" data-tab="tab1" type="button" onclick="showTab('tab1', event)">Full Test SQL</button>
-                            <button class="tab" data-tab="tab2" type="button" onclick="showTab('tab2', event)">File Test SQL</button>
-                        </div>
 
-                        <div id="tab1" class="tab-content active">
-                            <pre><code>-- MaazDB v11.9 Comprehensive Test Suite
-                    -- Demonstrates all major features
+        <!-- 7. COMMENTS & LITERALS -->
+        <section id="comments">
+            <h2>7. Comments & Literals</h2>
+            
+            <h3>Comments</h3>
+            <span class="code-label">Single-line (-- or //)</span>
+            <pre><code>-- This is a comment
+SELECT * FROM users; // This is also a comment</code></pre>
+            
+            <span class="code-label">Multi-line (/* */)</span>
+            <pre><code>/* 
+   This is a multi-line
+   comment block 
+*/
+SELECT * FROM users;</code></pre>
+            
+            <h3>Literals</h3>
+            <span class="code-label">Strings</span>
+            <pre><code>'Hello World'
+"MaazDB"</code></pre>
+            
+            <span class="code-label">Numbers & Booleans</span>
+            <pre><code>42
+3.14
+TRUE
+FALSE
+NULL</code></pre>
+        </section>
 
-                    -- 1. Authentication
-                    LOGIN admin PASSWORD 'admin';
+        <!-- 8. TEST SUITE -->
+        <section id="test-suite">
+            <h2>Complete Test Suite Example</h2>
+            <p>Below is a comprehensive test suite demonstrating all major features of MaazDB v11.9:</p>
+            
+            <div class="code-tabs">
+                <button class="tab active" data-tab="tab1" type="button">Full Test SQL</button>
+                <button class="tab" data-tab="tab2" type="button">File Test SQL</button>
+            </div>
 
-                    -- 2. Database Management
-                    CREATE DATABASE full_test_db;
-                    USE full_test_db;
+            <div id="tab1" class="tab-content active">
+                <pre><code>-- MaazDB v11.9 Comprehensive Test Suite
+-- Demonstrates all major features
 
-                    -- 3. DDL with Foreign Keys
-                    CREATE TABLE employees (
-                        id SERIAL PRIMARY KEY,
-                        name TEXT,
-                        role TEXT,
-                        salary DOUBLE,
-                        is_active BOOL,
-                        joined_at TIMESTAMP
-                    );
+-- 1. Authentication
+LOGIN admin PASSWORD 'admin';
 
-                    -- 4. INSERT with various data types
-                    INSERT INTO employees (name, role, salary, is_active, joined_at) 
-                    VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
+-- 2. Database Management
+CREATE DATABASE full_test_db;
+USE full_test_db;
 
-                    INSERT INTO employees (name, role, salary, is_active, joined_at) 
-                    VALUES ('Bob', 'Manager', 95000.50, TRUE, '2022-05-20 10:30:00');
+-- 3. DDL with Foreign Keys
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    role TEXT,
+    salary DOUBLE,
+    is_active BOOL,
+    joined_at TIMESTAMP
+);
 
-                    INSERT INTO employees (name, role, salary, is_active, joined_at) 
-                    VALUES ('Charlie', 'Intern', 30000.00, FALSE, '2024-01-10 08:15:00');
+-- 4. INSERT with various data types
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
 
-                    -- 5. SELECT queries
-                    SELECT * FROM employees;
-                    SELECT name, salary FROM employees WHERE salary > 50000;
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Bob', 'Manager', 95000.50, TRUE, '2022-05-20 10:30:00');
 
-                    -- 6. UPDATE operations
-                    UPDATE employees SET salary = 90000.00 WHERE name = 'Alice';
-                    SELECT name, salary FROM employees WHERE name = 'Alice';
+INSERT INTO employees (name, role, salary, is_active, joined_at) 
+VALUES ('Charlie', 'Intern', 30000.00, FALSE, '2024-01-10 08:15:00');
 
-                    -- 7. DELETE operations
-                    DELETE FROM employees WHERE name = 'Charlie';
-                    SELECT COUNT(*) FROM employees;
+-- 5. SELECT queries
+SELECT * FROM employees;
+SELECT name, salary FROM employees WHERE salary > 50000;
 
-                    -- 8. Foreign Key relationships
-                    CREATE TABLE projects (
-                        pid SERIAL PRIMARY KEY,
-                        title TEXT,
-                        lead_id INT,
-                        FOREIGN KEY (lead_id) REFERENCES employees(id)
-                    );
+-- 6. UPDATE operations
+UPDATE employees SET salary = 90000.00 WHERE name = 'Alice';
+SELECT name, salary FROM employees WHERE name = 'Alice';
 
-                    INSERT INTO projects (title, lead_id) VALUES ('Project X', 1);
-                    SELECT * FROM projects;
+-- 7. DELETE operations
+DELETE FROM employees WHERE name = 'Charlie';
+SELECT COUNT(*) FROM employees;
 
-                    -- 9. Backup & Restore
-                    BACKUP 'full_backup_test';
-                    DROP TABLE projects;
-                    DROP TABLE employees;
-                    RESTORE 'full_backup_test';
-                    SELECT COUNT(*) FROM employees;
+-- 8. Foreign Key relationships
+CREATE TABLE projects (
+    pid SERIAL PRIMARY KEY,
+    title TEXT,
+    lead_id INT,
+    FOREIGN KEY (lead_id) REFERENCES employees(id)
+);
 
-                    -- 10. Cleanup
-                    USE system;
-                    DROP DATABASE full_test_db;</code></pre>
-                        </div>
+INSERT INTO projects (title, lead_id) VALUES ('Project X', 1);
+SELECT * FROM projects;
 
-                        <div id="tab2" class="tab-content">
-                            <pre><code>-- File System Test Suite
-                    LOGIN admin PASSWORD 'admin';
-                    CREATE DATABASE file_test_db;
-                    USE file_test_db;
+-- 9. Backup & Restore
+BACKUP 'full_backup_test';
+DROP TABLE projects;
+DROP TABLE employees;
+RESTORE 'full_backup_test';
+SELECT COUNT(*) FROM employees;
 
-                    CREATE TABLE products (
-                        id SERIAL PRIMARY KEY,
-                        name TEXT,
-                        price DOUBLE
-                    );
+-- 10. Cleanup
+USE system;
+DROP DATABASE full_test_db;</code></pre>
+            </div>
 
-                    INSERT INTO products (name, price) VALUES ('Laptop', 999.99);
-                    INSERT INTO products (name, price) VALUES ('Mouse', 25.50);
-                    INSERT INTO products (name, price) VALUES ('Keyboard', 45.00);
+            <div id="tab2" class="tab-content">
+                <pre><code>-- File System Test Suite
+LOGIN admin PASSWORD 'admin';
+CREATE DATABASE file_test_db;
+USE file_test_db;
 
-                    SELECT * FROM products;
-                    UPDATE products SET price = 899.99 WHERE name = 'Laptop';
-                    DELETE FROM products WHERE name = 'Mouse';
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    price DOUBLE
+);
 
-                    BACKUP 'file_test_backup';
-                    SELECT COUNT(*) FROM products;
+INSERT INTO products (name, price) VALUES ('Laptop', 999.99);
+INSERT INTO products (name, price) VALUES ('Mouse', 25.50);
+INSERT INTO products (name, price) VALUES ('Keyboard', 45.00);
 
-                    USE system;
-                    DROP DATABASE file_test_db;</code></pre>
-                        </div>
-                    </section>
+SELECT * FROM products;
+UPDATE products SET price = 899.99 WHERE name = 'Laptop';
+DELETE FROM products WHERE name = 'Mouse';
+
+BACKUP 'file_test_backup';
+SELECT COUNT(*) FROM products;
+
+USE system;
+DROP DATABASE file_test_db;</code></pre>
+            </div>
+        </section>
     </main>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    function showTab(tabId, event) {
-        // Hide all tab contents
-        const tabContents = document.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        
-        // Remove active class from all tabs
-        const tabs = document.querySelectorAll('.tab');
-        tabs.forEach(tab => {
-            tab.classList.remove('active');
-        });
-        
-        // Show selected tab content and mark tab as active
-        const selectedTab = document.getElementById(tabId);
-        if (selectedTab) {
-            selectedTab.classList.add('active');
-        }
-        
-        // Mark the clicked tab as active
-        event.target.classList.add('active');
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // 1. Syntax Highlighting Logic
-        const codeBlocks = document.querySelectorAll('pre code');
-        
-        const keywords = ['LOGIN', 'CREATE', 'DATABASE', 'USE', 'TABLE', 'DROP', 'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'WHERE', 'DELETE', 'FROM', 'SELECT', 'ORDER', 'BY', 'LIMIT', 'OFFSET', 'BACKUP', 'RESTORE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'SERIAL', 'INT', 'DOUBLE', 'TEXT', 'BOOL', 'TIMESTAMP', 'PASSWORD', 'USER', 'AND', 'OR', 'NOT'];
-        
-        codeBlocks.forEach(block => {
-            let html = block.innerHTML;
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab functionality
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.getAttribute('data-tab');
             
-            // Highlight Keywords
-            keywords.forEach(kw => {
-                const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-                html = html.replace(regex, `<span class="sql-keyword">${kw}</span>`);
-            });
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
             
-            // Highlight Strings
-            html = html.replace(/'([^']+)'/g, `<span class="sql-string">'$1'</span>`);
-            
-            // Highlight Numbers
-            html = html.replace(/\b(\d+)\b/g, `<span class="sql-number">$1</span>`);
-            
-            block.innerHTML = html;
-        });
-
-        // 2. Scroll Spy for Sidebar
-        const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
-        const sections = document.querySelectorAll('section[id]');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            const scrollY = window.scrollY + 100; // Offset
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            sidebarLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-});
-
-// 3. Copy to Clipboard functionality
-const blocks = document.querySelectorAll('pre');
-blocks.forEach(block => {
-    const button = document.createElement('button');
-    button.className = 'copy-btn';
-    button.innerHTML = '<i class="far fa-copy"></i>';
-    button.style.position = 'absolute';
-    button.style.top = '10px';
-    button.style.right = '10px';
-    block.style.position = 'relative';
-    block.appendChild(button);
-
-    button.addEventListener('click', () => {
-        const code = block.querySelector('code').innerText;
-        navigator.clipboard.writeText(code).then(() => {
-            button.innerHTML = '<i class="fas fa-check"></i>';
-            setTimeout(() => {
-                button.innerHTML = '<i class="far fa-copy"></i>';
-            }, 2000);
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
         });
     });
-});
+    
+    // Sidebar tab links
+    document.querySelectorAll('.tab-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.getAttribute('href').substring(1);
+            
+            // Switch to the tab
+            document.querySelector(`.tab[data-tab="${tabId}"]`).click();
+            
+            // Scroll to test suite section
+            document.getElementById('test-suite').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+    
+    // Syntax Highlighting
+    const codeBlocks = document.querySelectorAll('pre code');
+    
+    const keywords = [
+        'LOGIN', 'CREATE', 'DATABASE', 'USE', 'TABLE', 'DROP', 'INSERT', 'INTO', 'VALUES',
+        'UPDATE', 'SET', 'WHERE', 'DELETE', 'FROM', 'SELECT', 'ORDER', 'BY', 'LIMIT', 'OFFSET',
+        'BACKUP', 'RESTORE', 'SHOW', 'DESCRIBE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES',
+        'SERIAL', 'INT', 'DOUBLE', 'TEXT', 'BOOL', 'TIMESTAMP', 'UUID', 'PASSWORD', 'USER',
+        'AND', 'OR', 'NOT', 'IS', 'NULL', 'TRUE', 'FALSE', 'COUNT', 'AS', 'ASC', 'DESC'
+    ];
+    
+    codeBlocks.forEach(block => {
+        let html = block.innerHTML;
+        const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
+        html = html.replace(keywordRegex, '<span class="sql-keyword">$1</span>');
+        block.innerHTML = html;
+    });
+
+    // Scroll Spy for Sidebar
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
+    const sections = document.querySelectorAll('section[id]');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset + 100;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href');
+            if (href === `#${current}` || (current === 'test-suite' && ['#tab1', '#tab2'].includes(href))) {
+                link.classList.add('active');
+            }
+        });
+    });
+    
+    // Copy to Clipboard
+    const copyButtons = document.querySelectorAll('pre');
+    
+    copyButtons.forEach(pre => {
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.innerHTML = '<i class="far fa-copy"></i> Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(button);
+        
+        button.addEventListener('click', async () => {
+            const code = pre.querySelector('code').innerText;
+            
+            try {
+                await navigator.clipboard.writeText(code);
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy"></i> Copy';
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                button.innerHTML = '<i class="fas fa-times"></i> Error';
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy"></i> Copy';
+                }, 2000);
+            }
+        });
+    });
 });
 </script>
 {% endblock %}

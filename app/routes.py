@@ -10,7 +10,14 @@ def index():
                            win_file=current_app.config['INSTALLER_WIN'],
                            linux_file=current_app.config['INSTALLER_LINUX'],
                            mac_file=current_app.config['INSTALLER_MAC'])
-
+@bp.context_processor
+def inject_global_vars():
+    return dict(version=current_app.config['LATEST_VERSION'])
 @bp.route('/docs')
 def docs():
     return render_template('docs.html')
+
+
+@bp.route('/docs/insert')
+def insert():
+    return render_template('command/insert.html')

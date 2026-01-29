@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    .command-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .command-sidebar {
+        position: sticky;
+        top: 2rem;
+        height: calc(100vh - 4rem);
+        overflow-y: auto;
+        padding: 1.5rem;
+        background: var(--card-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+    }
+
+    .command-sidebar h3 {
+        color: var(--primary-color);
+        margin: 1.5rem 0 0.75rem;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .command-sidebar a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+    .command-sidebar a:hover {
+        color: var(--primary-color);
+        background: rgba(var(--primary-rgb), 0.1);
+    }
+
+    .command-content {
+        max-width: 900px;
+    }
+
+    .command-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--heading-color);
+    }
+
+    .command-content h2 {
+        font-size: 1.8rem;
+        margin: 3rem 0 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .example-box {
+        background: var(--card-bg);
+        border-left: 4px solid var(--primary-color);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+
+    .warning-box {
+        background: rgba(239, 68, 68, 0.1);
+        border-left: 4px solid #ef4444;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        color: #fca5a5;
+    }
+
+    @media (max-width: 1024px) {
+        .command-layout {
+            grid-template-columns: 1fr;
+        }
+        .command-sidebar {
+            position: static;
+            height: auto;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="command-layout">
+    <aside class="command-sidebar">
+        <h3>DELETE Command</h3>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="#parameters">Parameters</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#best-practices">Best Practices</a></li>
+            <li><a href="#errors">Common Errors</a></li>
+        </ul>
+    </aside>
+
+    <main class="command-content">
+        <h1>DELETE Command</h1>
+        <p>Remove rows from a table based on specified conditions.</p>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>The <code>DELETE</code> command removes one or more rows from a table. It supports conditional deletion using the <code>WHERE</code> clause to target specific records.</p>
+            <div class="warning-box">
+                <strong>⚠️ Warning:</strong> Deletions are permanent and cannot be undone unless you have a backup. Always verify your WHERE condition before executing.
+            </div>
+        </section>
+
+        <section id="syntax">
+            <h2>Syntax</h2>
+            <span class="code-label">Basic Syntax</span>
+            <pre><code>DELETE FROM &lt;table_name&gt; WHERE &lt;condition&gt;;</code></pre>
+        </section>
+
+        <section id="parameters">
+            <h2>Parameters</h2>
+            <table>
+                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+                <tbody>
+                    <tr><td><code>&lt;table_name&gt;</code></td><td>Identifier</td><td>Name of the table to delete from</td></tr>
+                    <tr><td><code>&lt;condition&gt;</code></td><td>Expression</td><td>WHERE clause condition that identifies rows to delete</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="examples">
+            <h2>Examples</h2>
+
+            <h3>Example 1: Delete Single Row by Primary Key</h3>
+            <div class="example-box">
+                <p>Remove a user with ID 5:</p>
+                <span class="code-label">Query</span>
+                <pre><code>DELETE FROM users WHERE id = 5;</code></pre>
+            </div>
+
+            <h3>Example 2: Delete Multiple Rows</h3>
+            <div class="example-box">
+                <p>Remove all inactive users:</p>
+                <span class="code-label">Query</span>
+                <pre><code>DELETE FROM users WHERE active = FALSE;</code></pre>
+            </div>
+
+            <h3>Example 3: Delete with Complex Condition</h3>
+            <div class="example-box">
+                <p>Remove users who are inactive AND have no salary set:</p>
+                <span class="code-label">Query</span>
+                <pre><code>DELETE FROM users WHERE active = FALSE AND salary IS NULL;</code></pre>
+            </div>
+
+            <h3>Example 4: Delete with OR Condition</h3>
+            <div class="example-box">
+                <p>Remove users who are either named 'Test' or have an invalid UUID:</p>
+                <span class="code-label">Query</span>
+                <pre><code>DELETE FROM users WHERE name = 'Test' OR uuid IS NULL;</code></pre>
+            </div>
+        </section>
+
+        <section id="best-practices">
+            <h2>Best Practices</h2>
+            <ul style="margin-left: 1.5rem; color: var(--text-muted);">
+                <li><strong>Always use WHERE:</strong> Specify a condition to avoid deleting all rows by accident.</li>
+                <li><strong>Test first:</strong> Use a <code>SELECT</code> query with the same WHERE clause to preview which rows will be deleted.</li>
+                <li><strong>Create backups:</strong> Run <code>BACKUP</code> before large delete operations.</li>
+                <li><strong>Use Primary Keys:</strong> When deleting by ID, the query uses O(1) lookup for optimal performance.</li>
+                <li><strong>Document deletions:</strong> Add comments explaining why records are being deleted for audit trails.</li>
+            </ul>
+        </section>
+
+        <section id="errors">
+            <h2>Common Errors</h2>
+            <table>
+                <thead><tr><th>Error</th><th>Cause</th><th>Solution</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><code>Table not found</code></td>
+                        <td>Table does not exist</td>
+                        <td>Verify table name and ensure you're using the correct database</td>
+                    </tr>
+                    <tr>
+                        <td><code>Invalid WHERE clause</code></td>
+                        <td>Syntax error in condition</td>
+                        <td>Check column names and operator syntax</td>
+                    </tr>
+                    <tr>
+                        <td><code>Foreign key constraint violation</code></td>
+                        <td>Row is referenced by another table</td>
+                        <td>Delete dependent records first or use proper cascade handling</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+{% endblock %}

@@ -586,6 +586,7 @@ LIMIT 10 OFFSET 5;</code></pre>
             <span class="code-label">Example</span>
             <pre><code>SELECT COUNT(*) as total_users FROM users;
 SELECT 1 + 1 as result, 'Hello' as greeting, TRUE as flag;</code></pre>
+                <p>Learn more <a href="{{ url_for('main.select') }}">here</a></p>
         </section>
 
         <section id="update">
@@ -597,6 +598,7 @@ SELECT 1 + 1 as result, 'Hello' as greeting, TRUE as flag;</code></pre>
             
             <span class="code-label">Example</span>
             <pre><code>UPDATE users SET salary = 55000.00 WHERE name = 'Alice';</code></pre>
+             <p>Learn more <a href="{{ url_for('main.update') }}">here</a></p>
         </section>
 
         <section id="delete">
@@ -608,6 +610,7 @@ SELECT 1 + 1 as result, 'Hello' as greeting, TRUE as flag;</code></pre>
             
             <span class="code-label">Example</span>
             <pre><code>DELETE FROM users WHERE name = 'Charlie';</code></pre>
+             <p>Learn more <a href="{{ url_for('main.delete') }}">here</a></p>
         </section>
 
         <!-- 6. BACKUP & RESTORE -->

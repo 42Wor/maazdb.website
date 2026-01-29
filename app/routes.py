@@ -21,3 +21,13 @@ def docs():
 @bp.route('/docs/insert')
 def insert():
     return render_template('command/insert.html')
+
+@bp.route('/docs/update')
+def update():
+    return render_template('command/update.html')
+@bp.route('/docs/delete')
+def delete():
+    return render_template('command/delete.html')       
+@bp.route('/docs/select')
+def select():   
+    return render_template('command/select.html')

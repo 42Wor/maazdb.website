@@ -1,119 +1,255 @@
+<!--
+FILE: c:\Users\maaz\Desktop\maazdb.website\app\templates\command\delete.html
+
+PURPOSE:
+Template page for DELETE command documentation in MaazDB.
+-->
 {% extends "base.html" %}
 
 {% block head %}
 <style>
-    .command-layout {
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 2rem;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 2rem;
-    }
+.docs-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
 
-    .command-sidebar {
-        position: sticky;
-        top: 2rem;
-        height: calc(100vh - 4rem);
-        overflow-y: auto;
-        padding: 1.5rem;
-        background: var(--card-bg);
-        border-radius: 12px;
-        border: 1px solid var(--border-color);
-    }
+.docs-sidebar {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
 
-    .command-sidebar h3 {
-        color: var(--primary-color);
-        margin: 1.5rem 0 0.75rem;
-        font-size: 1rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
+.docs-sidebar h3 {
+    color: var(--primary-color);
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-    .command-sidebar a {
-        display: block;
-        padding: 0.5rem 1rem;
-        color: var(--text-muted);
-        text-decoration: none;
-        border-radius: 6px;
-        transition: all 0.2s ease;
-    }
+.docs-sidebar h3:first-child {
+    margin-top: 0;
+}
 
-    .command-sidebar a:hover {
-        color: var(--primary-color);
-        background: rgba(var(--primary-rgb), 0.1);
-    }
+.docs-sidebar a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
 
-    .command-content {
-        max-width: 900px;
-    }
+.docs-sidebar a:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+}
 
-    .command-content h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: var(--heading-color);
-    }
+.docs-sidebar a.active {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.15);
+    font-weight: 500;
+    border-left: 3px solid var(--primary-color);
+}
 
-    .command-content h2 {
-        font-size: 1.8rem;
-        margin: 3rem 0 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid var(--border-color);
-    }
+.docs-content {
+    max-width: 900px;
+}
 
-    .example-box {
-        background: var(--card-bg);
-        border-left: 4px solid var(--primary-color);
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin: 1.5rem 0;
-    }
+.docs-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--heading-color);
+}
 
-    .warning-box {
-        background: rgba(239, 68, 68, 0.1);
-        border-left: 4px solid #ef4444;
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin: 1.5rem 0;
-        color: #fca5a5;
-    }
+.docs-content h2 {
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--heading-color);
+}
 
-    @media (max-width: 1024px) {
-        .command-layout {
-            grid-template-columns: 1fr;
-        }
-        .command-sidebar {
-            position: static;
-            height: auto;
-        }
+.docs-content h3 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.code-label {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px 4px 0 0;
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+}
+
+.docs-content pre {
+    position: relative;
+    background: #1a1b26;
+    color: #c0caf5;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 8px;
+    overflow-x: auto;
+    margin: 0 0 2rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 1px solid #24283b;
+}
+
+.docs-content code {
+    font-family: 'Courier New', monospace;
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--primary-color);
+}
+
+.sql-keyword {
+    color: #7dcfff;
+    font-weight: bold;
+}
+
+.sql-string {
+    color: #9ece6a;
+}
+
+.warning-box {
+    background: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.info-box {
+    background: rgba(33, 150, 243, 0.1);
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #c0caf5;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.nav-links a {
+    flex: 1;
+    padding: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
     }
+    .docs-sidebar {
+        position: static;
+        height: auto;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .docs-layout {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .docs-content h1 {
+        font-size: 2rem;
+    }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="command-layout">
-    <aside class="command-sidebar">
-        <h3>DELETE Command</h3>
+<div class="docs-layout">
+    <aside class="docs-sidebar">
+        <h3>DELETE Guide</h3>
         <ul>
             <li><a href="#overview">Overview</a></li>
             <li><a href="#syntax">Syntax</a></li>
-            <li><a href="#parameters">Parameters</a></li>
-            <li><a href="#examples">Examples</a></li>
-            <li><a href="#best-practices">Best Practices</a></li>
-            <li><a href="#errors">Common Errors</a></li>
+            <li><a href="#basic-examples">Basic Examples</a></li>
+            <li><a href="#where-clause">WHERE Clause</a></li>
+            <li><a href="#complex">Complex Conditions</a></li>
+            <li><a href="#null-checks">NULL Checks</a></li>
+            <li><a href="#performance">Performance Notes</a></li>
+            <li><a href="#safety">Safety Best Practices</a></li>
+            <li><a href="#pitfalls">Common Pitfalls</a></li>
+            <li><a href="#comparison">DML Comparison</a></li>
+        </ul>
+
+        <h3>Related Commands</h3>
+        <ul>
+            <li><a href="{{ url_for('main.select') }}">SELECT</a></li>
+            <li><a href="{{ url_for('main.update') }}">UPDATE</a></li>
+            <li><a href="{{ url_for('main.insert') }}">INSERT</a></li>
         </ul>
     </aside>
 
-    <main class="command-content">
+    <main class="docs-content">
         <h1>DELETE Command</h1>
-        <p>Remove rows from a table based on specified conditions.</p>
+        <p><strong>Data Manipulation Language (DML)</strong> — Remove rows from a table based on conditions.</p>
 
         <section id="overview">
             <h2>Overview</h2>
-            <p>The <code>DELETE</code> command removes one or more rows from a table. It supports conditional deletion using the <code>WHERE</code> clause to target specific records.</p>
+            <p>The <code>DELETE</code> statement removes one or more rows from a table. A <code>WHERE</code> clause is used to specify which rows to delete. Without a <code>WHERE</code> clause, <strong>all rows in the table will be deleted</strong>.</p>
             <div class="warning-box">
-                <strong>⚠️ Warning:</strong> Deletions are permanent and cannot be undone unless you have a backup. Always verify your WHERE condition before executing.
+                <strong>⚠️ Warning:</strong> Always use a <code>WHERE</code> clause unless you intentionally want to delete all rows. DELETE operations cannot be undone without a backup.
             </div>
         </section>
 
@@ -121,85 +257,284 @@
             <h2>Syntax</h2>
             <span class="code-label">Basic Syntax</span>
             <pre><code>DELETE FROM &lt;table_name&gt; WHERE &lt;condition&gt;;</code></pre>
-        </section>
-
-        <section id="parameters">
-            <h2>Parameters</h2>
-            <table>
-                <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
-                <tbody>
-                    <tr><td><code>&lt;table_name&gt;</code></td><td>Identifier</td><td>Name of the table to delete from</td></tr>
-                    <tr><td><code>&lt;condition&gt;</code></td><td>Expression</td><td>WHERE clause condition that identifies rows to delete</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section id="examples">
-            <h2>Examples</h2>
-
-            <h3>Example 1: Delete Single Row by Primary Key</h3>
-            <div class="example-box">
-                <p>Remove a user with ID 5:</p>
-                <span class="code-label">Query</span>
-                <pre><code>DELETE FROM users WHERE id = 5;</code></pre>
-            </div>
-
-            <h3>Example 2: Delete Multiple Rows</h3>
-            <div class="example-box">
-                <p>Remove all inactive users:</p>
-                <span class="code-label">Query</span>
-                <pre><code>DELETE FROM users WHERE active = FALSE;</code></pre>
-            </div>
-
-            <h3>Example 3: Delete with Complex Condition</h3>
-            <div class="example-box">
-                <p>Remove users who are inactive AND have no salary set:</p>
-                <span class="code-label">Query</span>
-                <pre><code>DELETE FROM users WHERE active = FALSE AND salary IS NULL;</code></pre>
-            </div>
-
-            <h3>Example 4: Delete with OR Condition</h3>
-            <div class="example-box">
-                <p>Remove users who are either named 'Test' or have an invalid UUID:</p>
-                <span class="code-label">Query</span>
-                <pre><code>DELETE FROM users WHERE name = 'Test' OR uuid IS NULL;</code></pre>
+            
+            <div class="info-box">
+                <strong>ℹ️ Note:</strong> The <code>WHERE</code> clause is required in production environments. Without it, all rows will be deleted.
             </div>
         </section>
 
-        <section id="best-practices">
-            <h2>Best Practices</h2>
-            <ul style="margin-left: 1.5rem; color: var(--text-muted);">
-                <li><strong>Always use WHERE:</strong> Specify a condition to avoid deleting all rows by accident.</li>
-                <li><strong>Test first:</strong> Use a <code>SELECT</code> query with the same WHERE clause to preview which rows will be deleted.</li>
-                <li><strong>Create backups:</strong> Run <code>BACKUP</code> before large delete operations.</li>
-                <li><strong>Use Primary Keys:</strong> When deleting by ID, the query uses O(1) lookup for optimal performance.</li>
-                <li><strong>Document deletions:</strong> Add comments explaining why records are being deleted for audit trails.</li>
+        <section id="basic-examples">
+            <h2>Basic Examples</h2>
+
+            <h3>Delete a Single Row by ID</h3>
+            <p>Using the primary key for fast lookup (O(1) operation):</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE id = 5;</code></pre>
+
+            <h3>Delete by String Match</h3>
+            <p>Remove rows where a text column matches a value:</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE name = 'Charlie';</code></pre>
+
+            <h3>Delete by Numeric Condition</h3>
+            <p>Remove rows where a numeric column meets a condition:</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE age < 18;</code></pre>
+
+            <h3>Delete by Boolean Value</h3>
+            <p>Remove inactive users:</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE active = FALSE;</code></pre>
+        </section>
+
+        <section id="where-clause">
+            <h2>WHERE Clause Details</h2>
+
+            <h3>Comparison Operators</h3>
+            <p>The WHERE clause supports standard comparison operators:</p>
+            <ul>
+                <li><code>=</code> Equal to</li>
+                <li><code>&gt;</code> Greater than</li>
+                <li><code>&lt;</code> Less than</li>
+                <li><code>&gt;=</code> Greater than or equal</li>
+                <li><code>&lt;=</code> Less than or equal</li>
             </ul>
+
+            <span class="code-label">Examples</span>
+            <pre><code>-- Delete rows where salary is above threshold
+DELETE FROM employees WHERE salary > 100000;
+
+-- Delete rows where age is less than cutoff
+DELETE FROM users WHERE age < 21;
+
+-- Delete exact match
+DELETE FROM products WHERE price = 0.00;</code></pre>
         </section>
 
-        <section id="errors">
-            <h2>Common Errors</h2>
-            <table>
-                <thead><tr><th>Error</th><th>Cause</th><th>Solution</th></tr></thead>
+        <section id="complex">
+            <h2>Complex WHERE Conditions</h2>
+
+            <h3>AND Logic</h3>
+            <p>Delete rows that match multiple conditions (all must be true):</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE age > 30 AND active = FALSE;</code></pre>
+
+            <h3>OR Logic</h3>
+            <p>Delete rows that match at least one condition:</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE status = 'archived' OR age > 100;</code></pre>
+
+            <h3>Combined AND/OR with Grouping</h3>
+            <p>Use parentheses to control logical precedence:</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM orders WHERE (status = 'cancelled' AND created_date < '2020-01-01') 
+                   OR (total = 0 AND reason = 'test');</code></pre>
+
+            <h3>NOT Operator</h3>
+            <p>Delete rows that do NOT match a condition:</p>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE NOT (status = 'active');</code></pre>
+        </section>
+
+        <section id="null-checks">
+            <h2>NULL Checks</h2>
+
+            <h3>Delete Rows with NULL Values</h3>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE profile_picture IS NULL;</code></pre>
+
+            <h3>Delete Rows WITHOUT NULL Values</h3>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM users WHERE phone_number IS NOT NULL;</code></pre>
+
+            <h3>Mixed NULL and Regular Conditions</h3>
+            <span class="code-label">Example</span>
+            <pre><code>DELETE FROM orders WHERE (delivery_date IS NULL) AND (status = 'pending');</code></pre>
+        </section>
+
+        <section id="performance">
+            <h2>Performance Notes</h2>
+
+            <h3>Primary Key Lookups (O(1))</h3>
+            <p>Deleting by primary key is extremely fast:</p>
+            <span class="code-label">Fast</span>
+            <pre><code>DELETE FROM users WHERE id = 123;</code></pre>
+
+            <h3>Other Column Scans (O(n))</h3>
+            <p>Deleting by non-indexed columns requires a full table scan:</p>
+            <span class="code-label">Slower</span>
+            <pre><code>DELETE FROM users WHERE email = 'user@example.com';</code></pre>
+
+            <div class="info-box">
+                <strong>💡 Tip:</strong> For large datasets, consider deleting in batches using LIMIT or filtering by date ranges to reduce lock times.
+            </div>
+        </section>
+
+        <section id="safety">
+            <h2>Safety Best Practices</h2>
+
+            <h3>1. Always Test First with SELECT</h3>
+            <p>Before running a DELETE, verify the rows with SELECT:</p>
+            <span class="code-label">Safe Approach</span>
+            <pre><code>-- First, verify what will be deleted
+SELECT * FROM users WHERE age < 18;
+
+-- Then, delete with confidence
+DELETE FROM users WHERE age < 18;</code></pre>
+
+            <h3>2. Create a Backup</h3>
+            <p>Backup your database before bulk deletions:</p>
+            <span class="code-label">Example</span>
+            <pre><code>BACKUP 'before_deletion_2024';
+DELETE FROM users WHERE status = 'deprecated';
+-- Verify results, or restore if needed</code></pre>
+
+            <h3>3. Use Transaction Limits</h3>
+            <p>Delete in smaller batches for large datasets:</p>
+            <span class="code-label">Example</span>
+            <pre><code>-- Delete inactive users, but in manageable chunks
+DELETE FROM users WHERE active = FALSE AND joined_date < '2020-01-01';</code></pre>
+
+            <h3>4. Add Comments to Risky Operations</h3>
+            <span class="code-label">Example</span>
+            <pre><code>-- CAUTION: Removing all test records from production database
+-- Created backup: 'prod_backup_2024_01_15'
+DELETE FROM orders WHERE order_id IN (9001, 9002, 9003);</code></pre>
+        </section>
+
+        <section id="pitfalls">
+            <h2>Common Pitfalls</h2>
+
+            <h3>❌ Forgetting the WHERE Clause</h3>
+            <p>This will delete <strong>every row in the table</strong>:</p>
+            <span class="code-label">Dangerous</span>
+            <pre><code>DELETE FROM users;  -- ALL users deleted!</code></pre>
+
+            <h3>❌ Incorrect Column Names</h3>
+            <p>Typos in column names will cause errors:</p>
+            <span class="code-label">Error</span>
+            <pre><code>DELETE FROM users WHERE username = 'alice';  -- Column 'username' doesn't exist</code></pre>
+
+            <h3>❌ Type Mismatches</h3>
+            <p>Comparing incompatible types may not match rows:</p>
+            <span class="code-label">Error</span>
+            <pre><code>DELETE FROM users WHERE id = '123';  -- id is INT, not TEXT</code></pre>
+
+            <h3>❌ Complex Conditions Without Testing</h3>
+            <p>Run SELECT first to verify the condition logic:</p>
+            <span class="code-label">Safer</span>
+            <pre><code>-- Test the condition
+SELECT COUNT(*) FROM users WHERE (age > 50 AND status = 'inactive') OR premium = FALSE;
+
+-- Then delete
+DELETE FROM users WHERE (age > 50 AND status = 'inactive') OR premium = FALSE;</code></pre>
+        </section>
+
+        <section id="comparison">
+            <h2>DELETE vs Other DML Commands</h2>
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <thead>
+                    <tr style="background: rgba(var(--primary-rgb), 0.1);">
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Command</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Purpose</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Can Undo?</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
-                        <td><code>Table not found</code></td>
-                        <td>Table does not exist</td>
-                        <td>Verify table name and ensure you're using the correct database</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>INSERT</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Add new rows</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Use DELETE</td>
+                    </tr>
+                    <tr style="background: rgba(0,0,0,0.02);">
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>SELECT</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Read rows (no change)</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">N/A</td>
                     </tr>
                     <tr>
-                        <td><code>Invalid WHERE clause</code></td>
-                        <td>Syntax error in condition</td>
-                        <td>Check column names and operator syntax</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>UPDATE</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Modify existing rows</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Use UPDATE again or RESTORE</td>
                     </tr>
-                    <tr>
-                        <td><code>Foreign key constraint violation</code></td>
-                        <td>Row is referenced by another table</td>
-                        <td>Delete dependent records first or use proper cascade handling</td>
+                    <tr style="background: rgba(0,0,0,0.02);">
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>DELETE</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Remove rows</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Use RESTORE backup</td>
                     </tr>
                 </tbody>
             </table>
         </section>
+
+        <div class="nav-links">
+            <a href="{{ url_for('main.select') }}">← SELECT</a>
+            <a href="{{ url_for('main.docs') }}">📖 Documentation</a>
+            <a href="{{ url_for('main.update') }}">UPDATE →</a>
+        </div>
     </main>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Copy to Clipboard
+    const copyButtons = document.querySelectorAll('pre');
+    
+    copyButtons.forEach(pre => {
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.innerHTML = '<i class="far fa-copy"></i> Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(button);
+        
+        button.addEventListener('click', async () => {
+            const code = pre.querySelector('code').innerText;
+            
+            try {
+                await navigator.clipboard.writeText(code);
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy"></i> Copy';
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        });
+    });
+
+    // Syntax Highlighting
+    const keywords = ['DELETE', 'FROM', 'WHERE', 'AND', 'OR', 'NOT', 'IS', 'NULL', 'SELECT', 'BACKUP', 'RESTORE'];
+    const codeBlocks = document.querySelectorAll('pre code');
+    
+    codeBlocks.forEach(block => {
+        let html = block.innerHTML;
+        const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
+        html = html.replace(keywordRegex, '<span class="sql-keyword">$1</span>');
+        block.innerHTML = html;
+    });
+
+    // Scroll Spy
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
+    const sections = document.querySelectorAll('section[id]');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset + 100;
+        
+        sections.forEach(section => {
+            if (scrollY >= section.offsetTop && scrollY < section.offsetTop + section.clientHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

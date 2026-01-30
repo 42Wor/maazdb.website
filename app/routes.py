@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app,abort
 
 bp = Blueprint('main', __name__)
 
@@ -31,3 +31,11 @@ def delete():
 @bp.route('/docs/select')
 def select():   
     return render_template('command/select.html')
+@bp.route('/command/create-table')
+def create_table():
+    # This forces a 404 error when the user clicks the link
+    abort(404)
+#404
+@bp.app_errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404

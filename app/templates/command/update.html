@@ -1,538 +1,485 @@
+<!--
+FILE: app/templates/command/update.html
+
+PURPOSE:
+Template page for UPDATE command documentation in MaazDB.
+Matches the design structure of insert.html, select.html, and delete.html.
+-->
 {% extends "base.html" %}
 
 {% block head %}
 <style>
-    .command-doc {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 2rem;
-    }
+.docs-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
 
-    .command-header {
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 1.5rem;
+.docs-sidebar {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.docs-sidebar h3 {
+    color: var(--primary-color);
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.docs-sidebar h3:first-child {
+    margin-top: 0;
+}
+
+.docs-sidebar a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.docs-sidebar a:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+.docs-sidebar a.active {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.15);
+    font-weight: 500;
+    border-left: 3px solid var(--primary-color);
+}
+
+.docs-content {
+    max-width: 900px;
+}
+
+.docs-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content h2 {
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--heading-color);
+}
+
+.docs-content h3 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.code-label {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px 4px 0 0;
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+}
+
+.docs-content pre {
+    position: relative;
+    background: #1a1b26;
+    color: #c0caf5;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 8px;
+    overflow-x: auto;
+    margin: 0 0 2rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 1px solid #24283b;
+}
+
+.docs-content code {
+    font-family: 'Courier New', monospace;
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--primary-color);
+}
+
+.sql-keyword {
+    color: #7dcfff;
+    font-weight: bold;
+}
+
+.sql-string {
+    color: #9ece6a;
+}
+
+.sql-number {
+    color: #ff9e64;
+}
+
+.warning-box {
+    background: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.info-box {
+    background: rgba(33, 150, 243, 0.1);
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #c0caf5;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.nav-links a {
+    flex: 1;
+    padding: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
+    }
+    .docs-sidebar {
+        position: static;
+        height: auto;
         margin-bottom: 2rem;
     }
+}
 
-    .command-header h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .command-meta {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        color: var(--text-dim);
-        font-size: 0.95rem;
-    }
-
-    .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .section {
-        margin: 3rem 0;
-    }
-
-    .section h2 {
-        font-size: 1.8rem;
-        color: var(--text-main);
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 0.75rem;
-    }
-
-    .section h3 {
-        font-size: 1.3rem;
-        color: var(--text-main);
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .syntax-box {
-        background: var(--code-bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        font-family: var(--font-mono);
-        overflow-x: auto;
-    }
-
-    .example-box {
-        background: rgba(16, 185, 129, 0.08);
-        border-left: 3px solid var(--success);
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        border-radius: 4px;
-    }
-
-    .example-box h4 {
-        color: var(--success);
-        margin-top: 0;
-    }
-
-    .warning-box {
-        background: rgba(245, 158, 11, 0.08);
-        border-left: 3px solid var(--warning);
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        border-radius: 4px;
-    }
-
-    .warning-box h4 {
-        color: var(--warning);
-        margin-top: 0;
-    }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1.5rem 0;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .table th {
-        background: rgba(239, 68, 68, 0.1);
-        color: var(--accent);
+@media (max-width: 768px) {
+    .docs-layout {
         padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .table td {
-        padding: 1rem;
-        border-bottom: 1px solid var(--border);
-        color: var(--text-dim);
-    }
-
-    .table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .table tr:hover td {
-        background: rgba(239, 68, 68, 0.05);
-    }
-
-    code {
-        background: rgba(239, 68, 68, 0.1);
-        color: #ff8a8a;
-        padding: 0.25rem 0.5rem;
-        border-radius: 3px;
-        font-family: var(--font-mono);
-        font-size: 0.9em;
-    }
-
-    pre code {
-        background: none;
-        color: var(--text-main);
-        padding: 0;
-    }
-
-    .parameter-list {
-        list-style: none;
-        padding: 0;
-    }
-
-    .parameter-list li {
-        margin: 1rem 0;
-        padding: 0 0 0 1.5rem;
-        border-left: 2px solid var(--accent);
-        padding-left: 1rem;
-    }
-
-    .parameter-list strong {
-        color: var(--accent);
-    }
-
-    .nav-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: space-between;
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--border);
-    }
-
-    .nav-buttons a {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1.5rem;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        color: var(--text-main);
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .nav-buttons a:hover {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: white;
-    }
-
-    .return-button {
-        margin-bottom: 2rem;
-    }
-
-    .return-button a {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--accent);
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .return-button a:hover {
         gap: 1rem;
     }
+    .docs-content h1 {
+        font-size: 2rem;
+    }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="command-doc">
-    <!-- Return Button -->
-    <div class="return-button">
-        <a href="{{ url_for('main.docs') }}"><i class="fas fa-arrow-left"></i> Back to Documentation</a>
-    </div>
-
-    <!-- Header -->
-    <div class="command-header">
-        <h1><code>UPDATE</code> Command</h1>
-        <div class="command-meta">
-            <div class="meta-item">
-                <i class="fas fa-cube"></i>
-                <span>Category: Data Manipulation (DML)</span>
-            </div>
-            <div class="meta-item">
-                <i class="fas fa-sync"></i>
-                <span>Type: Modification</span>
-            </div>
-            <div class="meta-item">
-                <i class="fas fa-database"></i>
-                <span>Requires: Active Database</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Overview -->
-    <section class="section">
-        <h2>Overview</h2>
-        <p>The <code>UPDATE</code> command modifies one or more existing rows in a table based on a specified condition. It allows you to change values in specific columns for rows that match your criteria.</p>
-        <p><strong>Key Points:</strong></p>
+<div class="docs-layout">
+    <aside class="docs-sidebar">
+        <h3>UPDATE Guide</h3>
         <ul>
-            <li>Updates are permanent and cannot be undone (unless using <code>BACKUP</code>/<code>RESTORE</code>)</li>
-            <li>Always use a <code>WHERE</code> clause to target specific rows</li>
-            <li>Omitting <code>WHERE</code> will update all rows in the table</li>
-            <li>Foreign key constraints are enforced during updates</li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#data-types">Data Types</a></li>
+            <li><a href="#where-clause">WHERE Clause</a></li>
+            <li><a href="#best-practices">Best Practices</a></li>
+            <li><a href="#comparison">DML Comparison</a></li>
         </ul>
-    </section>
 
-    <!-- Syntax -->
-    <section class="section">
-        <h2>Syntax</h2>
-        <div class="syntax-box">UPDATE &lt;table_name&gt; SET &lt;column&gt; = &lt;value&gt; [, &lt;column&gt; = &lt;value&gt;] WHERE &lt;condition&gt;;</div>
-        
-        <h3>Parameters</h3>
-        <ul class="parameter-list">
-            <li>
-                <strong>&lt;table_name&gt;</strong><br>
-                The name of the table to update. Must exist in the current database.
-            </li>
-            <li>
-                <strong>&lt;column&gt; = &lt;value&gt;</strong><br>
-                Column name and new value. Multiple assignments separated by commas. Values must match the column's data type.
-            </li>
-            <li>
-                <strong>WHERE &lt;condition&gt;</strong><br>
-                (Recommended) Condition to filter which rows to update. Uses comparison operators: <code>=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>!=</code> and logical operators: <code>AND</code>, <code>OR</code>, <code>NOT</code>.
-            </li>
+        <h3>Related Commands</h3>
+        <ul>
+            <li><a href="{{ url_for('main.select') }}">SELECT</a></li>
+            <li><a href="{{ url_for('main.insert') }}">INSERT</a></li>
+            <li><a href="{{ url_for('main.delete') }}">DELETE</a></li>
         </ul>
-    </section>
+    </aside>
 
-    <!-- Examples -->
-    <section class="section">
-        <h2>Examples</h2>
+    <main class="docs-content">
+        <h1>UPDATE Command</h1>
+        <p><strong>Data Manipulation Language (DML)</strong> — Modify existing rows in a table based on conditions.</p>
 
-        <h3>Example 1: Simple Update (Single Column)</h3>
-        <div class="example-box">
-            <h4><i class="fas fa-check"></i> Update a Single Value</h4>
-            <p>Update the salary of an employee named Alice:</p>
-            <div class="syntax-box">UPDATE users SET salary = 55000.00 WHERE name = 'Alice';</div>
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>The <code>UPDATE</code> command modifies one or more existing rows in a table. It allows you to change values in specific columns for rows that match your criteria.</p>
+            
+            <div class="warning-box">
+                <strong>⚠️ Warning:</strong> Always use a <code>WHERE</code> clause unless you intentionally want to update <strong>every row</strong> in the table. Updates cannot be undone without a backup.
+            </div>
+        </section>
+
+        <section id="syntax">
+            <h2>Syntax</h2>
+            <span class="code-label">Basic Syntax</span>
+            <pre><code>UPDATE &lt;table_name&gt; 
+SET &lt;column&gt; = &lt;value&gt; [, &lt;column&gt; = &lt;value&gt;] 
+WHERE &lt;condition&gt;;</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Examples</h2>
+
+            <h3>Simple Update (Single Column)</h3>
+            <p>Update the salary of a specific user:</p>
+            <span class="code-label">Example</span>
+            <pre><code>UPDATE users SET salary = 55000.00 WHERE name = 'Alice';</code></pre>
+
+            <h3>Update Multiple Columns</h3>
+            <p>Change multiple fields at once using a comma separator:</p>
+            <span class="code-label">Example</span>
+            <pre><code>UPDATE employees 
+SET salary = 65000.00, role = 'Senior Engineer' 
+WHERE id = 5;</code></pre>
+
+            <h3>Conditional Update</h3>
+            <p>Deactivate inactive employees and reset their salary:</p>
+            <span class="code-label">Example</span>
+            <pre><code>UPDATE employees 
+SET active = FALSE, salary = 0 
+WHERE age > 65 AND role = 'Intern';</code></pre>
+
+            <h3>Fast Update (O(1) Lookup)</h3>
+            <p>When filtering by Primary Key, MaazDB optimizes the operation:</p>
+            <span class="code-label">Optimized</span>
+            <pre><code>UPDATE users SET active = TRUE WHERE id = 1;</code></pre>
+
+            <h3>Update Timestamp</h3>
+            <p>Update a timestamp field to mark modification time:</p>
+            <span class="code-label">Example</span>
+            <pre><code>UPDATE users 
+SET last_updated = '2024-01-29 15:30:00' 
+WHERE name = 'Bob';</code></pre>
+        </section>
+
+        <section id="data-types">
+            <h2>Data Type Compatibility</h2>
+            <p>Values must match the target column's data type:</p>
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <thead>
+                    <tr style="background: rgba(var(--primary-rgb), 0.1);">
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Type</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Example</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>INT</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><code>42</code></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Whole numbers</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>DOUBLE</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><code>99.99</code></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Floating-point</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>TEXT</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><code>'Hello'</code></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Single/Double quotes</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>BOOL</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><code>TRUE</code></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Case-insensitive</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>TIMESTAMP</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><code>'2024-01-01 12:00:00'</code></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Exact format required</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="where-clause">
+            <h2>WHERE Clause Operators</h2>
+            
+            <h3>Comparison</h3>
+            <p>Standard operators: <code>=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code></p>
+            <pre><code>UPDATE products SET price = 10.00 WHERE price < 5.00;</code></pre>
+
+            <h3>Logical</h3>
+            <p>Combine conditions: <code>AND</code>, <code>OR</code>, <code>NOT</code></p>
+            <pre><code>UPDATE users SET role = 'admin' WHERE age > 30 AND active = TRUE;</code></pre>
+
+            <h3>Null Checks</h3>
+            <p>Check for existence: <code>IS NULL</code>, <code>IS NOT NULL</code></p>
+            <pre><code>UPDATE users SET status = 'unknown' WHERE phone IS NULL;</code></pre>
+        </section>
+
+        <section id="best-practices">
+            <h2>Best Practices</h2>
+
+            <h3>1. Test Before Update</h3>
+            <p>Run a <code>SELECT</code> query with the same <code>WHERE</code> clause to verify which rows will be affected.</p>
+            <pre><code>-- Check first
+SELECT * FROM users WHERE age > 65;
+
+-- Then update
+UPDATE users SET status = 'retired' WHERE age > 65;</code></pre>
+
+            <h3>2. Create Backups</h3>
+            <p>Before bulk updates, create a snapshot.</p>
+            <pre><code>BACKUP 'pre_update_snapshot';
+UPDATE users SET salary = salary + 1000;</code></pre>
+
+            <h3>3. Respect Foreign Keys</h3>
+            <p>Updating a column referenced by a foreign key may fail if the new value doesn't exist in the parent table.</p>
+        </section>
+
+        <section id="comparison">
+            <h2>DML Comparison</h2>
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <thead>
+                    <tr style="background: rgba(var(--primary-rgb), 0.1);">
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Command</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Purpose</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Risk Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>INSERT</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Add new rows</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Low</td>
+                    </tr>
+                    <tr style="background: rgba(0,0,0,0.02);">
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>UPDATE</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Modify rows</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>High</strong> (if WHERE omitted)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>DELETE</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Remove rows</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>High</strong> (Data loss)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="nav-links">
+            <a href="{{ url_for('main.select') }}">← SELECT</a>
+            <a href="{{ url_for('main.docs') }}">📖 Documentation</a>
+            <a href="{{ url_for('main.delete') }}">DELETE →</a>
         </div>
-
-        <h3>Example 2: Multiple Columns</h3>
-        <div class="example-box">
-            <h4><i class="fas fa-check"></i> Update Multiple Columns</h4>
-            <p>Update both salary and role for a specific user:</p>
-            <div class="syntax-box">UPDATE employees SET salary = 65000.00, role = 'Senior Engineer' WHERE id = 5;</div>
-        </div>
-
-        <h3>Example 3: Conditional Update</h3>
-        <div class="example-box">
-            <h4><i class="fas fa-check"></i> Update with Complex Conditions</h4>
-            <p>Deactivate all inactive employees and reset their salary:</p>
-            <div class="syntax-box">UPDATE employees SET active = FALSE, salary = 0 WHERE age > 65 AND role = 'Intern';</div>
-        </div>
-
-        <h3>Example 4: Update Using Primary Key</h3>
-        <div class="example-box">
-            <h4><i class="fas fa-check"></i> Fast Update (O(1) Lookup)</h4>
-            <p>When filtering by primary key, MaazDB performs an optimized O(1) lookup:</p>
-            <div class="syntax-box">UPDATE users SET active = TRUE WHERE id = 1;</div>
-        </div>
-
-        <h3>Example 5: Update with Timestamp</h3>
-        <div class="example-box">
-            <h4><i class="fas fa-check"></i> Update Timestamp Columns</h4>
-            <p>Update a timestamp field to mark when a record was modified:</p>
-            <div class="syntax-box">UPDATE users SET last_updated = '2024-01-29 15:30:00' WHERE name = 'Bob';</div>
-        </div>
-    </section>
-
-    <!-- Data Types -->
-    <section class="section">
-        <h2>Data Type Compatibility</h2>
-        <p>Values must match the target column's data type. Here are the supported types and their value formats:</p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Data Type</th>
-                    <th>Example Value</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>INT</code></td>
-                    <td><code>42</code></td>
-                    <td>Whole numbers</td>
-                </tr>
-                <tr>
-                    <td><code>DOUBLE</code></td>
-                    <td><code>99.99</code></td>
-                    <td>Floating-point numbers</td>
-                </tr>
-                <tr>
-                    <td><code>TEXT</code></td>
-                    <td><code>'Hello'</code></td>
-                    <td>Quoted strings (single or double quotes)</td>
-                </tr>
-                <tr>
-                    <td><code>BOOL</code></td>
-                    <td><code>TRUE</code> or <code>FALSE</code></td>
-                    <td>Boolean values (case-insensitive)</td>
-                </tr>
-                <tr>
-                    <td><code>TIMESTAMP</code></td>
-                    <td><code>'2024-01-29 15:30:00'</code></td>
-                    <td>Format: YYYY-MM-DD HH:MM:SS</td>
-                </tr>
-                <tr>
-                    <td><code>UUID</code></td>
-                    <td><code>'550e8400-e29b-41d4-a716-446655440000'</code></td>
-                    <td>UUID string format</td>
-                </tr>
-                <tr>
-                    <td><code>SERIAL</code></td>
-                    <td>Cannot update</td>
-                    <td>Auto-increment primary key (immutable)</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- WHERE Clause Operators -->
-    <section class="section">
-        <h2>WHERE Clause Operators</h2>
-        
-        <h3>Comparison Operators</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Operator</th>
-                    <th>Description</th>
-                    <th>Example</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>=</code></td>
-                    <td>Equal to</td>
-                    <td><code>WHERE name = 'Alice'</code></td>
-                </tr>
-                <tr>
-                    <td><code>&gt;</code></td>
-                    <td>Greater than</td>
-                    <td><code>WHERE salary &gt; 50000</code></td>
-                </tr>
-                <tr>
-                    <td><code>&lt;</code></td>
-                    <td>Less than</td>
-                    <td><code>WHERE age &lt; 30</code></td>
-                </tr>
-                <tr>
-                    <td><code>&gt;=</code></td>
-                    <td>Greater than or equal</td>
-                    <td><code>WHERE salary &gt;= 60000</code></td>
-                </tr>
-                <tr>
-                    <td><code>&lt;=</code></td>
-                    <td>Less than or equal</td>
-                    <td><code>WHERE age &lt;= 65</code></td>
-                </tr>
-                <tr>
-                    <td><code>!=</code></td>
-                    <td>Not equal to</td>
-                    <td><code>WHERE status != 'inactive'</code></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>Logical Operators</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Operator</th>
-                    <th>Description</th>
-                    <th>Example</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>AND</code></td>
-                    <td>Both conditions must be true</td>
-                    <td><code>WHERE age &gt; 25 AND salary &gt; 50000</code></td>
-                </tr>
-                <tr>
-                    <td><code>OR</code></td>
-                    <td>At least one condition must be true</td>
-                    <td><code>WHERE role = 'Manager' OR role = 'Lead'</code></td>
-                </tr>
-                <tr>
-                    <td><code>NOT</code></td>
-                    <td>Negates a condition</td>
-                    <td><code>WHERE NOT active = FALSE</code></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>Null Checks</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Operator</th>
-                    <th>Description</th>
-                    <th>Example</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>IS NULL</code></td>
-                    <td>Checks if value is NULL</td>
-                    <td><code>WHERE uuid IS NULL</code></td>
-                </tr>
-                <tr>
-                    <td><code>IS NOT NULL</code></td>
-                    <td>Checks if value is not NULL</td>
-                    <td><code>WHERE last_updated IS NOT NULL</code></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- Important Notes -->
-    <section class="section">
-        <h2>Important Notes & Best Practices</h2>
-
-        <div class="warning-box">
-            <h4><i class="fas fa-exclamation-triangle"></i> Always Use WHERE Clause</h4>
-            <p>Omitting the <code>WHERE</code> clause will update <strong>all rows</strong> in the table. This is rarely intentional:</p>
-            <div class="syntax-box">-- ⚠️ DANGER: Updates ALL rows!
-UPDATE users SET active = FALSE;</div>
-        </div>
-
-        <h3>Best Practices</h3>
-        <ul class="parameter-list">
-            <li>
-                <strong>Test Before Update</strong><br>
-                Use a <code>SELECT</code> with the same <code>WHERE</code> clause to verify which rows will be affected.
-            </li>
-            <li>
-                <strong>Create Backups</strong><br>
-                Before performing bulk updates, create a backup using <code>BACKUP</code>.
-            </li>
-            <li>
-                <strong>Use Primary Keys</strong><br>
-                Filtering by primary key (<code>id</code>) provides O(1) performance instead of scanning the entire table.
-            </li>
-            <li>
-                <strong>Respect Foreign Keys</strong><br>
-                Updating a column that is referenced by a foreign key constraint may fail if the new value doesn't exist in the parent table.
-            </li>
-            <li>
-                <strong>Type Matching</strong><br>
-                Ensure the value type matches the column's defined data type to avoid unexpected behavior.
-            </li>
-        </ul>
-    </section>
-
-    <!-- Related Commands -->
-    <section class="section">
-        <h2>Related Commands</h2>
-        <ul class="parameter-list">
-            <li>
-                <strong><a href="{{ url_for('main.select') }}"><code>SELECT</code></a></strong><br>
-                Query and retrieve data before updating.
-            </li>
-            <li>
-                <strong><a href="{{ url_for('main.insert') }}"><code>INSERT</code></a></strong><br>
-                Add new rows to a table.
-            </li>
-            <li>
-                <strong><a href="{{ url_for('main.delete') }}"><code>DELETE</code></a></strong><br>
-                Remove rows from a table.
-            </li>
-            <li>
-                <strong><code>BACKUP</code> / <code>RESTORE</code></strong><br>
-                Create snapshots and recover from mistakes.
-            </li>
-        </ul>
-    </section>
-
-    <!-- Navigation -->
-    <div class="nav-buttons">
-        <a href="{{ url_for('main.docs') }}"><i class="fas fa-book"></i> View All Commands</a>
-        <a href="{{ url_for('main.delete') }}"><i class="fas fa-arrow-right"></i> Next: DELETE</a>
-    </div>
+    </main>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Syntax highlighting
-    const codeBlocks = document.querySelectorAll('.syntax-box, pre code');
-    const keywords = ['UPDATE', 'SET', 'WHERE', 'AND', 'OR', 'NOT', 'IS', 'NULL', 'TRUE', 'FALSE'];
+    // Copy to Clipboard
+    const copyButtons = document.querySelectorAll('pre');
+    
+    copyButtons.forEach(pre => {
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.innerHTML = '<i class="far fa-copy"></i> Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(button);
+        
+        button.addEventListener('click', async () => {
+            const code = pre.querySelector('code').innerText;
+            
+            try {
+                await navigator.clipboard.writeText(code);
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy"></i> Copy';
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        });
+    });
+
+    // Syntax Highlighting
+    const keywords = ['UPDATE', 'SET', 'WHERE', 'AND', 'OR', 'NOT', 'IS', 'NULL', 'TRUE', 'FALSE', 'SELECT', 'BACKUP', 'INSERT', 'DELETE'];
+    const codeBlocks = document.querySelectorAll('pre code');
     
     codeBlocks.forEach(block => {
         let html = block.innerHTML;
-        keywords.forEach(keyword => {
-            const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
-            html = html.replace(regex, `<span class="sql-keyword">${keyword}</span>`);
-        });
+        
+        // Highlight Keywords
+        const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
+        html = html.replace(keywordRegex, '<span class="sql-keyword">$1</span>');
+        
+
+        
         block.innerHTML = html;
+    });
+
+    // Scroll Spy
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
+    const sections = document.querySelectorAll('section[id]');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset + 100;
+        
+        sections.forEach(section => {
+            if (scrollY >= section.offsetTop && scrollY < section.offsetTop + section.clientHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
     });
 });
 </script>

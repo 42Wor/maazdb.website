@@ -1,471 +1,470 @@
+<!--
+FILE: app/templates/command/select.html
+
+PURPOSE:
+Template page for SELECT command documentation in MaazDB.
+Matches the design structure of insert.html.
+-->
 {% extends "base.html" %}
 
 {% block head %}
 <style>
-    .command-hero {
-        padding: 100px 0 60px;
-        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(13, 18, 31, 0.5) 100%);
-    }
+.docs-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
 
-    .command-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 0 2rem;
-    }
+.docs-sidebar {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
 
-    .command-header h1 {
-        font-size: 2.5rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
+.docs-sidebar h3 {
+    color: var(--primary-color);
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-    .command-header p {
-        font-size: 1.1rem;
-        color: var(--text-dim);
+.docs-sidebar h3:first-child {
+    margin-top: 0;
+}
+
+.docs-sidebar a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.docs-sidebar a:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+.docs-sidebar a.active {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.15);
+    font-weight: 500;
+    border-left: 3px solid var(--primary-color);
+}
+
+.docs-content {
+    max-width: 900px;
+}
+
+.docs-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content h2 {
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--heading-color);
+}
+
+.docs-content h3 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.code-label {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px 4px 0 0;
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+}
+
+.docs-content pre {
+    position: relative;
+    background: #1a1b26;
+    color: #c0caf5;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 8px;
+    overflow-x: auto;
+    margin: 0 0 2rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 1px solid #24283b;
+}
+
+.docs-content code {
+    font-family: 'Courier New', monospace;
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--primary-color);
+}
+
+.sql-keyword {
+    color: #7dcfff;
+    font-weight: bold;
+}
+
+.sql-string {
+    color: #9ece6a;
+}
+
+.sql-number {
+    color: #ff9e64;
+}
+
+.warning-box {
+    background: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.info-box {
+    background: rgba(33, 150, 243, 0.1);
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #c0caf5;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.nav-links a {
+    flex: 1;
+    padding: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
+    }
+    .docs-sidebar {
+        position: static;
+        height: auto;
         margin-bottom: 2rem;
     }
+}
 
-    .command-section {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    .command-section h2 {
-        font-size: 1.5rem;
-        color: var(--text-main);
-        margin-bottom: 1rem;
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 0.75rem;
-    }
-
-    .command-section h3 {
-        font-size: 1.2rem;
-        color: var(--text-main);
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .command-section p {
-        color: var(--text-dim);
-        line-height: 1.7;
-        margin-bottom: 1.25rem;
-    }
-
-    .syntax-block {
-        background: var(--code-bg);
-        border-left: 3px solid var(--accent);
-        padding: 1.25rem;
-        border-radius: 6px;
-        margin: 1.5rem 0;
-        font-family: var(--font-mono);
-        font-size: 0.95rem;
-        color: var(--text-main);
-        overflow-x: auto;
-    }
-
-    .example-block {
-        background: rgba(16, 185, 129, 0.05);
-        border-left: 3px solid var(--success);
-        padding: 1.25rem;
-        border-radius: 6px;
-        margin: 1.5rem 0;
-        font-family: var(--font-mono);
-        font-size: 0.9rem;
-        color: var(--text-main);
-        overflow-x: auto;
-    }
-
-    .table-wrapper {
-        overflow-x: auto;
-        margin: 1.5rem 0;
-    }
-
-    .command-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: var(--code-bg);
-    }
-
-    .command-table th {
-        background: rgba(239, 68, 68, 0.15);
-        color: var(--text-main);
+@media (max-width: 768px) {
+    .docs-layout {
         padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 2px solid var(--accent);
-    }
-
-    .command-table td {
-        padding: 0.875rem 1rem;
-        border-bottom: 1px solid var(--border);
-        color: var(--text-dim);
-    }
-
-    .command-table tr:hover td {
-        background: rgba(239, 68, 68, 0.05);
-    }
-
-    .code-highlight {
-        background: rgba(239, 68, 68, 0.1);
-        color: #ff8a8a;
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-family: var(--font-mono);
-        font-size: 0.9em;
-    }
-
-    .note-box {
-        background: rgba(59, 130, 246, 0.05);
-        border-left: 3px solid #3b82f6;
-        padding: 1rem;
-        border-radius: 6px;
-        margin: 1.5rem 0;
-        color: var(--text-dim);
-    }
-
-    .warning-box {
-        background: rgba(245, 158, 11, 0.05);
-        border-left: 3px solid var(--warning);
-        padding: 1rem;
-        border-radius: 6px;
-        margin: 1.5rem 0;
-        color: var(--text-dim);
-    }
-
-    .btn-group {
-        display: flex;
         gap: 1rem;
-        margin-top: 2rem;
-        flex-wrap: wrap;
     }
-
-    .btn-primary {
-        background: var(--accent);
-        color: white;
-        padding: 12px 28px;
-        border-radius: 6px;
-        border: none;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
+    .docs-content h1 {
+        font-size: 2rem;
     }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px var(--accent-glow);
-    }
-
-    .btn-secondary {
-        background: transparent;
-        color: var(--accent);
-        padding: 12px 28px;
-        border: 2px solid var(--accent);
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-secondary:hover {
-        background: var(--accent);
-        color: white;
-    }
-
-    @media (max-width: 768px) {
-        .command-hero {
-            padding: 60px 0 40px;
-        }
-
-        .command-header h1 {
-            font-size: 2rem;
-        }
-
-        .command-section {
-            padding: 1.5rem;
-        }
-
-        .btn-group {
-            flex-direction: column;
-        }
-
-        .btn-primary, .btn-secondary {
-            width: 100%;
-            text-align: center;
-        }
-    }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="command-hero">
-    <div class="command-container">
-        <div class="command-header">
-            <h1>SELECT Command</h1>
-            <p>Query and retrieve data from tables with powerful filtering, sorting, and pagination capabilities.</p>
-        </div>
-    </div>
-</div>
-
-<div class="command-container">
-    <!-- Overview Section -->
-    <div class="command-section">
-        <h2>Overview</h2>
-        <p>The <span class="code-highlight">SELECT</span> statement retrieves data from one or more tables. It supports filtering with <span class="code-highlight">WHERE</span>, sorting with <span class="code-highlight">ORDER BY</span>, and pagination with <span class="code-highlight">LIMIT</span> and <span class="code-highlight">OFFSET</span>.</p>
-        
-        <h3>Key Features</h3>
-        <ul style="color: var(--text-dim); line-height: 2; margin-left: 1.5rem;">
-            <li><strong>Basic Selection:</strong> Retrieve all or specific columns</li>
-            <li><strong>Smart O(1) Lookup:</strong> Automatic optimization when filtering by Primary Key</li>
-            <li><strong>Filtering:</strong> WHERE clause with comparison and logical operators</li>
-            <li><strong>Sorting:</strong> ORDER BY with ASC/DESC options</li>
-            <li><strong>Pagination:</strong> LIMIT and OFFSET for result control</li>
-            <li><strong>Aggregates:</strong> COUNT(*) and expressions</li>
+<div class="docs-layout">
+    <aside class="docs-sidebar">
+        <h3>SELECT Guide</h3>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="#basic-examples">Basic Examples</a></li>
+            <li><a href="#filtering">Filtering (WHERE)</a></li>
+            <li><a href="#sorting">Sorting & Pagination</a></li>
+            <li><a href="#optimization">Performance (O(1))</a></li>
+            <li><a href="#aggregates">Aggregates</a></li>
+            <li><a href="#comparison">DML Comparison</a></li>
         </ul>
-    </div>
 
-    <!-- Syntax Section -->
-    <div class="command-section">
-        <h2>Syntax</h2>
-        
-        <h3>Basic SELECT</h3>
-        <div class="syntax-block">SELECT * FROM &lt;table_name&gt;;<br>
-SELECT &lt;col1&gt;, &lt;col2&gt; FROM &lt;table_name&gt;;</div>
-
-        <h3>With WHERE Clause</h3>
-        <div class="syntax-block">SELECT &lt;columns&gt; FROM &lt;table_name&gt; WHERE &lt;condition&gt;;</div>
-
-        <h3>With Sorting & Pagination</h3>
-        <div class="syntax-block">SELECT &lt;columns&gt; FROM &lt;table_name&gt;<br>
-WHERE &lt;condition&gt;<br>
-ORDER BY &lt;col&gt; [ASC|DESC]<br>
-LIMIT &lt;num&gt; OFFSET &lt;num&gt;;</div>
-    </div>
-
-    <!-- Examples Section -->
-    <div class="command-section">
-        <h2>Examples</h2>
-
-        <h3>1. Select All Rows</h3>
-        <div class="example-block">SELECT * FROM users;</div>
-        <p>Returns all rows and columns from the <span class="code-highlight">users</span> table.</p>
-
-        <h3>2. Select Specific Columns</h3>
-        <div class="example-block">SELECT name, email, age FROM users;</div>
-        <p>Returns only the specified columns.</p>
-
-        <h3>3. Filter by Primary Key (O(1) Optimization)</h3>
-        <div class="example-block">SELECT * FROM users WHERE id = 5;</div>
-        <p>MaazDB automatically optimizes this query to perform a direct lookup instead of scanning the entire table.</p>
-
-        <h3>4. Filter with Comparison Operators</h3>
-        <div class="example-block">SELECT name, salary FROM users WHERE salary > 50000;</div>
-        <p>Returns users with salary greater than 50,000.</p>
-
-        <h3>5. Logical AND</h3>
-        <div class="example-block">SELECT * FROM users<br>
-WHERE age > 25 AND active = TRUE;</div>
-        <p>Returns active users older than 25.</p>
-
-        <h3>6. Logical OR with Grouping</h3>
-        <div class="example-block">SELECT * FROM users<br>
-WHERE (age > 20 AND active = TRUE) OR salary > 50000;</div>
-        <p>Returns users who are active and over 20 OR have a salary greater than 50,000.</p>
-
-        <h3>7. NULL Checks</h3>
-        <div class="example-block">SELECT * FROM users WHERE uuid IS NULL;</div>
-        <p>Returns rows where the UUID is not set.</p>
-
-        <h3>8. Sorting Ascending (Default)</h3>
-        <div class="example-block">SELECT name, age FROM users ORDER BY age;</div>
-        <p>Sorts users by age in ascending order.</p>
-
-        <h3>9. Sorting Descending</h3>
-        <div class="example-block">SELECT name, salary FROM users<br>
-ORDER BY salary DESC;</div>
-        <p>Sorts users by salary from highest to lowest.</p>
-
-        <h3>10. Pagination with LIMIT & OFFSET</h3>
-        <div class="example-block">SELECT * FROM users<br>
-ORDER BY age DESC<br>
-LIMIT 10 OFFSET 20;</div>
-        <p>Skips the first 20 results and returns the next 10 (page 3 with 10 items per page).</p>
-
-        <h3>11. Count Aggregate</h3>
-        <div class="example-block">SELECT COUNT(*) AS total_users FROM users;</div>
-        <p>Returns the total number of rows in the table.</p>
-
-        <h3>12. Expressions</h3>
-        <div class="example-block">SELECT 1 + 1 AS result, 'Hello' AS greeting, TRUE AS flag;</div>
-        <p>Evaluates expressions and returns computed values.</p>
-    </div>
-
-    <!-- Operators Reference -->
-    <div class="command-section">
-        <h2>Operators Reference</h2>
-
-        <h3>Comparison Operators</h3>
-        <div class="table-wrapper">
-            <table class="command-table">
-                <thead>
-                    <tr>
-                        <th>Operator</th>
-                        <th>Description</th>
-                        <th>Example</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="code-highlight">=</span></td>
-                        <td>Equal to</td>
-                        <td><code>WHERE name = 'Alice'</code></td>
-                    </tr>
-                    <tr>
-                        <td><span class="code-highlight">></span></td>
-                        <td>Greater than</td>
-                        <td><code>WHERE age > 25</code></td>
-                    </tr>
-                    <tr>
-                        <td><span class="code-highlight"><</span></td>
-                        <td>Less than</td>
-                        <td><code>WHERE age < 30</code></td>
-                    </tr>
-                    <tr>
-                        <td><span class="code-highlight">>=</span></td>
-                        <td>Greater than or equal</td>
-                        <td><code>WHERE salary >= 50000</code></td>
-                    </tr>
-                    <tr>
-                        <td><span class="code-highlight"><=</span></td>
-                        <td>Less than or equal</td>
-                        <td><code>WHERE salary <= 80000</code></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>Logical Operators</h3>
-        <div class="table-wrapper">
-            <table class="command-table">
-                <thead>
-                    <tr>
-                        <th>Operator</th>
-                        <th>Description</th>
-                        <th>Example</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="code-highlight">AND</span></td>
-                        <td>Both conditions must be true</td>
-                        <td><code>WHERE age > 25 AND active = TRUE</code></td>
-                    </tr>
-                    <tr>
-                        <td><span class="code-highlight">OR</span></td>
-                        <td>Either condition must be true</td>
-                        <td><code>WHERE age > 30 OR salary > 100000</code></td>
-                    </tr>
-                    <tr>
-                        <td><span class="code-highlight">NOT</span></td>
-                        <td>Negates a condition</td>
-                        <td><code>WHERE NOT active = FALSE</code></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h3>Null Operations</h3>
-        <div class="table-wrapper">
-            <table class="command-table">
-                <thead>
-                    <tr>
-                        <th>Operator</th>
-                        <th>Description</th>
-                        <th>Example</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="code-highlight">IS NULL</span></td>
-                        <td>Value is null/undefined</td>
-                        <td><code>WHERE uuid IS NULL</code></td>
-                    </tr>
-                    <tr>
-                        <td><span class="code-highlight">IS NOT NULL</span></td>
-                        <td>Value is not null</td>
-                        <td><code>WHERE uuid IS NOT NULL</code></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Performance Notes -->
-    <div class="command-section">
-        <h2>Performance Optimization</h2>
-        
-        <div class="note-box">
-            <strong>🚀 Smart Lookup (O(1)):</strong> When you query by Primary Key (e.g., <span class="code-highlight">WHERE id = 5</span>), MaazDB automatically uses an indexed direct lookup instead of scanning the table. This is extremely fast even on large datasets.
-        </div>
-
-        <h3>Best Practices</h3>
-        <ul style="color: var(--text-dim); line-height: 2; margin-left: 1.5rem;">
-            <li>Use <span class="code-highlight">WHERE id = value</span> for fast single-row lookups</li>
-            <li>Combine filters with <span class="code-highlight">AND/OR</span> to narrow results early</li>
-            <li>Use <span class="code-highlight">LIMIT</span> to avoid retrieving unnecessary data</li>
-            <li>Order results only when necessary, as sorting larger datasets takes time</li>
+        <h3>Related Commands</h3>
+        <ul>
+            <li><a href="{{ url_for('main.insert') }}">INSERT</a></li>
+            <li><a href="{{ url_for('main.update') }}">UPDATE</a></li>
+            <li><a href="{{ url_for('main.delete') }}">DELETE</a></li>
         </ul>
-    </div>
+    </aside>
 
-    <!-- Common Patterns -->
-    <div class="command-section">
-        <h2>Common Query Patterns</h2>
+    <main class="docs-content">
+        <h1>SELECT Command</h1>
+        <p><strong>Data Query Language (DQL)</strong> — Retrieve, filter, sort, and paginate data from tables.</p>
 
-        <h3>Pagination Pattern</h3>
-        <div class="example-block">-- Page 1 (items 1-20)<br>
-SELECT * FROM products ORDER BY id LIMIT 20 OFFSET 0;<br>
-<br>
--- Page 2 (items 21-40)<br>
-SELECT * FROM products ORDER BY id LIMIT 20 OFFSET 20;<br>
-<br>
--- Page 3 (items 41-60)<br>
-SELECT * FROM products ORDER BY id LIMIT 20 OFFSET 40;</div>
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>The <code>SELECT</code> statement is the primary way to read data from MaazDB. It supports complex filtering, sorting, and pagination. MaazDB includes a special optimization engine for Primary Key lookups.</p>
+        </section>
 
-        <h3>Filtering with Multiple Conditions</h3>
-        <div class="example-block">SELECT * FROM employees<br>
-WHERE department = 'Engineering'<br>
-AND salary > 60000<br>
-AND active = TRUE<br>
-ORDER BY hire_date DESC;</div>
+        <section id="syntax">
+            <h2>Syntax</h2>
+            <span class="code-label">Basic Syntax</span>
+            <pre><code>SELECT &lt;columns&gt; FROM &lt;table_name&gt;
+[WHERE &lt;condition&gt;]
+[ORDER BY &lt;column&gt; ASC|DESC]
+[LIMIT &lt;n&gt; OFFSET &lt;n&gt;];</code></pre>
+        </section>
 
-        <h3>Complex Logical Conditions</h3>
-        <div class="example-block">SELECT * FROM orders<br>
-WHERE (status = 'pending' AND priority = 'high')<br>
-OR (status = 'urgent' AND created > '2024-01-01')<br>
-ORDER BY created DESC<br>
-LIMIT 50;</div>
-    </div>
+        <section id="basic-examples">
+            <h2>Basic Examples</h2>
 
-    <!-- Related Commands -->
-    <div class="command-section">
-        <h2>Related Commands</h2>
-        <p>Learn about other data manipulation commands:</p>
-        <div class="btn-group">
-            <a href="{{ url_for('main.insert') }}" class="btn-secondary">INSERT</a>
-            <a href="{{ url_for('main.update') }}" class="btn-secondary">UPDATE</a>
-            <a href="{{ url_for('main.delete') }}" class="btn-secondary">DELETE</a>
-            <a href="{{ url_for('main.docs') }}" class="btn-secondary">Full Documentation</a>
+            <h3>Select All Columns</h3>
+            <p>Retrieve every row and column from a table:</p>
+            <span class="code-label">Example</span>
+            <pre><code>SELECT * FROM users;</code></pre>
+
+            <h3>Select Specific Columns</h3>
+            <p>Retrieve only specific fields to reduce data transfer:</p>
+            <span class="code-label">Example</span>
+            <pre><code>SELECT username, email, age FROM users;</code></pre>
+        </section>
+
+        <section id="filtering">
+            <h2>Filtering (WHERE)</h2>
+            <p>Use the <code>WHERE</code> clause to filter results. MaazDB supports standard comparison and logical operators.</p>
+
+            <h3>Comparison Operators</h3>
+            <pre><code>-- Numeric comparison
+SELECT * FROM products WHERE price > 50.00;
+
+-- String matching
+SELECT * FROM users WHERE username = 'Alice';
+
+-- Boolean check
+SELECT * FROM tasks WHERE completed = TRUE;</code></pre>
+
+            <h3>Logical Operators (AND / OR)</h3>
+            <pre><code>-- Both conditions must be true
+SELECT * FROM users WHERE age > 21 AND active = TRUE;
+
+-- Either condition can be true
+SELECT * FROM users WHERE role = 'admin' OR role = 'moderator';</code></pre>
+
+            <h3>Complex Grouping</h3>
+            <p>Use parentheses to control operator precedence:</p>
+            <pre><code>SELECT * FROM orders 
+WHERE (status = 'pending' AND total > 100) 
+   OR (status = 'urgent');</code></pre>
+
+            <h3>NULL Checks</h3>
+            <pre><code>-- Find rows with missing values
+SELECT * FROM users WHERE phone_number IS NULL;
+
+-- Find rows with values present
+SELECT * FROM users WHERE email IS NOT NULL;</code></pre>
+        </section>
+
+        <section id="sorting">
+            <h2>Sorting & Pagination</h2>
+
+            <h3>ORDER BY</h3>
+            <p>Sort results by a specific column. Default is <code>ASC</code> (Ascending).</p>
+            <span class="code-label">Example</span>
+            <pre><code>-- Sort by age (Ascending)
+SELECT * FROM users ORDER BY age;
+
+-- Sort by price (Descending)
+SELECT * FROM products ORDER BY price DESC;</code></pre>
+
+            <h3>LIMIT and OFFSET</h3>
+            <p>Essential for implementing pagination in applications.</p>
+            <span class="code-label">Example</span>
+            <pre><code>-- Get the first 10 rows
+SELECT * FROM users LIMIT 10;
+
+-- Get the next 10 rows (Skip 10, take 10)
+SELECT * FROM users LIMIT 10 OFFSET 10;</code></pre>
+        </section>
+
+        <section id="optimization">
+            <h2>Performance Optimization</h2>
+            
+            <div class="info-box">
+                <strong>🚀 O(1) Lookup:</strong> MaazDB automatically detects queries filtering by the <strong>Primary Key</strong> and switches to a direct index lookup instead of a table scan.
+            </div>
+
+            <h3>Optimized Query</h3>
+            <p>This query runs in constant time regardless of table size:</p>
+            <pre><code>SELECT * FROM users WHERE id = 54321;</code></pre>
+
+            <h3>Standard Scan</h3>
+            <p>This query requires scanning rows (O(n)) to find matches:</p>
+            <pre><code>SELECT * FROM users WHERE email = 'john@example.com';</code></pre>
+        </section>
+
+        <section id="aggregates">
+            <h2>Aggregates & Expressions</h2>
+
+            <h3>Counting Rows</h3>
+            <p>Count the total number of rows matching a condition:</p>
+            <pre><code>SELECT COUNT(*) FROM users WHERE active = TRUE;</code></pre>
+
+            <h3>Evaluating Expressions</h3>
+            <p>MaazDB can evaluate mathematical and logical expressions directly:</p>
+            <pre><code>SELECT 10 * 5, 'Hello' + ' World', TRUE AND FALSE;</code></pre>
+        </section>
+
+        <section id="comparison">
+            <h2>DML Comparison</h2>
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <thead>
+                    <tr style="background: rgba(var(--primary-rgb), 0.1);">
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Command</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Purpose</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Complexity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>SELECT (PK)</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Read by ID</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>O(1)</strong></td>
+                    </tr>
+                    <tr style="background: rgba(0,0,0,0.02);">
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>SELECT (Scan)</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Read by Filter</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">O(n)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>INSERT</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Create</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">O(1)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="nav-links">
+            <a href="{{ url_for('main.insert') }}">← INSERT</a>
+            <a href="{{ url_for('main.docs') }}">📖 Documentation</a>
+            <a href="{{ url_for('main.update') }}">UPDATE →</a>
         </div>
-    </div>
+    </main>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Copy to Clipboard
+    const copyButtons = document.querySelectorAll('pre');
+    
+    copyButtons.forEach(pre => {
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.innerHTML = '<i class="far fa-copy"></i> Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(button);
+        
+        button.addEventListener('click', async () => {
+            const code = pre.querySelector('code').innerText;
+            
+            try {
+                await navigator.clipboard.writeText(code);
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy"></i> Copy';
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        });
+    });
+
+    // Syntax Highlighting
+    const keywords = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'NOT', 'IS', 'NULL', 'ORDER', 'BY', 'ASC', 'DESC', 'LIMIT', 'OFFSET', 'COUNT', 'TRUE', 'FALSE'];
+    const codeBlocks = document.querySelectorAll('pre code');
+    
+    codeBlocks.forEach(block => {
+        let html = block.innerHTML;
+        
+        // Highlight Keywords
+        const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
+        html = html.replace(keywordRegex, '<span class="sql-keyword">$1</span>');
+        
+
+        block.innerHTML = html;
+    });
+
+    // Scroll Spy
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
+    const sections = document.querySelectorAll('section[id]');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset + 100;
+        
+        sections.forEach(section => {
+            if (scrollY >= section.offsetTop && scrollY < section.offsetTop + section.clientHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

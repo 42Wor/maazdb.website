@@ -1,467 +1,453 @@
-<!-- filepath: c:\Users\maaz\Desktop\maazdb.website\app\templates\command\insert.html -->
+<!--
+FILE: c:\Users\maaz\Desktop\maazdb.website\app\templates\command\insert.html
+
+PURPOSE:
+Template page for INSERT command documentation in MaazDB.
+-->
 {% extends "base.html" %}
-{% block title %}Insert Command - Documentation{% endblock %}
+
+{% block head %}
+<style>
+.docs-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.docs-sidebar {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.docs-sidebar h3 {
+    color: var(--primary-color);
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.docs-sidebar h3:first-child {
+    margin-top: 0;
+}
+
+.docs-sidebar a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.docs-sidebar a:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+.docs-sidebar a.active {
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.15);
+    font-weight: 500;
+    border-left: 3px solid var(--primary-color);
+}
+
+.docs-content {
+    max-width: 900px;
+}
+
+.docs-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content h2 {
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--heading-color);
+}
+
+.docs-content h3 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem;
+    color: var(--heading-color);
+}
+
+.docs-content p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.code-label {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px 4px 0 0;
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+}
+
+.docs-content pre {
+    position: relative;
+    background: #1a1b26;
+    color: #c0caf5;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 8px;
+    overflow-x: auto;
+    margin: 0 0 2rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 1px solid #24283b;
+}
+
+.docs-content code {
+    font-family: 'Courier New', monospace;
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--primary-color);
+}
+
+.sql-keyword {
+    color: #7dcfff;
+    font-weight: bold;
+}
+
+.sql-string {
+    color: #9ece6a;
+}
+
+.sql-number {
+    color: #ff9e64;
+}
+
+.warning-box {
+    background: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.info-box {
+    background: rgba(33, 150, 243, 0.1);
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #c0caf5;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.nav-links a {
+    flex: 1;
+    padding: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+    .docs-layout {
+        grid-template-columns: 1fr;
+    }
+    .docs-sidebar {
+        position: static;
+        height: auto;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .docs-layout {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .docs-content h1 {
+        font-size: 2rem;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
+<div class="docs-layout">
+    <aside class="docs-sidebar">
+        <h3>INSERT Guide</h3>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="#basic-examples">Basic Examples</a></li>
+            <li><a href="#data-types">Data Types</a></li>
+            <li><a href="#serial-columns">SERIAL Columns</a></li>
+            <li><a href="#foreign-keys">Foreign Keys</a></li>
+            <li><a href="#pitfalls">Common Pitfalls</a></li>
+            <li><a href="#comparison">DML Comparison</a></li>
+        </ul>
 
-    
+        <h3>Related Commands</h3>
+        <ul>
+            <li><a href="{{ url_for('main.select') }}">SELECT</a></li>
+            <li><a href="{{ url_for('main.update') }}">UPDATE</a></li>
+            <li><a href="{{ url_for('main.delete') }}">DELETE</a></li>
+        </ul>
+    </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="command-content">
+    <main class="docs-content">
+        <h1>INSERT Command</h1>
+        <p><strong>Data Manipulation Language (DML)</strong> — Add new rows of data into a table.</p>
 
-        <!-- HEADER -->
         <section id="overview">
-            <h1><i class="fas fa-plus-circle" style="color: var(--accent);"></i> INSERT Command</h1>
-            <p><strong>Version:</strong> MaazDB 11.9.0+</p>
-            <p>The <code>INSERT</code> command adds new rows of data to an existing table. It supports single and batch inserts with full data type validation and constraint checking.</p>
+            <h2>Overview</h2>
+            <p>The <code>INSERT</code> statement is used to add new records to a database table. You must specify the target table, the columns you wish to populate, and the corresponding values for those columns.</p>
+            <div class="info-box">
+                <strong>ℹ️ Note:</strong> The order of values in the <code>VALUES</code> clause must exactly match the order of columns specified in the column list.
+            </div>
         </section>
 
-        <!-- SYNTAX -->
         <section id="syntax">
             <h2>Syntax</h2>
-            
-            <h3>Basic Syntax</h3>
-            <span class="code-label">General Form</span>
-            <pre><code><span class="sql-keyword">INSERT INTO</span> &lt;table_name&gt; (&lt;col1&gt;, &lt;col2&gt;, ...) <span class="sql-keyword">VALUES</span> (&lt;val1&gt;, &lt;val2&gt;, ...);</code></pre>
-
-            <h3>Syntax Rules</h3>
-            <ul>
-                <li><code>table_name</code> must exist in the current database</li>
-                <li>Column names must be valid identifiers</li>
-                <li>Values must match the column data types</li>
-                <li><strong>SERIAL columns must be omitted</strong> from the column list (auto-generated)</li>
-                <li>Column order in the INSERT statement does not need to match table definition</li>
-                <li>All NOT NULL columns must be specified or have default values</li>
-            </ul>
-
-            <div class="highlight-box">
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>Important:</strong> Do NOT include SERIAL PRIMARY KEY columns in your INSERT statement. They are automatically generated by MaazDB.
-            </div>
+            <span class="code-label">Basic Syntax</span>
+            <pre><code>INSERT INTO &lt;table_name&gt; (column1, column2, ...) 
+VALUES (value1, value2, ...);</code></pre>
         </section>
 
-        <!-- PARAMETERS -->
-        <section id="parameters">
-            <h2>Parameters</h2>
+        <section id="basic-examples">
+            <h2>Basic Examples</h2>
 
-            <table class="info-table">
+            <h3>Simple Insert</h3>
+            <p>Adding a user with a name and age:</p>
+            <span class="code-label">Example</span>
+            <pre><code>INSERT INTO users (username, age) VALUES ('Alice', 30);</code></pre>
+
+            <h3>Insert with All Supported Types</h3>
+            <p>Inserting a product with text, double, boolean, and timestamp data:</p>
+            <span class="code-label">Example</span>
+            <pre><code>INSERT INTO products (name, price, is_active, created_at) 
+VALUES ('Gaming Mouse', 59.99, TRUE, '2024-01-15 14:30:00');</code></pre>
+        </section>
+
+        <section id="data-types">
+            <h2>Handling Data Types</h2>
+            <p>MaazDB supports specific formatting for different data types during insertion.</p>
+
+            <h3>Strings (TEXT)</h3>
+            <p>Enclose strings in single (<code>'</code>) or double (<code>"</code>) quotes.</p>
+            <pre><code>INSERT INTO logs (message) VALUES ('System started successfully');</code></pre>
+
+            <h3>Numbers (INT, DOUBLE)</h3>
+            <p>Enter numbers directly without quotes.</p>
+            <pre><code>INSERT INTO measurements (temperature, pressure) VALUES (23.5, 1013);</code></pre>
+
+            <h3>Booleans (BOOL)</h3>
+            <p>Use <code>TRUE</code> or <code>FALSE</code> (case-insensitive).</p>
+            <pre><code>INSERT INTO tasks (completed) VALUES (FALSE);</code></pre>
+
+            <h3>Timestamps (TIMESTAMP)</h3>
+            <p>Must follow the exact format <code>'YYYY-MM-DD HH:MM:SS'</code> enclosed in quotes.</p>
+            <pre><code>INSERT INTO events (event_time) VALUES ('2023-12-31 23:59:59');</code></pre>
+
+            <h3>UUIDs</h3>
+            <p>Treat UUIDs as string literals.</p>
+            <pre><code>INSERT INTO sessions (session_id) VALUES ('550e8400-e29b-41d4-a716-446655440000');</code></pre>
+        </section>
+
+        <section id="serial-columns">
+            <h2>Handling SERIAL Columns</h2>
+            <p>If a table has a primary key defined as <code>SERIAL</code> (auto-incrementing integer), you <strong>must not</strong> include it in the <code>INSERT</code> statement.</p>
+            
+            <div class="warning-box">
+                <strong>⚠️ Important:</strong> Do not attempt to manually insert a value into a SERIAL column. The database handles this automatically.
+            </div>
+
+            <p><strong>Correct Usage:</strong></p>
+            <pre><code>-- Table 'users' has columns: id (SERIAL), name (TEXT)
+INSERT INTO users (name) VALUES ('Bob'); 
+-- 'id' will be automatically generated (e.g., 1, 2, 3...)</code></pre>
+
+            <p><strong>Incorrect Usage:</strong></p>
+            <pre><code>-- This will likely cause an error or unexpected behavior
+INSERT INTO users (id, name) VALUES (5, 'Bob');</code></pre>
+        </section>
+
+        <section id="foreign-keys">
+            <h2>Foreign Key Constraints</h2>
+            <p>When inserting into a column that is a <code>FOREIGN KEY</code>, the value must already exist in the referenced parent table.</p>
+
+            <span class="code-label">Example Scenario</span>
+            <pre><code>-- 1. Parent Table: users (id=1 exists)
+-- 2. Child Table: orders (user_id references users.id)
+
+-- ✅ SUCCESS: User 1 exists
+INSERT INTO orders (user_id, amount) VALUES (1, 99.99);
+
+-- ❌ FAILURE: User 999 does not exist
+INSERT INTO orders (user_id, amount) VALUES (999, 50.00);
+-- Error: Foreign key constraint violation</code></pre>
+        </section>
+
+        <section id="pitfalls">
+            <h2>Common Pitfalls</h2>
+
+            <h3>❌ Column Count Mismatch</h3>
+            <p>The number of columns must match the number of values.</p>
+            <span class="code-label">Error</span>
+            <pre><code>INSERT INTO users (name, age) VALUES ('Alice'); 
+-- Error: Expected 2 values, got 1</code></pre>
+
+            <h3>❌ Type Mismatch</h3>
+            <p>Trying to insert text into a numeric field.</p>
+            <span class="code-label">Error</span>
+            <pre><code>INSERT INTO users (age) VALUES ('twenty'); 
+-- Error: Cannot parse 'twenty' as INT</code></pre>
+
+            <h3>❌ Invalid Timestamp Format</h3>
+            <p>Timestamps must be precise.</p>
+            <span class="code-label">Error</span>
+            <pre><code>INSERT INTO events (time) VALUES ('2024/01/01'); 
+-- Error: Invalid timestamp format. Use 'YYYY-MM-DD HH:MM:SS'</code></pre>
+        </section>
+
+        <section id="comparison">
+            <h2>DML Comparison</h2>
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
                 <thead>
-                    <tr>
-                        <th>Parameter</th>
-                        <th>Type</th>
-                        <th>Description</th>
+                    <tr style="background: rgba(var(--primary-rgb), 0.1);">
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Command</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Purpose</th>
+                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Effect</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>table_name</code></td>
-                        <td>Identifier</td>
-                        <td>The name of the table where data will be inserted</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>INSERT</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Create</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Adds new rows to the table.</td>
+                    </tr>
+                    <tr style="background: rgba(0,0,0,0.02);">
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>UPDATE</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Modify</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Changes values in existing rows.</td>
                     </tr>
                     <tr>
-                        <td><code>col1, col2, ...</code></td>
-                        <td>Identifiers</td>
-                        <td>List of column names to populate (excluding SERIAL columns)</td>
-                    </tr>
-                    <tr>
-                        <td><code>val1, val2, ...</code></td>
-                        <td>Literals / Expressions</td>
-                        <td>Corresponding values matching the column types</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Supported Data Types</h3>
-            <table class="info-table">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Example Value</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>SERIAL</code></td>
-                        <td>(auto)</td>
-                        <td><strong>Omit from INSERT</strong> - automatically generated</td>
-                    </tr>
-                    <tr>
-                        <td><code>INT</code></td>
-                        <td><span class="sql-number">42</span></td>
-                        <td>32-bit signed integer</td>
-                    </tr>
-                    <tr>
-                        <td><code>DOUBLE</code></td>
-                        <td><span class="sql-number">3.14</span></td>
-                        <td>64-bit floating point</td>
-                    </tr>
-                    <tr>
-                        <td><code>TEXT</code></td>
-                        <td><span class="sql-string">'Hello'</span></td>
-                        <td>UTF-8 string, single or double quotes</td>
-                    </tr>
-                    <tr>
-                        <td><code>BOOL</code></td>
-                        <td><span class="sql-keyword">TRUE</span> / <span class="sql-keyword">FALSE</span></td>
-                        <td>Boolean value</td>
-                    </tr>
-                    <tr>
-                        <td><code>TIMESTAMP</code></td>
-                        <td><span class="sql-string">'2024-01-15 09:30:00'</span></td>
-                        <td>Format: YYYY-MM-DD HH:MM:SS</td>
-                    </tr>
-                    <tr>
-                        <td><code>UUID</code></td>
-                        <td><span class="sql-string">'550e8400-e29b-41d4-a716-446655440000'</span></td>
-                        <td>Standard UUID format</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>DELETE</strong></td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Remove</td>
+                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Removes rows from the table.</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
-        <!-- BEHAVIOR -->
-        <section id="behavior">
-            <h2>Behavior & Validation</h2>
-
-            <h3>Row Creation</h3>
-            <ol>
-                <li>MaazDB validates all provided values against their column types</li>
-                <li>SERIAL columns are automatically assigned unique incrementing values</li>
-                <li>NOT NULL constraints are enforced</li>
-                <li>Foreign key constraints are validated (if defined)</li>
-                <li>Row is written to the database with transaction logging</li>
-            </ol>
-
-            <h3>Return Value</h3>
-            <p>On successful INSERT, the server returns a <strong>Response Message (0x02)</strong> packet with:</p>
-            <span class="code-label">Response Format</span>
-            <pre><code>Rows affected: 1</code></pre>
-
-            <h3>Error Handling</h3>
-            <p>If validation fails, an <strong>Error (0xFF)</strong> packet is returned with details:</p>
-            <ul>
-                <li><strong>Type Mismatch:</strong> Value doesn't match column type</li>
-                <li><strong>NOT NULL Violation:</strong> Required column is missing</li>
-                <li><strong>Foreign Key Violation:</strong> Referenced row doesn't exist</li>
-                <li><strong>Column Not Found:</strong> Invalid column name</li>
-                <li><strong>Table Not Found:</strong> Table doesn't exist</li>
-            </ul>
-        </section>
-
-        <!-- EXAMPLES -->
-        <section id="basic">
-            <h2>Examples</h2>
-
-            <h3>Basic Insert - Single Row</h3>
-            <p>Insert a single employee record into the <code>employees</code> table:</p>
-            
-            <span class="code-label">SQL</span>
-            <pre><code><span class="sql-keyword">INSERT INTO</span> employees (name, role, salary, is_active, joined_at) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice Johnson'</span>, <span class="sql-string">'Senior Engineer'</span>, <span class="sql-number">95000.00</span>, <span class="sql-keyword">TRUE</span>, <span class="sql-string">'2023-01-15 09:00:00'</span>);</code></pre>
-
-            <div class="note-box">
-                <i class="fas fa-info-circle"></i>
-                <strong>Note:</strong> The <code>id</code> column (SERIAL PRIMARY KEY) is automatically generated and omitted from the INSERT statement.
-            </div>
-        </section>
-
-        <section id="multiple">
-            <h3>Multiple Row Insert</h3>
-            <p>Insert multiple employees in separate statements:</p>
-
-            <span class="code-label">SQL</span>
-            <pre><code><span class="sql-keyword">INSERT INTO</span> employees (name, role, salary, is_active, joined_at) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Bob Smith'</span>, <span class="sql-string">'Manager'</span>, <span class="sql-number">85000.50</span>, <span class="sql-keyword">TRUE</span>, <span class="sql-string">'2022-05-20 10:30:00'</span>);
-
-<span class="sql-keyword">INSERT INTO</span> employees (name, role, salary, is_active, joined_at) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Carol White'</span>, <span class="sql-string">'Developer'</span>, <span class="sql-number">75000.00</span>, <span class="sql-keyword">TRUE</span>, <span class="sql-string">'2023-06-10 08:15:00'</span>);
-
-<span class="sql-keyword">INSERT INTO</span> employees (name, role, salary, is_active, joined_at) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Dave Brown'</span>, <span class="sql-string">'Intern'</span>, <span class="sql-number">30000.00</span>, <span class="sql-keyword">FALSE</span>, <span class="sql-string">'2024-01-10 08:00:00'</span>);</code></pre>
-
-            <p><strong>Result:</strong> Three rows are inserted, each receiving unique auto-generated IDs (1, 2, 3).</p>
-        </section>
-
-        <section id="datatypes">
-            <h3>All Data Types Example</h3>
-            <p>Demonstrate inserting values for all supported MaazDB data types:</p>
-
-            <span class="code-label">Table Definition</span>
-            <pre><code><span class="sql-keyword">CREATE TABLE</span> sample_data (
-    id <span class="sql-keyword">SERIAL PRIMARY KEY</span>,
-    int_col <span class="sql-keyword">INT</span>,
-    double_col <span class="sql-keyword">DOUBLE</span>,
-    text_col <span class="sql-keyword">TEXT</span>,
-    bool_col <span class="sql-keyword">BOOL</span>,
-    timestamp_col <span class="sql-keyword">TIMESTAMP</span>,
-    uuid_col <span class="sql-keyword">UUID</span>
-);</code></pre>
-
-            <span class="code-label">Insert Statement</span>
-            <pre><code><span class="sql-keyword">INSERT INTO</span> sample_data (int_col, double_col, text_col, bool_col, timestamp_col, uuid_col)
-<span class="sql-keyword">VALUES</span> (
-    <span class="sql-number">42</span>,
-    <span class="sql-number">3.14159</span>,
-    <span class="sql-string">'Hello MaazDB'</span>,
-    <span class="sql-keyword">TRUE</span>,
-    <span class="sql-string">'2024-01-15 14:30:00'</span>,
-    <span class="sql-string">'550e8400-e29b-41d4-a716-446655440000'</span>
-);</code></pre>
-
-            <p><strong>Result:</strong> Row 1 created with all data types properly stored.</p>
-        </section>
-
-        <section id="defaults">
-            <h3>SERIAL Auto-Generation</h3>
-            <p>Demonstrate how SERIAL columns are automatically generated:</p>
-
-            <span class="code-label">Table Definition</span>
-            <pre><code><span class="sql-keyword">CREATE TABLE</span> users (
-    user_id <span class="sql-keyword">SERIAL PRIMARY KEY</span>,
-    username <span class="sql-keyword">TEXT</span>,
-    email <span class="sql-keyword">TEXT</span>
-);</code></pre>
-
-            <span class="code-label">Insert Statements</span>
-            <pre><code><span class="sql-keyword">-- Note: user_id is OMITTED from INSERT</span>
-<span class="sql-keyword">INSERT INTO</span> users (username, email) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'alice'</span>, <span class="sql-string">'alice@example.com'</span>);
-<span class="sql-keyword">INSERT INTO</span> users (username, email) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'bob'</span>, <span class="sql-string">'bob@example.com'</span>);
-<span class="sql-keyword">INSERT INTO</span> users (username, email) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'carol'</span>, <span class="sql-string">'carol@example.com'</span>);</code></pre>
-
-            <span class="code-label">Resulting Table</span>
-            <pre><code>user_id | username | email
---------|----------|-------------------
-   1    | alice    | alice@example.com
-   2    | bob      | bob@example.com
-   3    | carol    | carol@example.com</code></pre>
-
-            <p>Auto-generated IDs are sequential and guaranteed to be unique.</p>
-        </section>
-
-        <!-- CONSTRAINTS -->
-        <section id="constraints">
-            <h2>Constraints & Validation</h2>
-
-            <h3>Foreign Key Constraints</h3>
-            <p>When a table has foreign key relationships, INSERT validates that referenced rows exist:</p>
-
-            <span class="code-label">Table Definitions</span>
-            <pre><code><span class="sql-keyword">CREATE TABLE</span> departments (
-    dept_id <span class="sql-keyword">SERIAL PRIMARY KEY</span>,
-    dept_name <span class="sql-keyword">TEXT</span>
-);
-
-<span class="sql-keyword">CREATE TABLE</span> employees (
-    emp_id <span class="sql-keyword">SERIAL PRIMARY KEY</span>,
-    name <span class="sql-keyword">TEXT</span>,
-    dept_id <span class="sql-keyword">INT</span>,
-    <span class="sql-keyword">FOREIGN KEY</span> (dept_id) <span class="sql-keyword">REFERENCES</span> departments(dept_id)
-);</code></pre>
-
-            <span class="code-label">Valid Insert</span>
-            <pre><code><span class="sql-keyword">-- First create department</span>
-<span class="sql-keyword">INSERT INTO</span> departments (dept_name) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'Engineering'</span>);
-
-<span class="sql-keyword">-- Then insert employee referencing that department</span>
-<span class="sql-keyword">INSERT INTO</span> employees (name, dept_id) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>, <span class="sql-number">1</span>);</code></pre>
-
-            <span class="code-label">Invalid Insert (Error)</span>
-            <pre><code><span class="sql-keyword">-- This will fail - department 999 doesn't exist</span>
-<span class="sql-keyword">INSERT INTO</span> employees (name, dept_id) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'Bob'</span>, <span class="sql-number">999</span>);</code></pre>
-
-            <div class="highlight-box">
-                <i class="fas fa-times-circle"></i>
-                <strong>Error Response:</strong> Foreign key constraint violation - referenced row in 'departments' table not found.
-            </div>
-        </section>
-
-        <section id="errors">
-            <h2>Common Errors</h2>
-
-            <div class="example-section">
-                <h4><i class="fas fa-exclamation-circle" style="color: var(--accent);"></i> Error 1: SERIAL Column in INSERT</h4>
-                <p><strong>Problem:</strong> Attempting to insert into a SERIAL column</p>
-                <span class="code-label">Incorrect</span>
-                <pre><code><span class="sql-keyword">-- ❌ WRONG - Don't include SERIAL column</span>
-<span class="sql-keyword">INSERT INTO</span> employees (id, name, salary) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-number">1</span>, <span class="sql-string">'Alice'</span>, <span class="sql-number">50000.00</span>);</code></pre>
-                
-                <span class="code-label">Correct</span>
-                <pre><code><span class="sql-keyword">-- ✅ CORRECT - Omit the SERIAL column</span>
-<span class="sql-keyword">INSERT INTO</span> employees (name, salary) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>, <span class="sql-number">50000.00</span>);</code></pre>
-            </div>
-
-            <div class="example-section">
-                <h4><i class="fas fa-exclamation-circle" style="color: var(--accent);"></i> Error 2: Type Mismatch</h4>
-                <p><strong>Problem:</strong> Value type doesn't match column type</p>
-                <span class="code-label">Incorrect</span>
-                <pre><code><span class="sql-keyword">-- ❌ WRONG - 'abc' is not a valid INT</span>
-<span class="sql-keyword">INSERT INTO</span> employees (name, age) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>, <span class="sql-string">'abc'</span>);</code></pre>
-                
-                <span class="code-label">Correct</span>
-                <pre><code><span class="sql-keyword">-- ✅ CORRECT - age is a proper INT</span>
-<span class="sql-keyword">INSERT INTO</span> employees (name, age) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>, <span class="sql-number">30</span>);</code></pre>
-            </div>
-
-            <div class="example-section">
-                <h4><i class="fas fa-exclamation-circle" style="color: var(--accent);"></i> Error 3: NULL in NOT NULL Column</h4>
-                <p><strong>Problem:</strong> Omitting a required column value</p>
-                <span class="code-label">Incorrect</span>
-                <pre><code><span class="sql-keyword">-- ❌ WRONG - name is NOT NULL but missing</span>
-<span class="sql-keyword">INSERT INTO</span> employees (age, salary) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-number">30</span>, <span class="sql-number">50000.00</span>);</code></pre>
-                
-                <span class="code-label">Correct</span>
-                <pre><code><span class="sql-keyword">-- ✅ CORRECT - provide all NOT NULL columns</span>
-<span class="sql-keyword">INSERT INTO</span> employees (name, age, salary) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>, <span class="sql-number">30</span>, <span class="sql-number">50000.00</span>);</code></pre>
-            </div>
-
-            <div class="example-section">
-                <h4><i class="fas fa-exclamation-circle" style="color: var(--accent);"></i> Error 4: Invalid Table Name</h4>
-                <p><strong>Problem:</strong> Table doesn't exist or is in different database</p>
-                <span class="code-label">Incorrect</span>
-                <pre><code><span class="sql-keyword">-- ❌ WRONG - table doesn't exist in current DB</span>
-<span class="sql-keyword">INSERT INTO</span> employees (name) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>);</code></pre>
-                
-                <span class="code-label">Solution</span>
-                <pre><code><span class="sql-keyword">-- ✅ First verify table exists</span>
-<span class="sql-keyword">SHOW TABLES</span>;
-<span class="sql-keyword">DESCRIBE</span> employees;
-
-<span class="sql-keyword">-- ✅ Or switch to correct database</span>
-<span class="sql-keyword">USE</span> my_database;
-<span class="sql-keyword">INSERT INTO</span> employees (name) <span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>);</code></pre>
-            </div>
-        </section>
-
-        <!-- BEST PRACTICES -->
-        <section id="best-practices">
-            <h2>Best Practices</h2>
-
-            <h3>1. Always Omit SERIAL Columns</h3>
-            <p>Never attempt to manually insert values into SERIAL PRIMARY KEY columns. Let MaazDB handle auto-generation:</p>
-            <div class="note-box">
-                <i class="fas fa-check-circle"></i>
-                <strong>Best Practice:</strong> Exclude SERIAL columns from all INSERT statements.
-            </div>
-
-            <h3>2. Use Explicit Column Lists</h3>
-            <p>Always specify column names rather than relying on order:</p>
-            <span class="code-label">Good</span>
-            <pre><code><span class="sql-keyword">INSERT INTO</span> employees (name, salary, is_active) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'Alice'</span>, <span class="sql-number">50000.00</span>, <span class="sql-keyword">TRUE</span>);</code></pre>
-
-            <h3>3. Validate Data Before Insert</h3>
-            <ul>
-                <li>Ensure all values match expected types</li>
-                <li>Check that foreign key references exist</li>
-                <li>Verify required columns are provided</li>
-                <li>Validate string lengths and formats</li>
-            </ul>
-
-            <h3>4. Use Proper Date/Time Format</h3>
-            <p>Always use the TIMESTAMP format: <code>YYYY-MM-DD HH:MM:SS</code></p>
-            <span class="code-label">Correct</span>
-            <pre><code><span class="sql-keyword">INSERT INTO</span> events (event_time) 
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'2024-01-15 14:30:00'</span>);</code></pre>
-
-            <h3>5. Handle Constraints Gracefully</h3>
-            <p>When implementing applications, handle potential constraint violations:</p>
-            <ul>
-                <li>Check foreign key references before INSERT</li>
-                <li>Validate unique constraints if applicable</li>
-                <li>Implement retry logic for transient errors</li>
-                <li>Log all INSERT failures for debugging</li>
-            </ul>
-
-            <h3>6. Batch Processing Strategy</h3>
-            <p>For multiple inserts, consider:</p>
-            <ul>
-                <li><strong>Transaction Safety:</strong> Execute related inserts in logical groups</li>
-                <li><strong>Error Handling:</strong> Catch and log failures individually</li>
-                <li><strong>Performance:</strong> Send multiple statements in one connection</li>
-            </ul>
-        </section>
-
-        <!-- RELATED OPERATIONS -->
-        <section style="margin-top: 4rem;">
-            <h2>Related Operations</h2>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                <div class="example-section">
-                    <h4>After INSERT: Query Data</h4>
-                    <p>Verify inserted data with SELECT:</p>
-                    <pre><code><span class="sql-keyword">SELECT</span> * <span class="sql-keyword">FROM</span> employees <span class="sql-keyword">WHERE</span> id = <span class="sql-number">1</span>;</code></pre>
-                </div>
-                
-                <div class="example-section">
-                    <h4>Modify Data: UPDATE</h4>
-                    <p>Update inserted rows:</p>
-                    <pre><code><span class="sql-keyword">UPDATE</span> employees <span class="sql-keyword">SET</span> salary = <span class="sql-number">60000</span> 
-<span class="sql-keyword">WHERE</span> name = <span class="sql-string">'Alice'</span>;</code></pre>
-                </div>
-
-                <div class="example-section">
-                    <h4>Remove Data: DELETE</h4>
-                    <p>Delete specific rows:</p>
-                    <pre><code><span class="sql-keyword">DELETE FROM</span> employees 
-<span class="sql-keyword">WHERE</span> id = <span class="sql-number">1</span>;</code></pre>
-                </div>
-
-                <div class="example-section">
-                    <h4>Backup Inserted Data</h4>
-                    <p>Create snapshot after changes:</p>
-                    <pre><code><span class="sql-keyword">BACKUP</span> <span class="sql-string">'employees_backup'</span>;</code></pre>
-                </div>
-            </div>
-        </section>
-
+        <div class="nav-links">
+            <a href="{{ url_for('main.create_table') }}">← CREATE TABLE</a>
+            <a href="{{ url_for('main.docs') }}">📖 Documentation</a>
+            <a href="{{ url_for('main.select') }}">SELECT →</a>
+        </div>
     </main>
-
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Syntax highlighting for code blocks
+    // Copy to Clipboard
+    const copyButtons = document.querySelectorAll('pre');
+    
+    copyButtons.forEach(pre => {
+        const button = document.createElement('button');
+        button.className = 'copy-btn';
+        button.innerHTML = '<i class="far fa-copy"></i> Copy';
+        pre.style.position = 'relative';
+        pre.appendChild(button);
+        
+        button.addEventListener('click', async () => {
+            const code = pre.querySelector('code').innerText;
+            
+            try {
+                await navigator.clipboard.writeText(code);
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy"></i> Copy';
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        });
+    });
+
+    // Syntax Highlighting
+    const keywords = ['INSERT', 'INTO', 'VALUES', 'TRUE', 'FALSE', 'NULL', 'SERIAL', 'INT', 'TEXT', 'DOUBLE', 'BOOL', 'TIMESTAMP'];
     const codeBlocks = document.querySelectorAll('pre code');
-    
-    const keywords = [
-        'INSERT', 'INTO', 'VALUES', 'SELECT', 'UPDATE', 'DELETE', 'WHERE', 'AND', 'OR',
-        'CREATE', 'TABLE', 'SERIAL', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES',
-        'INT', 'DOUBLE', 'TEXT', 'BOOL', 'TIMESTAMP', 'UUID',
-        'TRUE', 'FALSE', 'NULL', 'FROM', 'SET', 'BY', 'LIMIT', 'OFFSET',
-        'BACKUP', 'RESTORE', 'SHOW', 'DESCRIBE', 'USE', 'AS'
-    ];
-    
     codeBlocks.forEach(block => {
         let html = block.innerHTML;
-        
-        // Highlight keywords
         const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
-        html = html.replace(keywordRegex, (match) => {
-            return `<span class="sql-keyword">${match}</span>`;
-        });
-        
+        html = html.replace(keywordRegex, '<span class="sql-keyword">$1</span>');
         block.innerHTML = html;
     });
 
-    // Sidebar active link tracking
-    const sidebarLinks = document.querySelectorAll('.command-sidebar a');
-    const sections = document.querySelectorAll('main section[id]');
+  
+
+    // Scroll Spy
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
+    const sections = document.querySelectorAll('section[id]');
     
     window.addEventListener('scroll', () => {
         let current = '';
         const scrollY = window.pageYOffset + 100;
         
         sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            if (scrollY >= sectionTop) {
+            if (scrollY >= section.offsetTop && scrollY < section.offsetTop + section.clientHeight) {
                 current = section.getAttribute('id');
             }
         });

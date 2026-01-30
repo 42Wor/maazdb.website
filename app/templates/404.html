@@ -1,0 +1,148 @@
+<!--
+FILE: app/templates/404.html
+PURPOSE: Custom 404 Error page with a database/terminal theme.
+-->
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    .error-container {
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .error-code {
+        font-size: 8rem;
+        font-weight: 900;
+        line-height: 1;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #ff6b6b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        text-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.2);
+    }
+
+    .error-title {
+        font-size: 2rem;
+        color: var(--heading-color);
+        margin-bottom: 2rem;
+    }
+
+    .terminal-window {
+        background: #1a1b26;
+        border: 1px solid #24283b;
+        border-radius: 8px;
+        padding: 1.5rem;
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 2.5rem;
+        text-align: left;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        font-family: 'Courier New', monospace;
+    }
+
+    .terminal-header {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #24283b;
+        padding-bottom: 0.5rem;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+
+    .code-line {
+        color: #a9b1d6;
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+
+    .prompt { color: #7aa2f7; }
+    .cmd { color: #e0af68; }
+    .string { color: #9ece6a; }
+    .error-msg { color: #f7768e; }
+    
+    .cursor {
+        display: inline-block;
+        width: 8px;
+        height: 15px;
+        background: #a9b1d6;
+        animation: blink 1s infinite;
+        vertical-align: middle;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    .btn-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--primary-color);
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-code">404</div>
+    <h1 class="error-title">Query Returned 0 Rows</h1>
+
+    <div class="terminal-window">
+        <div class="terminal-header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+        <div class="code-content">
+            <div class="code-line">
+                <span class="prompt">maazdb></span> 
+                <span class="cmd">SELECT</span> * <span class="cmd">FROM</span> pages <span class="cmd">WHERE</span> url = <span class="string">'{{ request.path }}'</span>;
+            </div>
+            <div class="code-line">
+                <span class="prompt">System:</span> Processing query...
+            </div>
+            <div class="code-line">
+                <span class="error-msg">Error 404: Resource not found in schema.</span>
+            </div>
+            <div class="code-line">
+                <span class="prompt">maazdb></span> <span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">
+        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+    </p>
+
+    <a href="{{ url_for('main.index') }}" class="btn-home">
+        <i class="fas fa-home"></i> Return to Dashboard
+    </a>
+</div>
+{% endblock %}

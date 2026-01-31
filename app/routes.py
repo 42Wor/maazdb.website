@@ -35,6 +35,14 @@ def select():
 def create_table():
     # This forces a 404 error when the user clicks the link
     abort(404)
+
+
+
+@bp.route('/install')
+def install():
+    # Pass the version variable so it updates automatically in the text
+    return render_template('install.html', version=current_app.config['LATEST_VERSION'])
+
 #404
 @bp.app_errorhandler(404)
 def page_not_found(e):

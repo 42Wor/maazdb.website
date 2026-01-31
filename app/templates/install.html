@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Wrapper for Sidebar + Content -->
+<div class="docs-layout">
+    
+    <!-- SIDEBAR (Fixed Left) -->
+    <aside class="docs-sidebar">
+        <h3>Installation</h3>
+        <ul>
+            <li><a href="#windows"><i class="fab fa-windows"></i> Windows</a></li>
+            <li><a href="#linux"><i class="fab fa-linux"></i> Linux</a></li>
+            <li><a href="#macos"><i class="fab fa-apple"></i> macOS</a></li>
+            <li><a href="#files"><i class="fas fa-folder-open"></i> File Locations</a></li>
+        </ul>
+        
+        <h3>Resources</h3>
+        <ul>
+            <li><a href="{{ url_for('main.docs') }}"><i class="fas fa-book"></i> Documentation</a></li>
+            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT (Pushed Right) -->
+    <main class="docs-content">
+        <h1>Installation Guide</h1>
+        <p class="lead">Step-by-step instructions to get MaazDB v{{ version }} running on your machine.</p>
+        <hr style="border-color: var(--border); margin: 20px 0;">
+
+        <!-- WINDOWS SECTION -->
+        <section id="windows" class="install-section">
+            <h2><i class="fab fa-windows"></i> Windows Installation</h2>
+            
+            <div class="step">
+                <h3>1. Run the Installer</h3>
+                <p>Download <strong>MaazDB_Setup_Windows_x64_{{ version|replace('.','') }}.exe</strong> and run it. Follow the on-screen prompts.</p>
+            </div>
+
+            <div class="step">
+                <h3>2. Start the Server</h3>
+                <p>The server is designed to start automatically. If it doesn't:</p>
+                <div class="note">
+                    <strong>Manual Start:</strong>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Open Start Menu and search <strong>"MaazDB Server"</strong>.</li>
+                        <li>Right-click and select <strong>Run as Administrator</strong>.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>3. Connect via CLI</h3>
+                <p>Search for <strong>"MaazDB CLI"</strong> in the Start Menu and press Enter.</p>
+            </div>
+        </section>
+
+        <!-- LINUX SECTION -->
+        <section id="linux" class="install-section">
+            <h2><i class="fab fa-linux"></i> Linux Installation</h2>
+            <p class="sub-text">Debian / Ubuntu / Kali / WSL</p>
+            
+            <div class="step">
+                <h3>1. Install the Package</h3>
+                <pre><code>sudo dpkg -i maazdb_{{ version }}_linux_amd64.deb</code></pre>
+                <div class="info-box"><i class="fas fa-info-circle"></i> If you see dependency errors, run <code>sudo apt-get install -f</code></div>
+            </div>
+
+            <div class="step">
+                <h3>2. Verify & Connect</h3>
+                <pre><code>systemctl status maazdb
+maazdb-cli</code></pre>
+            </div>
+        </section>
+
+        <!-- MACOS SECTION -->
+        <section id="macos" class="install-section">
+            <h2><i class="fab fa-apple"></i> macOS Installation</h2>
+            
+            <div class="step">
+                <h3>1. Run the Installer</h3>
+                <p>Download <strong>MaazDB_{{ version }}_macOS.dmg</strong>, mount it, and run the installer app.</p>
+            </div>
+
+            <div class="step warning-box">
+                <h3><i class="fas fa-shield-alt"></i> Security Warning</h3>
+                <p>If macOS blocks the app: Right-click the icon > Select <strong>Open</strong> > Click <strong>Open</strong> in the dialog.</p>
+            </div>
+
+            <div class="step">
+                <h3>2. Connect</h3>
+                <pre><code>maazdb-cli</code></pre>
+            </div>
+        </section>
+
+        <!-- FILE LOCATIONS -->
+        <section id="files" class="install-section">
+            <h2><i class="fas fa-folder-open"></i> File Locations</h2>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>File Type</th>
+                        <th>Linux Path</th>
+                        <th>macOS Path</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Executable</strong></td>
+                        <td><code>/usr/local/bin/maazdb-server</code></td>
+                        <td><code>/usr/local/bin/maazdb-server</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>CLI Tool</strong></td>
+                        <td><code>/usr/local/bin/maazdb-cli</code></td>
+                        <td><code>/usr/local/bin/maazdb-cli</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Config</strong></td>
+                        <td><code>/etc/maazdb/maazdb.toml</code></td>
+                        <td><code>/etc/maazdb/maazdb.toml</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data</strong></td>
+                        <td><code>/var/lib/maazdb/</code></td>
+                        <td><code>/var/lib/maazdb/</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+</div>
+{% endblock %}

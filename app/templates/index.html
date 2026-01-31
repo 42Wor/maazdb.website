@@ -53,19 +53,27 @@
         <h2 class="section-title">Download MaazDB v{{ version }}</h2>
         <div class="download-grid">
             <!-- Windows -->
-            <a href="{{ url_for('static', filename='installers/' + win_file) }}" class="dl-card windows">
+            <a href="{{ url_for('static', filename='installers/' + win_file) }}" 
+               class="dl-card windows"
+               onclick="setTimeout(() => window.location.href = '{{ url_for('main.install') }}#windows', 500)">
                 <i class="fab fa-windows"></i>
                 <h3>Windows</h3>
                 <p>64-bit Installer (.exe)</p>
             </a>
+            
             <!-- Linux -->
-            <a href="{{ url_for('static', filename='installers/' + linux_file) }}" class="dl-card linux">
+            <a href="{{ url_for('static', filename='installers/' + linux_file) }}" 
+               class="dl-card linux"
+               onclick="setTimeout(() => window.location.href = '{{ url_for('main.install') }}#linux', 500)">
                 <i class="fab fa-linux"></i>
                 <h3>Linux</h3>
                 <p>Debian/Ubuntu (.deb)</p>
             </a>
+            
             <!-- macOS -->
-            <a href="{{ url_for('static', filename='installers/' + mac_file) }}" class="dl-card mac">
+            <a href="{{ url_for('static', filename='installers/' + mac_file) }}" 
+               class="dl-card mac"
+               onclick="setTimeout(() => window.location.href = '{{ url_for('main.install') }}#macos', 500)">
                 <i class="fab fa-apple"></i>
                 <h3>macOS</h3>
                 <p>Universal Installer (.dmg)</p>

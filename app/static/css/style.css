@@ -257,10 +257,10 @@ pre code { background: none; padding: 0; color: inherit; }
 .install-badge i { color: var(--accent); }
 
 /* Syntax Highlighting */
-.sql-keyword { color: #ff79c6; font-weight: bold; }
-.sql-string { color: #f1fa8c; }
-.sql-number { color: #bd93f9; }
-.sql-comment { color: #6272a4; font-style: italic; }
+.sql-keyword { color: #ff7b72; font-weight: bold; } /* Soft Red */
+.sql-string  { color: #a5d6ff; }                   /* Sky Blue */
+.sql-number  { color: #d2a8ff; }                   /* Soft Purple */
+.sql-comment { color: #8b949e; font-style: italic; } /* Muted Gray */
 
 /* Alert Boxes */
 .note, .info-box, .warning-box {
@@ -311,7 +311,7 @@ pre code { background: none; padding: 0; color: inherit; }
 }
 
 /* =========================================
-   INFINITE MARQUEE ANIMATION
+   INFINITE MARQUEE ANIMATION (FEATURES)
    ========================================= */
 
 /* 1. The Wrapper: Hides the scrollbar and adds fade edges */
@@ -511,6 +511,7 @@ pre code { background: none; padding: 0; color: inherit; }
     .split-layout { grid-template-columns: 1fr; }
     .terminal-window { transform: none; min-height: 300px; }
 }
+
 /* =========================================
    MASTER ARCHITECTURE DIAGRAM (UPDATED)
    ========================================= */
@@ -631,9 +632,7 @@ pre code { background: none; padding: 0; color: inherit; }
     border-left: 2px dashed #475569; background: transparent;
 }
 
-/* --- TRAFFIC DOTS ANIMATION --- */
-
-/* --- TRAFFIC DOTS (UPDATED: CLEAN & SIMPLE) --- */
+/* --- TRAFFIC DOTS ANIMATION (CLEAN & SIMPLE) --- */
 
 .traffic-dot {
     position: absolute;
@@ -678,6 +677,7 @@ pre code { background: none; padding: 0; color: inherit; }
     animation: flowFlush 5s infinite ease-in-out; 
 }
 
+/* --- KEYFRAMES --- */
 
 @keyframes flowWrite {
     0% { left: 10%; top: 50%; opacity: 0; }
@@ -687,7 +687,6 @@ pre code { background: none; padding: 0; color: inherit; }
     80% { left: 75%; top: 50%; opacity: 1; } /* At MemTable */
     100% { left: 75%; top: 50%; opacity: 0; }
 }
-
 
 @keyframes flowReadCorrect {
     0% { 
@@ -713,7 +712,6 @@ pre code { background: none; padding: 0; color: inherit; }
     }
 }
 
-
 @keyframes flowFlush {
     0% { right: 80px; top: 50%; opacity: 0; } /* At Mem */
     20% { opacity: 1; }
@@ -721,7 +719,7 @@ pre code { background: none; padding: 0; color: inherit; }
     100% { right: 80px; top: 85%; opacity: 0; }
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive for Architecture Diagram */
 @media (max-width: 768px) {
     .master-diagram { flex-direction: column; height: auto; gap: 30px; padding: 40px 0; }
     .line, .traffic-dot { display: none; } /* Hide complex animation on mobile */

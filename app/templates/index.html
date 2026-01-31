@@ -23,30 +23,207 @@
     </div>
 </header>
 
-<!-- FEATURES -->
+<!-- FEATURES SECTION -->
 <section id="features" class="section">
-    <div class="container">
-        <h2 class="section-title">Engineered</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <i class="fas fa-bolt"></i>
-                <h3>RAM-Speed Writes</h3>
-                <p>Utilizing LSM Trees and MemTables, MaazDB handles high-frequency writes in memory before flushing.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-link"></i>
-                <h3>Relational Integrity</h3>
-                <p>Full <strong>Foreign Key</strong> support ensures your data relationships remain consistent and crash-safe.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-shield-virus"></i>
-                <h3>Disaster Recovery</h3>
-                <p>Native <code>BACKUP</code> and <code>RESTORE</code> commands for point-in-time recovery.</p>
+    <div class="container-fluid"> <!-- Changed to fluid for full width -->
+        <h2 class="section-title">Engineered for Performance</h2>
+        
+        <!-- The Window (Hides overflow) -->
+        <div class="marquee-wrapper">
+            <!-- The Track (Moves continuously) -->
+            <div class="marquee-track">
+                
+                <!-- === ORIGINAL SET (6 Cards) === -->
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>RAM-Speed Writes</h3>
+                    <p>Utilizing LSM Trees and MemTables for high-frequency in-memory writes.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-microchip"></i>
+                    <h3>Smart Optimizer</h3>
+                    <p>Primary Key lookups utilize O(1) direct access, bypassing table scans.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-link"></i>
+                    <h3>Relational Integrity</h3>
+                    <p>Full FOREIGN KEY support ensures strict data consistency automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-server"></i>
+                    <h3>Native Cross-Platform</h3>
+                    <p>Runs natively on Linux and Windows without virtualization overhead.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Binary TCP Protocol</h3>
+                    <p>Custom binary protocol minimizes packet overhead for low latency.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-virus"></i>
+                    <h3>Disaster Recovery</h3>
+                    <p>Native BACKUP and RESTORE commands for point-in-time snapshots.</p>
+                </div>
+
+                <!-- === DUPLICATE SET (Exact copy for seamless loop) === -->
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>RAM-Speed Writes</h3>
+                    <p>Utilizing LSM Trees and MemTables for high-frequency in-memory writes.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-microchip"></i>
+                    <h3>Smart Optimizer</h3>
+                    <p>Primary Key lookups utilize O(1) direct access, bypassing table scans.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-link"></i>
+                    <h3>Relational Integrity</h3>
+                    <p>Full FOREIGN KEY support ensures strict data consistency automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-server"></i>
+                    <h3>Native Cross-Platform</h3>
+                    <p>Runs natively on Linux and Windows without virtualization overhead.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Binary TCP Protocol</h3>
+                    <p>Custom binary protocol minimizes packet overhead for low latency.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-virus"></i>
+                    <h3>Disaster Recovery</h3>
+                    <p>Native BACKUP and RESTORE commands for point-in-time snapshots.</p>
+                </div>
+
             </div>
         </div>
     </div>
 </section>
+<!-- UNIFIED ARCHITECTURE SECTION -->
+<section class="section" style="background: linear-gradient(180deg, #0b1120 0%, #0f172a 100%); overflow: hidden;">
+    <div class="container">
+        <div class="text-center" style="margin-bottom: 50px;">
+            <h2 class="section-title">The <span class="text-gradient">MaazDB Engine</span></h2>
+            <p style="color: var(--text-dim); max-width: 700px; margin: 0 auto;">
+                A unified view of the data lifecycle. MaazDB handles concurrent 
+                <strong>Reads</strong> (Select) and <strong>Writes</strong> (Insert/Update/Delete) 
+                while managing memory flushing and disk persistence automatically.
+            </p>
+        </div>
 
+        <!-- THE MASTER DIAGRAM -->
+        <div class="master-diagram">
+            
+            <!-- === ANIMATION PACKETS (The Traffic) === -->
+            
+            <!-- WRITE TRAFFIC (Red): Client -> Engine -> WAL -> RAM -->
+            <div class="traffic-dot write-dot-1"></div>
+            <div class="traffic-dot write-dot-2"></div>
+
+            <!-- READ TRAFFIC (Cyan): Disk/RAM -> Engine -> Client -->
+            <div class="traffic-dot read-dot-1"></div>
+            <div class="traffic-dot read-dot-2"></div>
+
+            <!-- FLUSH TRAFFIC (Green): RAM -> Disk -->
+            <div class="traffic-dot flush-dot"></div>
+
+
+            <!-- === THE NODES === -->
+
+            <!-- LEFT: CLIENT -->
+            <div class="arch-box client-box">
+                <i class="fas fa-terminal"></i>
+                <h3>Client</h3>
+                <!-- This text changes via CSS animation -->
+                <div class="cmd-ticker">
+                    <span>INSERT INTO...</span>
+                    <span>SELECT * FROM...</span>
+                    <span>UPDATE users...</span>
+                    <span>DELETE FROM...</span>
+                </div>
+            </div>
+
+            <!-- CENTER: ENGINE -->
+            <div class="arch-box engine-box">
+                <div class="engine-gear"><i class="fas fa-cog"></i></div>
+                <h3>Core Engine</h3>
+                <p>Parser & Planner</p>
+            </div>
+
+            <!-- RIGHT: STORAGE CLUSTER -->
+            <div class="storage-cluster">
+                
+                <!-- WAL -->
+                <div class="arch-mini-box wal-box">
+                    <span>WAL</span> <i class="fas fa-file-signature"></i>
+                </div>
+
+                <!-- MEMTABLE -->
+                <div class="arch-mini-box mem-box">
+                    <span>MemTable</span> <i class="fas fa-memory"></i>
+                </div>
+
+                <!-- SSTABLE -->
+                <div class="arch-mini-box disk-box">
+                    <span>SSTable</span> <i class="fas fa-hdd"></i>
+                </div>
+
+            </div>
+
+            <!-- === CONNECTING LINES === -->
+            <div class="line line-main"></div> <!-- Client to Engine -->
+            <div class="line line-split-top"></div> <!-- Engine to WAL -->
+            <div class="line line-split-mid"></div> <!-- Engine to Mem -->
+            <div class="line line-split-bot"></div> <!-- Engine to Disk -->
+            <div class="line line-flush"></div> <!-- Mem to Disk -->
+
+        </div>
+    </div>
+</section>
+
+<!-- LIVE DEMO SECTION -->
+<section class="section bg-darker">
+    <div class="container">
+        <div class="split-layout">
+            <!-- Left Side: Text -->
+            <div class="text-content">
+                <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">
+                    Speak <span class="text-gradient">SQL</span> natively.
+                </h2>
+                <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 1.1rem;">
+                    MaazDB supports a familiar SQL syntax. Connect via our CLI tool or any TCP client. 
+                    Experience instant feedback with our binary protocol.
+                </p>
+                
+                <div class="feature-list">
+                    <div class="list-item">
+                        <i class="fas fa-check-circle"></i> <span>Standard INSERT / SELECT syntax</span>
+                    </div>
+
+                    <div class="list-item">
+                        <i class="fas fa-check-circle"></i> <span>Microsecond query execution time</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: The Terminal -->
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                    <span class="terminal-title">user@maazdb-cli:~</span>
+                </div>
+                <div class="terminal-body" id="typewriter-box">
+                    <!-- Javascript will type text here -->
+                    <span id="typing-text"></span><span class="cursor">|</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- DOWNLOADS -->
 <section id="download" class="section bg-light">
     <div class="container">
@@ -98,6 +275,83 @@
             osMessage.style.display = 'inline-flex';
             osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected ${detected} - Download below.`;
         }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const textElement = document.getElementById('typing-text');
+        
+        // The sequence of events in the terminal
+        // type: 'input' (user typing) or 'output' (db response)
+        const sequence = [
+            { type: 'input', text: "LOGIN admin PASSWORD 'admin';" },
+            { type: 'output', html: "Connected to MaazDB v11.9.0 @ localhost:8888<br>Session ID: #9921-AF<br><br>" },
+            
+            { type: 'input', text: "CREATE TABLE users (id SERIAL, name TEXT);" },
+            { type: 'output', html: "<span class='output-success'>OK</span>: Table 'users' created.<br><span class='output-time'>Time: 0.002s</span><br><br>" },
+            
+            { type: 'input', text: "INSERT INTO users (name) VALUES ('Alice');" },
+            { type: 'output', html: "<span class='output-success'>OK</span>: 1 row affected.<br><span class='output-time'>Time: 0.004s</span><br><br>" },
+            
+            { type: 'input', text: "SELECT * FROM users;" },
+            { type: 'output', html: "<span class='output-data'>+----+-------+</span><br><span class='output-data'>| id | name  |</span><br><span class='output-data'>+----+-------+</span><br><span class='output-data'>| 1  | Alice |</span><br><span class='output-data'>+----+-------+</span><br><span class='output-time'>Time: 0.001s (O(1) lookup)</span><br><br>" }
+        ];
+
+        let stepIndex = 0;
+        let charIndex = 0;
+        let currentHTML = "";
+
+        function typeWriter() {
+            if (stepIndex >= sequence.length) {
+                // Loop animation after a delay
+                setTimeout(() => {
+                    stepIndex = 0;
+                    charIndex = 0;
+                    currentHTML = "";
+                    textElement.innerHTML = "";
+                    typeWriter();
+                }, 5000);
+                return;
+            }
+
+            const step = sequence[stepIndex];
+
+            if (step.type === 'input') {
+                // Add prompt if starting a new line
+                if (charIndex === 0) {
+                    currentHTML += "<span class='cmd-prompt'>maazdb> </span><span class='cmd-text'>";
+                }
+
+                // Type one character
+                textElement.innerHTML = currentHTML + step.text.substring(0, charIndex + 1) + "</span>";
+                charIndex++;
+
+                if (charIndex < step.text.length) {
+                    setTimeout(typeWriter, 10 + Math.random() * 10); // Random typing speed
+                } else {
+                    // Finished typing line
+                    currentHTML += step.text + "</span><br>";
+                    stepIndex++;
+                    charIndex = 0;
+                    setTimeout(typeWriter, 100); // Pause before output
+                }
+            } else {
+                // Output appears instantly
+                currentHTML += step.html;
+                textElement.innerHTML = currentHTML;
+                stepIndex++;
+                setTimeout(typeWriter, 100); // Pause before next input
+            }
+        }
+
+        // Start the animation only when scrolled into view (optional optimization)
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                typeWriter();
+                observer.disconnect();
+            }
+        });
+        observer.observe(document.querySelector('.terminal-window'));
     });
 </script>
 {% endblock %}

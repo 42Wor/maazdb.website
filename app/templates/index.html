@@ -1,40 +1,45 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block head %}
+<!-- Load the homepage-specific styles -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<!-- Optional: Include a professional font like Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
 <!-- HERO SECTION -->
 <header class="hero">
     <div class="container hero-content">
         <div class="hero-text">
-            <span class="badge"><i class="fas fa-fire"></i> v{{ version }} Stable <span class="new-feature-badge">LATEST</span></span>
-            <h1>The <span class="text-gradient">Red Dragon</span><br>of Databases</h1>
+            <span class="badge"><i class="fas fa-shield-alt"></i> Enterprise Ready &bull; v{{ version }} Stable</span>
+            <h1>The High-Performance <br><span class="text-gradient">Relational Engine</span></h1>
             <p>
-                An ultra-high-performance, columnar, disk-based relational engine written in Rust. 
-                Experience the speed of <strong>LSM Trees</strong> with the reliability of <strong>Foreign Keys</strong>.
+                An ultra-fast, columnar, disk-based database written in Rust. 
+                Engineered for scale, combining the microsecond latency of <strong>LSM Trees</strong> with strict <strong>Relational Integrity</strong>.
             </p>
             <div id="os-message" class="os-check" style="display: none;"></div>
             <div class="hero-btns">
-                <a href="#download" class="btn-nav" style="padding:15px 35px; font-size:1.1rem;">Download Now</a>
-                <a href="{{ url_for('main.docs') }}" style="margin-left:25px; font-weight:600; text-decoration:underline;">View Documentation</a>
+                <a href="#download" class="btn-primary">Download MaazDB</a>
+                <a href="{{ url_for('main.docs') }}" class="btn-secondary">Read Documentation</a>
             </div>
         </div>
         <div class="hero-image">
-            <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" class="floating-logo" alt="MaazDB Dragon">
+            <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" class="floating-logo" alt="MaazDB Engine">
         </div>
     </div>
 </header>
 
-<!-- FEATURES SECTION -->
-<section id="features" class="section">
-    <div class="container-fluid"> <!-- Changed to fluid for full width -->
-        <h2 class="section-title">Engineered for Performance</h2>
+<!-- FEATURES SECTION (Infinite Marquee) -->
+<section id="features" class="section border-top">
+    <div class="container-fluid">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Engineered for Mission-Critical Workloads</h2>
+        </div>
         
-        <!-- The Window (Hides overflow) -->
         <div class="marquee-wrapper">
-            <!-- The Track (Moves continuously) -->
             <div class="marquee-track">
-                
-                <!-- === ORIGINAL SET (6 Cards) === -->
+                <!-- Set 1 -->
                 <div class="feature-card">
                     <i class="fas fa-bolt"></i>
                     <h3>RAM-Speed Writes</h3>
@@ -65,79 +70,159 @@
                     <h3>Disaster Recovery</h3>
                     <p>Native BACKUP and RESTORE commands for point-in-time snapshots.</p>
                 </div>
-
-                <!-- === DUPLICATE SET (Exact copy for seamless loop) === -->
                 <div class="feature-card">
-                    <i class="fas fa-bolt"></i>
-                    <h3>RAM-Speed Writes</h3>
-                    <p>Utilizing LSM Trees and MemTables for high-frequency in-memory writes.</p>
+                    <i class="fas fa-hdd"></i>
+                    <h3>Storage Encryption</h3>
+                    <p>Enterprise-grade transparent disk encryption to secure your data at rest.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-microchip"></i>
-                    <h3>Smart Optimizer</h3>
-                    <p>Primary Key lookups utilize O(1) direct access, bypassing table scans.</p>
+                    <i class="fas fa-lock"></i>
+                    <h3>TLS 1.3 & Protocol v1</h3>
+                    <p>Secure data in transit using Binary Protocol v1 and industry-standard TLS 1.3.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-link"></i>
-                    <h3>Relational Integrity</h3>
-                    <p>Full FOREIGN KEY support ensures strict data consistency automatically.</p>
+                    <i class="fas fa-layer-group"></i>
+                    <h3>Advanced Bulk Inserts</h3>
+                    <p>Accelerate data ingestion with Multiple Rows Insert and Insert from Select.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-server"></i>
-                    <h3>Native Cross-Platform</h3>
-                    <p>Runs natively on Linux and Windows without virtualization overhead.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-network-wired"></i>
-                    <h3>Binary TCP Protocol</h3>
-                    <p>Custom binary protocol minimizes packet overhead for low latency.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-shield-virus"></i>
-                    <h3>Disaster Recovery</h3>
-                    <p>Native BACKUP and RESTORE commands for point-in-time snapshots.</p>
+                    <i class="fas fa-calculator"></i>
+                    <h3>Aggregates & Expressions</h3>
+                    <p>Perform complex analytical queries with built-in aggregates and expressions.</p>
                 </div>
 
+                <!-- Duplicate Set for seamless loop -->
+                <div class="feature-card"><i class="fas fa-bolt"></i><h3>RAM-Speed Writes</h3><p>Utilizing LSM Trees and MemTables for high-frequency in-memory writes.</p></div>
+                <div class="feature-card"><i class="fas fa-microchip"></i><h3>Smart Optimizer</h3><p>Primary Key lookups utilize O(1) direct access, bypassing table scans.</p></div>
+                <div class="feature-card"><i class="fas fa-link"></i><h3>Relational Integrity</h3><p>Full FOREIGN KEY support ensures strict data consistency automatically.</p></div>
+                <div class="feature-card"><i class="fas fa-server"></i><h3>Native Cross-Platform</h3><p>Runs natively on Linux and Windows without virtualization overhead.</p></div>
+                <div class="feature-card"><i class="fas fa-network-wired"></i><h3>Binary TCP Protocol</h3><p>Custom binary protocol minimizes packet overhead for low latency.</p></div>
+                <div class="feature-card"><i class="fas fa-shield-virus"></i><h3>Disaster Recovery</h3><p>Native BACKUP and RESTORE commands for point-in-time snapshots.</p></div>
+                <div class="feature-card"><i class="fas fa-hdd"></i><h3>Storage Encryption</h3><p>Enterprise-grade transparent disk encryption to secure your data at rest.</p></div>
+                <div class="feature-card"><i class="fas fa-lock"></i><h3>TLS 1.3 & Protocol v1</h3><p>Secure data in transit using Binary Protocol v1 and industry-standard TLS 1.3.</p></div>
+                <div class="feature-card"><i class="fas fa-layer-group"></i><h3>Advanced Bulk Inserts</h3><p>Accelerate data ingestion with Multiple Rows Insert and Insert from Select.</p></div>
+                <div class="feature-card"><i class="fas fa-calculator"></i><h3>Aggregates & Expressions</h3><p>Perform complex analytical queries with built-in aggregates and expressions.</p></div>
             </div>
         </div>
     </div>
 </section>
-<!-- UNIFIED ARCHITECTURE SECTION -->
-<section class="section" style="background: linear-gradient(180deg, #0b1120 0%, #0f172a 100%); overflow: hidden;">
+
+<!-- ECOSYSTEM SECTION (UPDATED: Real Languages Only) -->
+<section class="section bg-alt">
     <div class="container">
-        <div class="text-center" style="margin-bottom: 50px;">
-            <h2 class="section-title">The <span class="text-gradient">MaazDB Engine</span></h2>
-            <p style="color: var(--text-dim); max-width: 700px; margin: 0 auto;">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Universal <span class="text-gradient">Connectivity</span></h2>
+            <p class="section-subtitle">
+                Native drivers for your favorite languages. 
+                <br>We are rapidly expanding our ecosystem to support every major backend stack.
+            </p>
+        </div>
+        
+        <div class="eco-grid-compact">
+            <!-- ACTIVE LANGUAGES (Clickable) -->
+            <a href="#" class="eco-block active" title="Python Driver">
+                <i class="fab fa-python" style="color: #3776AB;"></i>
+                <span>Python</span>
+            </a>
+            <a href="#" class="eco-block active" title="Node.js Driver">
+                <i class="fab fa-node-js" style="color: #68A063;"></i>
+                <span>Node.js</span>
+            </a>
+            <a href="#" class="eco-block active" title="Rust Crate">
+                <i class="fab fa-rust" style="color: #DEA584;"></i>
+                <span>Rust</span>
+            </a>
+
+            <!-- UPCOMING LANGUAGES (Dimmed) -->
+            <div class="eco-block coming-soon">
+                <i class="fab fa-golang" style="color: #00ADD8;"></i>
+                <span>Go</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fab fa-java" style="color: #f89820;"></i>
+                <span>Java</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fab fa-php" style="color: #777BB4;"></i>
+                <span>PHP</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-gem" style="color: #CC342D;"></i>
+                <span>Ruby</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fab fa-swift" style="color: #F05138;"></i>
+                <span>Swift</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fab fa-microsoft" style="color: #00a4ef;"></i>
+                <span>C# / .NET</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-cube" style="color: #00599C;"></i>
+                <span>C++</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-robot" style="color: #7F52FF;"></i> <!-- Kotlin Icon Placeholder -->
+                <span>Kotlin</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-code" style="color: #DC322F;"></i> <!-- Scala Icon Placeholder -->
+                <span>Scala</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-camel" style="color: #39457E;"></i> <!-- Perl Icon Placeholder -->
+                <span>Perl</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-moon" style="color: #000080;"></i> <!-- Lua Icon Placeholder -->
+                <span>Lua</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-bullseye" style="color: #0175C2;"></i> <!-- Dart Icon Placeholder -->
+                <span>Dart</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-flask" style="color: #4e2a8e;"></i> <!-- Elixir Icon Placeholder -->
+                <span>Elixir</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-lambda" style="color: #5e5086;"></i> <!-- Haskell Icon Placeholder -->
+                <span>Haskell</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-circle" style="color: #9558B2;"></i> <!-- Julia Icon Placeholder -->
+                <span>Julia</span>
+            </div>
+            <div class="eco-block coming-soon">
+                <i class="fas fa-chart-bar" style="color: #276DC3;"></i> <!-- R Icon Placeholder -->
+                <span>R</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ARCHITECTURE SECTION -->
+<section class="section border-top overflow-hidden">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Core <span class="text-gradient">Architecture</span></h2>
+            <p class="section-subtitle">
                 A unified view of the data lifecycle. MaazDB handles concurrent 
-                <strong>Reads</strong> (Select) and <strong>Writes</strong> (Insert/Update/Delete) 
-                while managing memory flushing and disk persistence automatically.
+                <strong>Reads</strong> and <strong>Writes</strong> while managing memory flushing automatically.
             </p>
         </div>
 
-        <!-- THE MASTER DIAGRAM -->
         <div class="master-diagram">
-            
-            <!-- === ANIMATION PACKETS (The Traffic) === -->
-            
-            <!-- WRITE TRAFFIC (Red): Client -> Engine -> WAL -> RAM -->
             <div class="traffic-dot write-dot-1"></div>
             <div class="traffic-dot write-dot-2"></div>
-
-            <!-- READ TRAFFIC (Cyan): Disk/RAM -> Engine -> Client -->
             <div class="traffic-dot read-dot-1"></div>
             <div class="traffic-dot read-dot-2"></div>
-
-            <!-- FLUSH TRAFFIC (Green): RAM -> Disk -->
             <div class="traffic-dot flush-dot"></div>
 
-
-            <!-- === THE NODES === -->
-
-            <!-- LEFT: CLIENT -->
             <div class="arch-box client-box">
                 <i class="fas fa-terminal"></i>
                 <h3>Client</h3>
-                <!-- This text changes via CSS animation -->
                 <div class="cmd-ticker">
                     <span>INSERT INTO...</span>
                     <span>SELECT * FROM...</span>
@@ -146,113 +231,78 @@
                 </div>
             </div>
 
-            <!-- CENTER: ENGINE -->
             <div class="arch-box engine-box">
                 <div class="engine-gear"><i class="fas fa-cog"></i></div>
                 <h3>Core Engine</h3>
                 <p>Parser & Planner</p>
             </div>
 
-            <!-- RIGHT: STORAGE CLUSTER -->
             <div class="storage-cluster">
-                
-                <!-- WAL -->
-                <div class="arch-mini-box wal-box">
-                    <span>WAL</span> <i class="fas fa-file-signature"></i>
-                </div>
-
-                <!-- MEMTABLE -->
-                <div class="arch-mini-box mem-box">
-                    <span>MemTable</span> <i class="fas fa-memory"></i>
-                </div>
-
-                <!-- SSTABLE -->
-                <div class="arch-mini-box disk-box">
-                    <span>SSTable</span> <i class="fas fa-hdd"></i>
-                </div>
-
+                <div class="arch-mini-box wal-box"><span>WAL</span> <i class="fas fa-file-signature"></i></div>
+                <div class="arch-mini-box mem-box"><span>MemTable</span> <i class="fas fa-memory"></i></div>
+                <div class="arch-mini-box disk-box"><span>SSTable</span> <i class="fas fa-hdd"></i></div>
             </div>
 
-            <!-- === CONNECTING LINES === -->
-            <div class="line line-main"></div> <!-- Client to Engine -->
-            <div class="line line-split-top"></div> <!-- Engine to WAL -->
-            <div class="line line-split-mid"></div> <!-- Engine to Mem -->
-            <div class="line line-split-bot"></div> <!-- Engine to Disk -->
-            <div class="line line-flush"></div> <!-- Mem to Disk -->
-
+            <div class="line line-main"></div>
+            <div class="line line-split-top"></div>
+            <div class="line line-split-mid"></div>
+            <div class="line line-split-bot"></div>
+            <div class="line line-flush"></div>
         </div>
     </div>
 </section>
 
 <!-- LIVE DEMO SECTION -->
-<section class="section bg-darker">
+<section class="section bg-alt border-top">
     <div class="container">
         <div class="split-layout">
-            <!-- Left Side: Text -->
             <div class="text-content">
-                <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">
+                <h2 class="section-title text-left">
                     Speak <span class="text-gradient">SQL</span> natively.
                 </h2>
-                <p style="color: var(--text-dim); margin-bottom: 30px; font-size: 1.1rem;">
-                    MaazDB supports a familiar SQL syntax. Connect via our CLI tool or any TCP client. 
-                    Experience instant feedback with our binary protocol.
+                <p class="mb-4 text-dim text-lg">
+                    MaazDB supports standard SQL syntax. Connect via our CLI tool, REST API, or any official language driver. 
                 </p>
-                
                 <div class="feature-list">
-                    <div class="list-item">
-                        <i class="fas fa-check-circle"></i> <span>Standard INSERT / SELECT syntax</span>
-                    </div>
-
-                    <div class="list-item">
-                        <i class="fas fa-check-circle"></i> <span>Microsecond query execution time</span>
-                    </div>
+                    <div class="list-item"><i class="fas fa-check-circle"></i> <span>Standard ANSI SQL compatibility</span></div>
+                    <div class="list-item"><i class="fas fa-check-circle"></i> <span>Microsecond query execution time</span></div>
+                    <div class="list-item"><i class="fas fa-check-circle"></i> <span>Real-time execution metrics</span></div>
                 </div>
             </div>
 
-            <!-- Right Side: The Terminal -->
             <div class="terminal-window">
                 <div class="terminal-header">
-                    <div class="dot red"></div>
-                    <div class="dot yellow"></div>
-                    <div class="dot green"></div>
+                    <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
                     <span class="terminal-title">user@maazdb-cli:~</span>
                 </div>
-                <div class="terminal-body" id="typewriter-box">
-                    <!-- Javascript will type text here -->
+                <div class="terminal-body">
                     <span id="typing-text"></span><span class="cursor">|</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 <!-- DOWNLOADS -->
-<section id="download" class="section bg-light">
+<section id="download" class="section border-top">
     <div class="container">
-        <h2 class="section-title">Download MaazDB v{{ version }}</h2>
+        <div class="text-center mb-5">
+            <h2 class="section-title">Deploy MaazDB v{{ version }}</h2>
+            <p class="section-subtitle">Available for all major operating systems and architectures.</p>
+        </div>
         <div class="download-grid">
-            <!-- Windows -->
-            <a href="{{ url_for('static', filename='installers/' + win_file) }}" 
-               class="dl-card windows"
-               onclick="setTimeout(() => window.location.href = '{{ url_for('main.install') }}#windows', 500)">
-                <i class="fab fa-windows"></i>
+            <a href="{{ url_for('static', filename='installers/' + win_file) }}" class="dl-card">
+                <i class="fab fa-windows icon-windows"></i>
                 <h3>Windows</h3>
                 <p>64-bit Installer (.exe)</p>
             </a>
-            
-            <!-- Linux -->
-            <a href="{{ url_for('static', filename='installers/' + linux_file) }}" 
-               class="dl-card linux"
-               onclick="setTimeout(() => window.location.href = '{{ url_for('main.install') }}#linux', 500)">
-                <i class="fab fa-linux"></i>
+            <a href="{{ url_for('static', filename='installers/' + linux_file) }}" class="dl-card">
+                <i class="fab fa-linux icon-linux"></i>
                 <h3>Linux</h3>
                 <p>Debian/Ubuntu (.deb)</p>
             </a>
-            
-            <!-- macOS -->
-            <a href="{{ url_for('static', filename='installers/' + mac_file) }}" 
-               class="dl-card mac"
-               onclick="setTimeout(() => window.location.href = '{{ url_for('main.install') }}#macos', 500)">
-                <i class="fab fa-apple"></i>
+            <a href="{{ url_for('static', filename='installers/' + mac_file) }}" class="dl-card">
+                <i class="fab fa-apple icon-mac"></i>
                 <h3>macOS</h3>
                 <p>Universal Installer (.dmg)</p>
             </a>
@@ -263,7 +313,7 @@
 
 {% block scripts %}
 <script>
-    // Simple OS Detection for the Hero section
+    // OS Detection
     document.addEventListener("DOMContentLoaded", () => {
         const osMessage = document.getElementById('os-message');
         const platform = navigator.userAgent.toLowerCase();
@@ -274,82 +324,43 @@
 
         if (detected && osMessage) {
             osMessage.style.display = 'inline-flex';
-            osMessage.innerHTML = `<i class="fas fa-check-circle"></i> Detected ${detected} - Download below.`;
+            osMessage.innerHTML = `<i class="fas fa-info-circle"></i> Detected ${detected} - Download available below.`;
         }
     });
-</script>
-<script>
+
+    // Terminal Typewriter
     document.addEventListener("DOMContentLoaded", function() {
         const textElement = document.getElementById('typing-text');
-        
-        // The sequence of events in the terminal
-        // type: 'input' (user typing) or 'output' (db response)
         const sequence = [
-
-            
             { type: 'input', text: "CREATE TABLE users (id SERIAL, name TEXT);" },
-            { type: 'output', html: "<span class='output-success'>OK</span>: Table 'users' created.<br><span class='output-time'>Time: 0.002s</span><br><br>" },
-            
+            { type: 'output', html: "<span class='output-success'>OK</span>: Table 'users' created.<br><span class='output-time'>Execution Time: 0.002s</span><br><br>" },
             { type: 'input', text: "INSERT INTO users (name) VALUES ('Alice');" },
-            { type: 'output', html: "<span class='output-success'>OK</span>: 1 row affected.<br><span class='output-time'>Time: 0.004s</span><br><br>" },
-            
+            { type: 'output', html: "<span class='output-success'>OK</span>: 1 row affected.<br><span class='output-time'>Execution Time: 0.004s</span><br><br>" },
             { type: 'input', text: "SELECT * FROM users;" },
-            { type: 'output', html: "<span class='output-data'>+----+-------+</span><br><span class='output-data'>| id | name  |</span><br><span class='output-data'>+----+-------+</span><br><span class='output-data'>| 1  | Alice |</span><br><span class='output-data'>+----+-------+</span><br><span class='output-time'>Time: 0.001s (O(1) lookup)</span><br><br>" }
+            { type: 'output', html: "<span class='output-data'>+----+-------+</span><br><span class='output-data'>| id | name  |</span><br><span class='output-data'>+----+-------+</span><br><span class='output-data'>| 1  | Alice |</span><br><span class='output-data'>+----+-------+</span><br><span class='output-time'>Execution Time: 0.001s (O(1) lookup)</span><br><br>" }
         ];
 
-        let stepIndex = 0;
-        let charIndex = 0;
-        let currentHTML = "";
+        let stepIndex = 0, charIndex = 0, currentHTML = "";
 
         function typeWriter() {
             if (stepIndex >= sequence.length) {
-                // Loop animation after a delay
-                setTimeout(() => {
-                    stepIndex = 0;
-                    charIndex = 0;
-                    currentHTML = "";
-                    textElement.innerHTML = "";
-                    typeWriter();
-                }, 5000);
+                setTimeout(() => { stepIndex = 0; charIndex = 0; currentHTML = ""; textElement.innerHTML = ""; typeWriter(); }, 5000);
                 return;
             }
-
             const step = sequence[stepIndex];
-
             if (step.type === 'input') {
-                // Add prompt if starting a new line
-                if (charIndex === 0) {
-                    currentHTML += "<span class='cmd-prompt'>maazdb> </span><span class='cmd-text'>";
-                }
-
-                // Type one character
+                if (charIndex === 0) currentHTML += "<span class='cmd-prompt'>maazdb> </span><span class='cmd-text'>";
                 textElement.innerHTML = currentHTML + step.text.substring(0, charIndex + 1) + "</span>";
                 charIndex++;
-
-                if (charIndex < step.text.length) {
-                    setTimeout(typeWriter, 10 + Math.random() * 10); // Random typing speed
-                } else {
-                    // Finished typing line
-                    currentHTML += step.text + "</span><br>";
-                    stepIndex++;
-                    charIndex = 0;
-                    setTimeout(typeWriter, 100); // Pause before output
-                }
+                if (charIndex < step.text.length) setTimeout(typeWriter, 15);
+                else { currentHTML += step.text + "</span><br>"; stepIndex++; charIndex = 0; setTimeout(typeWriter, 600); }
             } else {
-                // Output appears instantly
-                currentHTML += step.html;
-                textElement.innerHTML = currentHTML;
-                stepIndex++;
-                setTimeout(typeWriter, 100); // Pause before next input
+                currentHTML += step.html; textElement.innerHTML = currentHTML; stepIndex++; setTimeout(typeWriter, 600);
             }
         }
 
-        // Start the animation only when scrolled into view (optional optimization)
         const observer = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting) {
-                typeWriter();
-                observer.disconnect();
-            }
+            if(entries[0].isIntersecting) { typeWriter(); observer.disconnect(); }
         });
         observer.observe(document.querySelector('.terminal-window'));
     });

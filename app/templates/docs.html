@@ -297,32 +297,5 @@ DROP DATABASE full_test_db;</code></pre>
 {% endblock %}
 
 {% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Scroll Spy for Sidebar
-    const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
-    const sections = document.querySelectorAll('section[id]');
-    
-    window.addEventListener('scroll', () => {
-        let current = '';
-        const scrollY = window.pageYOffset + 150;
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        sidebarLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
-    });
-});
-</script>
+   <script src="{{ url_for('static', filename='js/docs.js') }}"></script>
 {% endblock %}

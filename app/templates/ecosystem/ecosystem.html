@@ -5,12 +5,12 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/other.css') }}">
 <style>
     /* =========================================
-       ECOSYSTEM SPECIFIC STYLES (Red Dragon Theme)
+       ECOSYSTEM SPECIFIC STYLES
        ========================================= */
     .ecosystem-header {
         text-align: center;
         padding: 6rem 1rem 4rem;
-        background: radial-gradient(circle at center, rgba(239, 68, 68, 0.08) 0%, var(--bg-dark) 70%);
+        background: radial-gradient(circle at center, rgba(59, 130, 246, 0.08) 0%, var(--bg-dark) 70%);
         border-bottom: 1px solid var(--border);
     }
     
@@ -83,10 +83,10 @@
     
     .driver-desc {
         color: var(--text-dim);
-        font-size: 1rem;
+        font-size: 0.95rem;
         line-height: 1.6;
         margin-bottom: 2rem;
-        min-height: 80px;
+        min-height: 100px; /* Ensures alignment */
     }
 
     .driver-links {
@@ -105,6 +105,9 @@
         color: var(--text-main);
         transition: all 0.2s;
         border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .driver-links a:hover {
@@ -125,6 +128,15 @@
         background: #0d1117;
         margin: 0;
         border-left: 2px solid var(--accent);
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+    
+    .driver-card code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+        color: #e5e5e5;
     }
 
     @media (max-width: 768px) {
@@ -138,7 +150,7 @@
 <div class="ecosystem-header">
     <div class="container">
         <h1>MaazDB Ecosystem & Drivers</h1>
-        <p>MaazDB is more than a database engine. Build applications faster with our native, high-performance client libraries that handle encryption and protocols automatically.</p>
+        <p>MaazDB is more than a database engine. Build applications faster with our native, high-performance client libraries that handle encryption, binary protocols, and connection pooling automatically.</p>
     </div>
 </div>
 
@@ -151,11 +163,13 @@
                 <i class="fab fa-node-js brand-node"></i>
                 <h2>MaazDB-JS</h2>
             </div>
-            <p class="driver-desc">Async-first Node.js driver featuring zero-copy parsing and native Promise support. Perfect for real-time web applications and APIs.</p>
+            <p class="driver-desc">
+                A high-performance, asynchronous Node.js client library. It leverages native Promises and Node.js Buffers to implement the custom MaazDB binary protocol securely over TLS 1.3. Perfect for real-time web applications.
+            </p>
             
             <div class="driver-links">
-                <a href="https://github.com/your-repo/maazdb-js" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://www.npmjs.com/" target="_blank"><i class="fas fa-box"></i> npm</a>
+                <a href="https://github.com/42Wor/maazdb-js" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://www.npmjs.com/package/maazdb-js" target="_blank"><i class="fab fa-npm"></i> npm</a>
             </div>
 
             <div class="code-section">
@@ -163,8 +177,16 @@
                 <pre><code>npm install maazdb-js</code></pre>
                 
                 <h4>Usage</h4>
-                <pre><code>const db = new MaazDB();
-await db.connect("127.0.0.1", 8888, "root", "pass");</code></pre>
+                <pre><code>const MaazDB = require('maazdb-js');
+
+async function main() {
+    const db = new MaazDB();
+    // Connect securely via TLS 1.3
+    await db.connect("127.0.0.1", 8888, "admin", "admin");
+    
+    const results = await db.query("SELECT * FROM users;");
+    console.log(results);
+}</code></pre>
             </div>
         </div>
 
@@ -174,11 +196,13 @@ await db.connect("127.0.0.1", 8888, "root", "pass");</code></pre>
                 <i class="fab fa-rust brand-rust"></i>
                 <h2>MaazDB-RS</h2>
             </div>
-            <p class="driver-desc">High-speed Rust SDK built on Tokio. Provides type-safe query building and strict binary protocol alignment for maximum efficiency.</p>
+            <p class="driver-desc">
+                The official high-speed Rust SDK built on Tokio. It implements the binary protocol over a secure TLS 1.3 socket, allowing Rust applications to communicate with your database safely with zero-cost abstractions.
+            </p>
             
             <div class="driver-links">
-                <a href="https://github.com/your-repo/maazdb-rs" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://crates.io/" target="_blank"><i class="fas fa-box"></i> Crates.io</a>
+                <a href="https://github.com/42Wor/maazdb-rs" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://crates.io/crates/maazdb-rs" target="_blank"><i class="fas fa-cube"></i> Crates.io</a>
             </div>
 
             <div class="code-section">
@@ -186,7 +210,15 @@ await db.connect("127.0.0.1", 8888, "root", "pass");</code></pre>
                 <pre><code>maazdb-rs = "0.1.0"</code></pre>
                 
                 <h4>Usage</h4>
-                <pre><code>let db = MaazDB::connect("addr", 8888, "user", "pass").await?;</code></pre>
+                <pre><code>use maazdb_rs::{MaazDB, Result};
+
+fn main() -> Result<()> {
+    let mut db = MaazDB::connect("127.0.0.1", 8888, "admin", "admin")?;
+    
+    db.query("CREATE DATABASE store_prod;")?;
+    let res = db.query("SELECT * FROM users;")?;
+    Ok(())
+}</code></pre>
             </div>
         </div>
 
@@ -196,11 +228,13 @@ await db.connect("127.0.0.1", 8888, "root", "pass");</code></pre>
                 <i class="fab fa-python brand-python"></i>
                 <h2>MaazDB-Py</h2>
             </div>
-            <p class="driver-desc">A pure-Python client library with automatic TLS 1.3 handshake. Fully supports context managers and provides a simple, idiomatic Pythonic API.</p>
+            <p class="driver-desc">
+                A pure-Python client library with automatic TLS 1.3 handshake. It supports context managers (<code>with</code> statements) for safe connection handling and provides a simple, idiomatic Pythonic API.
+            </p>
             
             <div class="driver-links">
                 <a href="https://github.com/42Wor/maazdb-py" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://pypi.org/" target="_blank"><i class="fas fa-box"></i> PyPI</a>
+                <a href="https://pypi.org/project/maazdb-py/" target="_blank"><i class="fab fa-python"></i> PyPI</a>
             </div>
 
             <div class="code-section">
@@ -208,8 +242,14 @@ await db.connect("127.0.0.1", 8888, "root", "pass");</code></pre>
                 <pre><code>pip install maazdb-py</code></pre>
                 
                 <h4>Usage</h4>
-                <pre><code>with MaazDB() as db:
-    db.connect("127.0.0.1", 8888, "user", "pass")</code></pre>
+                <pre><code>from maazdb import MaazDB
+
+# Supports Context Managers
+with MaazDB() as db:
+    db.connect("127.0.0.1", 8888, "admin", "pass")
+    
+    db.query("INSERT INTO logs VALUES ('System Start');")
+    print(db.query("SELECT * FROM logs;"))</code></pre>
             </div>
         </div>
 

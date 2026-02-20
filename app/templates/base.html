@@ -11,13 +11,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- THIS ALLOWS CHILD PAGES TO INJECT THEIR OWN CSS -->
+    <!-- This allows child pages to inject other.css or index.css -->
     {% block head %}{% endblock %}
 </head>
 <body>
 
-    <!-- HEADER / NAVBAR -->
-    <nav class="navbar" style="--nav-height: 70px;">
+    <nav class="navbar">
         <div class="container nav-container">
             <a href="{{ url_for('main.index') }}" class="logo">
                 <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" alt="Logo"> 
@@ -26,39 +25,40 @@
             <ul class="nav-links">
                 <li><a href="{{ url_for('main.index') }}">Home</a></li>
                 <li><a href="{{ url_for('main.docs') }}">Documentation</a></li>
+                <li><a href="{{ url_for('main.overview') }}">Ecosystem</a></li>
                 <li><a href="{{ url_for('main.index') }}#download" class="btn-nav">Get v{{ version }}</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- CONTENT INJECTION POINT -->
     {% block content %}{% endblock %}
 
-    <!-- FOOTER -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col footer-about">
+                <div class="footer-col">
                     <div class="logo" style="margin-bottom:20px;">
-                                                <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" alt="Logo"> 
-                        <span>MaazDB </span>
+                        <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" alt="Logo"> 
+                        <span>MaazDB</span>
                     </div>
-                    <p>The "Red Dragon" database engine: High-performance LSM storage meet relational integrity.</p>
-        <div class="social-links">
-            <a href="https://github.com/42Wor" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://www.facebook.com/profile.php?id=61550243033527" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://x.com/wwork4287" target="_blank" rel="noopener noreferrer" title="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="https://instagram.com/maa.zwaheed" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://huggingface.co/Maazwaheed" target="_blank" rel="noopener noreferrer" title="Hugging Face"><img src="{{ url_for('static', filename='images/hf-logo.svg') }}" alt="Hugging Face" style="width: 20px; height: 20px;" /></a>
-        </div>
+                    <p>The "Red Dragon" database engine: High-performance LSM storage meets relational integrity.</p>
+                    <div class="social-links" style="display: flex; gap: 15px; font-size: 1.2rem; margin-top: 15px;">
+                        <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/maa.zwaheed" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://huggingface.co/Maazwaheed" target="_blank">
+                           <img src="{{ url_for('static', filename='images/hf-logo.svg') }}" style="width: 20px; height: 20px; vertical-align: middle;" />
+                        </a>
+                    </div>
                 </div>
                 <div class="footer-col">
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="{{ url_for('main.docs') }}">Documentation</a></li>
+                        <li><a href="{{ url_for('main.overview') }}">Ecosystem & Drivers</a></li>
                         <li><a href="{{ url_for('main.install') }}">Installation Guide</a></li>
                         <li><a href="{{ url_for('main.docs') }}#test-suite">Test Suite</a></li>
-                        <li><a href="#download">Downloads</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -72,7 +72,6 @@
                     <h4>Support</h4>
                     <ul>
                         <li><a href="mailto:support@maazdb.org">Contact Support</a></li>
-                        <li><a href="#">License Details</a></li>
                     </ul>
                 </div>
             </div>
@@ -81,8 +80,7 @@
             </div>
         </div>
     </footer>
-    <!-- SCRIPTS -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
     {% block scripts %}{% endblock %}
 </body>
 </html>

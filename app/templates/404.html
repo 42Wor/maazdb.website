@@ -1,76 +1,72 @@
-<!--
-FILE: app/templates/404.html
-PURPOSE: Custom 404 Error page with a database/terminal theme.
--->
 {% extends "base.html" %}
 
 {% block head %}
 <style>
     .error-container {
-        min-height: 70vh;
+        min-height: 80vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
         padding: 2rem;
+        background: radial-gradient(circle at center, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
     }
 
     .error-code {
         font-size: 8rem;
         font-weight: 900;
         line-height: 1;
-        background: linear-gradient(135deg, var(--primary-color) 0%, #ff6b6b 100%);
+        background: linear-gradient(135deg, var(--accent) 0%, #ff6b6b 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 1rem;
-        text-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.2);
+        text-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
     }
 
     .error-title {
-        font-size: 2rem;
-        color: var(--heading-color);
+        font-size: 2.5rem;
+        color: var(--text-main);
         margin-bottom: 2rem;
+        font-weight: 800;
     }
 
     .terminal-window {
-        background: #1a1b26;
-        border: 1px solid #24283b;
-        border-radius: 8px;
-        padding: 1.5rem;
+        background: #1e1e1e;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0;
         width: 100%;
         max-width: 600px;
         margin-bottom: 2.5rem;
         text-align: left;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        font-family: 'Courier New', monospace;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        font-family: 'JetBrains Mono', monospace;
+        overflow: hidden;
     }
 
     .terminal-header {
+        background: #2d2d2d;
+        padding: 12px 15px;
         display: flex;
+        align-items: center;
         gap: 8px;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid #24283b;
-        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #333;
     }
 
-    .dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .red { background: #ff5f56; }
+    .yellow { background: #ffbd2e; }
+    .green { background: #27c93f; }
+
+    .terminal-body {
+        padding: 20px;
+        color: #a9b7c6;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
 
-    .dot.red { background: #ff5f56; }
-    .dot.yellow { background: #ffbd2e; }
-    .dot.green { background: #27c93f; }
-
-    .code-line {
-        color: #a9b1d6;
-        margin-bottom: 0.5rem;
-        line-height: 1.5;
-    }
-
-    .prompt { color: #7aa2f7; }
+    .prompt { color: var(--accent); font-weight: bold; }
     .cmd { color: #e0af68; }
     .string { color: #9ece6a; }
     .error-msg { color: #f7768e; }
@@ -79,7 +75,7 @@ PURPOSE: Custom 404 Error page with a database/terminal theme.
         display: inline-block;
         width: 8px;
         height: 15px;
-        background: #a9b1d6;
+        background: var(--accent);
         animation: blink 1s infinite;
         vertical-align: middle;
     }
@@ -93,18 +89,19 @@ PURPOSE: Custom 404 Error page with a database/terminal theme.
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: var(--primary-color);
+        background: var(--accent);
         color: white;
-        padding: 0.8rem 2rem;
+        padding: 12px 30px;
         border-radius: 6px;
         text-decoration: none;
         font-weight: 600;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     }
 
     .btn-home:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
+        filter: brightness(1.1);
     }
 </style>
 {% endblock %}
@@ -120,24 +117,24 @@ PURPOSE: Custom 404 Error page with a database/terminal theme.
             <div class="dot yellow"></div>
             <div class="dot green"></div>
         </div>
-        <div class="code-content">
-            <div class="code-line">
+        <div class="terminal-body">
+            <div>
                 <span class="prompt">maazdb></span> 
                 <span class="cmd">SELECT</span> * <span class="cmd">FROM</span> pages <span class="cmd">WHERE</span> url = <span class="string">'{{ request.path }}'</span>;
             </div>
-            <div class="code-line">
+            <div style="margin-top: 5px;">
                 <span class="prompt">System:</span> Processing query...
             </div>
-            <div class="code-line">
+            <div style="margin-top: 5px;">
                 <span class="error-msg">Error 404: Resource not found in schema.</span>
             </div>
-            <div class="code-line">
+            <div style="margin-top: 5px;">
                 <span class="prompt">maazdb></span> <span class="cursor"></span>
             </div>
         </div>
     </div>
 
-    <p style="color: var(--text-muted); margin-bottom: 2rem;">
+    <p style="color: var(--text-dim); margin-bottom: 2rem; max-width: 500px;">
         The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
     </p>
 

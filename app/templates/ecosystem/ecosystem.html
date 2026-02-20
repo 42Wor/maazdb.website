@@ -1,123 +1,145 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block head %}
+<!-- This ensures the basic documentation font styles are available -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/other.css') }}">
 <style>
-    /* Custom Styling for the Ecosystem Page */
+    /* =========================================
+       ECOSYSTEM SPECIFIC STYLES (Red Dragon Theme)
+       ========================================= */
     .ecosystem-header {
         text-align: center;
-        padding: 3rem 1rem;
-        background: #f8f9fa;
-        border-bottom: 1px solid #eaeaea;
-        margin-bottom: 3rem;
+        padding: 6rem 1rem 4rem;
+        background: radial-gradient(circle at center, rgba(239, 68, 68, 0.08) 0%, var(--bg-dark) 70%);
+        border-bottom: 1px solid var(--border);
     }
+    
     .ecosystem-header h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: #333;
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
+
     .ecosystem-header p {
-        font-size: 1.1rem;
-        color: #666;
-        max-width: 700px;
+        font-size: 1.2rem;
+        color: var(--text-dim);
+        max-width: 800px;
         margin: 0 auto;
         line-height: 1.6;
     }
+
     .ecosystem-container {
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 0 1rem 4rem 1rem;
+        padding: 4rem 2rem;
     }
+
     .driver-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
     }
+
     .driver-card {
-        background: #fff;
-        border: 1px solid #eaeaea;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
     }
+
     .driver-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        transform: translateY(-8px);
+        border-color: var(--accent);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     }
+
     .driver-header {
         display: flex;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
+
     .driver-header i {
-        font-size: 2.5rem;
-        margin-right: 1rem;
+        font-size: 2.8rem;
+        margin-right: 1.2rem;
     }
+
     .driver-header h2 {
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+        color: var(--text-main);
     }
-    /* Brand Colors */
-    .brand-node { color: #5FA04E; }
-    .brand-rust { color: #000000; }
-    .brand-python { color: #3776AB; }
+
+    /* Brand Accent Colors */
+    .brand-node { color: #68a063; }
+    .brand-rust { color: #f46623; }
+    .brand-python { color: #3776ab; }
     
     .driver-desc {
-        color: #555;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
-        min-height: 65px;
+        color: var(--text-dim);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        min-height: 80px;
     }
+
     .driver-links {
         display: flex;
-        gap: 10px;
-        margin-bottom: 1.5rem;
+        gap: 12px;
+        margin-bottom: 2rem;
     }
+
     .driver-links a {
         text-decoration: none;
         font-size: 0.85rem;
-        font-weight: bold;
-        padding: 6px 12px;
-        border-radius: 6px;
-        background: #f1f3f5;
-        color: #333;
-        transition: background 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .driver-links a:hover {
-        background: #e2e6ea;
-    }
-    .code-section h4 {
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #888;
-        margin-bottom: 0.5rem;
-        margin-top: 1.5rem;
-    }
-    .driver-card pre {
-        background: #1e1e1e;
-        color: #d4d4d4;
-        padding: 1rem;
+        font-weight: 700;
+        padding: 8px 16px;
         border-radius: 8px;
-        overflow-x: auto;
-        font-size: 0.85rem;
-        margin: 0;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+        transition: all 0.2s;
+        border: 1px solid var(--border);
     }
-    .driver-card code {
-        font-family: 'Courier New', Courier, monospace;
+
+    .driver-links a:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+    }
+
+    .code-section h4 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--accent);
+        margin: 1.5rem 0 0.8rem;
+    }
+
+    .driver-card pre {
+        background: #0d1117;
+        margin: 0;
+        border-left: 2px solid var(--accent);
+    }
+
+    @media (max-width: 768px) {
+        .ecosystem-header h1 { font-size: 2.2rem; }
+        .driver-grid { grid-template-columns: 1fr; }
     }
 </style>
+{% endblock %}
 
-<!-- Make sure FontAwesome is loaded in your base.html for the icons to work! -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
-
+{% block content %}
 <div class="ecosystem-header">
-    <h1>MaazDB Ecosystem & Drivers</h1>
-    <p>Connect to MaazDB seamlessly using our official, high-performance client libraries. Each driver is tailored specifically for its ecosystem, providing a secure, idiomatic, and lightning-fast way to interact with your database.</p>
+    <div class="container">
+        <h1>MaazDB Ecosystem & Drivers</h1>
+        <p>MaazDB is more than a database engine. Build applications faster with our native, high-performance client libraries that handle encryption and protocols automatically.</p>
+    </div>
 </div>
 
 <div class="ecosystem-container">
@@ -129,36 +151,20 @@
                 <i class="fab fa-node-js brand-node"></i>
                 <h2>MaazDB-JS</h2>
             </div>
-            <p class="driver-desc">A high-performance, asynchronous Node.js client library. It leverages native Promises and implements the custom MaazDB binary protocol securely over TLS 1.3.</p>
+            <p class="driver-desc">Async-first Node.js driver featuring zero-copy parsing and native Promise support. Perfect for real-time web applications and APIs.</p>
             
             <div class="driver-links">
                 <a href="https://github.com/your-repo/maazdb-js" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://www.npmjs.com/package/maazdb-js" target="_blank"><i class="fas fa-box"></i> npm</a>
+                <a href="https://www.npmjs.com/" target="_blank"><i class="fas fa-box"></i> npm</a>
             </div>
 
             <div class="code-section">
                 <h4>Installation</h4>
                 <pre><code>npm install maazdb-js</code></pre>
                 
-                <h4>Quick Start</h4>
-                <pre><code>const MaazDB = require('maazdb-js');
-
-async function main() {
-  const db = new MaazDB();
-  try {
-    await db.connect("127.0.0.1", 8888, "admin", "admin");
-    console.log("✓ Connected to MaazDB");
-
-    await db.query("CREATE DATABASE web_app;");
-    await db.query("USE web_app;");
-    
-    const results = await db.query("SELECT * FROM users;");
-    console.log(results);
-  } finally {
-    db.close();
-  }
-}
-main();</code></pre>
+                <h4>Usage</h4>
+                <pre><code>const db = new MaazDB();
+await db.connect("127.0.0.1", 8888, "root", "pass");</code></pre>
             </div>
         </div>
 
@@ -168,34 +174,19 @@ main();</code></pre>
                 <i class="fab fa-rust brand-rust"></i>
                 <h2>MaazDB-RS</h2>
             </div>
-            <p class="driver-desc">A memory-safe, zero-cost abstraction Rust SDK. Implements the binary protocol over a secure TLS 1.3 socket, supporting both blocking and tokio-based workflows.</p>
+            <p class="driver-desc">High-speed Rust SDK built on Tokio. Provides type-safe query building and strict binary protocol alignment for maximum efficiency.</p>
             
             <div class="driver-links">
                 <a href="https://github.com/your-repo/maazdb-rs" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://crates.io/crates/maazdb-rs" target="_blank"><i class="fas fa-box"></i> Crates.io</a>
+                <a href="https://crates.io/" target="_blank"><i class="fas fa-box"></i> Crates.io</a>
             </div>
 
             <div class="code-section">
-                <h4>Installation (Cargo.toml)</h4>
-                <pre><code>[dependencies]
-maazdb-rs = "0.1.0"</code></pre>
+                <h4>Cargo.toml</h4>
+                <pre><code>maazdb-rs = "0.1.0"</code></pre>
                 
-                <h4>Quick Start</h4>
-                <pre><code>use maazdb_rs::{MaazDB, Result};
-
-fn main() -> Result<()> {
-    let mut db = MaazDB::connect(
-        "127.0.0.1", 8888, "admin", "admin"
-    )?;
-    println!("✓ Connected via TLS 1.3");
-
-    db.query("USE store_prod;")?;
-    
-    let res = db.query("SELECT 'Hello!' as msg;")?;
-    println!("{}", res);
-
-    Ok(())
-}</code></pre>
+                <h4>Usage</h4>
+                <pre><code>let db = MaazDB::connect("addr", 8888, "user", "pass").await?;</code></pre>
             </div>
         </div>
 
@@ -205,32 +196,20 @@ fn main() -> Result<()> {
                 <i class="fab fa-python brand-python"></i>
                 <h2>MaazDB-Py</h2>
             </div>
-            <p class="driver-desc">A pure-Python client library. No heavy C-extensions required. Features automatic TLS 1.3 encryption and Context Manager support for safe connection handling.</p>
+            <p class="driver-desc">A pure-Python client library with automatic TLS 1.3 handshake. Fully supports context managers and provides a simple, idiomatic Pythonic API.</p>
             
             <div class="driver-links">
                 <a href="https://github.com/42Wor/maazdb-py" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://pypi.org/project/maazdb-py/" target="_blank"><i class="fas fa-box"></i> PyPI</a>
+                <a href="https://pypi.org/" target="_blank"><i class="fas fa-box"></i> PyPI</a>
             </div>
 
             <div class="code-section">
                 <h4>Installation</h4>
                 <pre><code>pip install maazdb-py</code></pre>
                 
-                <h4>Quick Start</h4>
-                <pre><code>from maazdb import MaazDB
-
-try:
-    # Context manager handles closing
-    with MaazDB() as db:
-        db.connect("127.0.0.1", 8888, 
-                   "admin", "admin")
-        print("✓ Connected to MaazDB")
-        
-        db.query("USE analytics;")
-        res = db.query("SELECT COUNT(*) FROM users;")
-        print(f"Total users: {res}")
-except Exception as e:
-    print(f"Error: {e}")</code></pre>
+                <h4>Usage</h4>
+                <pre><code>with MaazDB() as db:
+    db.connect("127.0.0.1", 8888, "user", "pass")</code></pre>
             </div>
         </div>
 

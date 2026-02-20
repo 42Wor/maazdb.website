@@ -1,0 +1,144 @@
+/* 
+    FILE PATH: app/static/css/other.css 
+    MaazDB v11.9 - Documentation, Code Blocks, and Tables
+*/
+
+/* =========================================
+   1. DOCUMENTATION LAYOUT
+   ========================================= */
+.docs-layout {
+    display: block;
+    margin-top: 70px;
+    min-height: 100vh;
+}
+
+/* Sidebar (Fixed Left) */
+.docs-sidebar {
+    width: 280px; position: fixed; top: 70px; bottom: 0; left: 0;
+    background-color: var(--bg-dark); border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem; overflow-y: auto; z-index: 900;
+}
+
+.docs-sidebar h3 {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--accent); margin-top: 1.5rem; margin-bottom: 1rem; font-weight: 700;
+}
+.docs-sidebar h3:first-child { margin-top: 0; }
+
+.docs-sidebar ul { list-style: none; padding: 0; }
+.docs-sidebar li { margin-bottom: 5px; }
+
+.docs-sidebar a {
+    display: block; padding: 8px 12px; color: var(--text-dim);
+    font-size: 0.95rem; border-radius: 6px; transition: all 0.2s ease;
+}
+.docs-sidebar a:hover { color: var(--text-main); background-color: rgba(255, 255, 255, 0.05); }
+.docs-sidebar a.active { color: var(--text-main); background-color: rgba(239, 68, 68, 0.1); font-weight: 600; }
+
+/* Main Content (Pushed Right) */
+.docs-content {
+    margin-left: 280px; padding: 3rem 4rem; max-width: 1000px;
+}
+
+.docs-content h1 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-main); }
+.docs-content h2 {
+    font-size: 1.8rem; margin: 3rem 0 1.5rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border); color: var(--text-main);
+}
+.docs-content h3 { font-size: 1.3rem; margin: 2rem 0 1rem; color: var(--accent); }
+.docs-content p, .docs-content li { color: var(--text-dim); line-height: 1.7; margin-bottom: 1rem; }
+
+/* =========================================
+   2. INSTALLATION SECTION
+   ========================================= */
+.install-section { margin-bottom: 60px; scroll-margin-top: 100px; }
+.step { margin-bottom: 30px; }
+.step h3 { font-size: 1.2rem; color: var(--text-main); margin-bottom: 10px; font-weight: 700; }
+
+.install-badge {
+    display: inline-flex; align-items: center; gap: 10px; padding: 10px 15px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 6px; margin-bottom: 10px; color: var(--text-main);
+    font-family: var(--font-mono);
+}
+.install-badge i { color: var(--accent); }
+
+/* =========================================
+   3. CODE BLOCKS & TABS
+   ========================================= */
+pre, .code-box {
+    background-color: var(--code-bg); border: 1px solid var(--border);
+    border-left: 4px solid var(--accent); border-radius: 6px;
+    padding: 15px; overflow-x: auto; font-family: var(--font-mono);
+    font-size: 0.9rem; color: #a5d6ff; margin: 15px 0; position: relative;
+}
+code {
+    font-family: var(--font-mono); background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px; border-radius: 4px; color: #ff9ea3;
+}
+pre code { background: none; padding: 0; color: inherit; }
+
+.code-label {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.8rem;
+    color: var(--accent); background: rgba(239, 68, 68, 0.1);
+    padding: 0.25rem 0.75rem; border-radius: 4px 4px 0 0;
+    margin-top: 1.5rem; border: 1px solid var(--border); border-bottom: none;
+}
+
+.code-tabs { display: flex; gap: 5px; margin-top: 1.5rem; border-bottom: 1px solid var(--border); }
+.code-tabs .tab {
+    padding: 0.75rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border);
+    border-bottom: none; color: var(--text-dim); cursor: pointer;
+    border-radius: 6px 6px 0 0; transition: all 0.2s;
+}
+.code-tabs .tab:hover { color: var(--text-main); }
+.code-tabs .tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.tab-content {
+    display: none; border: 1px solid var(--border); border-top: none;
+    background: var(--bg-card); padding: 1rem; border-radius: 0 0 6px 6px;
+}
+.tab-content.active { display: block; }
+
+.copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,0.1); border: none; color: var(--text-dim);
+    padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;
+}
+.copy-btn:hover { background: var(--accent); color: white; }
+
+/* Syntax Highlighting */
+.sql-keyword { color: #ff7b72; font-weight: bold; } 
+.sql-string  { color: #a5d6ff; }                   
+.sql-number  { color: #d2a8ff; }                   
+.sql-comment { color: #8b949e; font-style: italic; } 
+
+/* =========================================
+   4. ALERTS & TABLES
+   ========================================= */
+.note, .info-box, .warning-box {
+    padding: 15px; border-radius: 6px; margin-top: 15px; font-size: 0.95rem; border: 1px solid;
+}
+.note { background: rgba(255, 255, 255, 0.03); border-color: var(--border); color: var(--text-dim); }
+.info-box { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #93c5fd; }
+.warning-box { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #fcd34d; }
+
+.custom-table {
+    width: 100%; border-collapse: collapse; margin-top: 20px;
+    background: var(--bg-card); border-radius: 8px; overflow: hidden;
+}
+.custom-table th, .custom-table td { padding: 15px; border-bottom: 1px solid var(--border); text-align: left; }
+.custom-table th { background-color: rgba(0, 0, 0, 0.2); color: var(--text-main); font-weight: 600; }
+.custom-table td { color: var(--text-dim); }
+
+/* =========================================
+   5. DOCS RESPONSIVE
+   ========================================= */
+@media (max-width: 992px) {
+    .docs-sidebar { display: none; }
+    .docs-content { margin-left: 0; padding: 2rem; }
+}
+
+@media (max-width: 768px) {
+    .custom-table { display: block; overflow-x: auto; }
+}

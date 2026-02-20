@@ -6,13 +6,13 @@
     <title>MaazDB v{{ version }}</title>
     
     <!-- Global CSS & Fonts -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer_header.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/maazdb.ico') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-
-
+    <!-- THIS ALLOWS CHILD PAGES TO INJECT THEIR OWN CSS -->
+    {% block head %}{% endblock %}
 </head>
 <body>
 

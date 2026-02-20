@@ -16,7 +16,9 @@ def inject_global_vars():
 @bp.route('/docs')
 def docs():
     return render_template('docs.html')
-
+@bp.route('/docs/ecosystem')
+def overview():
+    return render_template('ecosystem/ecosystem.html')
 
 @bp.route('/docs/insert')
 def insert():

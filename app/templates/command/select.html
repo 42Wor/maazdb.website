@@ -1,228 +1,14 @@
-<!--
-FILE: app/templates/command/select.html
-
-PURPOSE:
-Template page for SELECT command documentation in MaazDB.
-Matches the design structure of insert.html.
--->
 {% extends "base.html" %}
 
 {% block head %}
-<style>
-.docs-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.docs-sidebar {
-    position: sticky;
-    top: 2rem;
-    height: calc(100vh - 4rem);
-    overflow-y: auto;
-    padding: 1.5rem;
-    background: var(--card-bg);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-}
-
-.docs-sidebar h3 {
-    color: var(--primary-color);
-    margin: 1.5rem 0 0.75rem;
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.docs-sidebar h3:first-child {
-    margin-top: 0;
-}
-
-.docs-sidebar a {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.docs-sidebar a:hover {
-    color: var(--primary-color);
-    background: rgba(var(--primary-rgb), 0.1);
-}
-
-.docs-sidebar a.active {
-    color: var(--primary-color);
-    background: rgba(var(--primary-rgb), 0.15);
-    font-weight: 500;
-    border-left: 3px solid var(--primary-color);
-}
-
-.docs-content {
-    max-width: 900px;
-}
-
-.docs-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--heading-color);
-}
-
-.docs-content h2 {
-    font-size: 1.8rem;
-    margin: 3rem 0 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border-color);
-    color: var(--heading-color);
-}
-
-.docs-content h3 {
-    font-size: 1.3rem;
-    margin: 2rem 0 1rem;
-    color: var(--heading-color);
-}
-
-.docs-content p {
-    line-height: 1.7;
-    margin-bottom: 1.25rem;
-}
-
-.code-label {
-    display: inline-block;
-    font-family: 'Courier New', monospace;
-    font-size: 0.85rem;
-    color: var(--primary-color);
-    background: rgba(var(--primary-rgb), 0.1);
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px 4px 0 0;
-    margin-top: 1.5rem;
-    border: 1px solid var(--border-color);
-    border-bottom: none;
-}
-
-.docs-content pre {
-    position: relative;
-    background: #1a1b26;
-    color: #c0caf5;
-    padding: 1.5rem;
-    border-radius: 0 8px 8px 8px;
-    overflow-x: auto;
-    margin: 0 0 2rem 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    border: 1px solid #24283b;
-}
-
-.docs-content code {
-    font-family: 'Courier New', monospace;
-    background: rgba(var(--primary-rgb), 0.1);
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-size: 0.9em;
-    color: var(--primary-color);
-}
-
-.sql-keyword {
-    color: #7dcfff;
-    font-weight: bold;
-}
-
-.sql-string {
-    color: #9ece6a;
-}
-
-.sql-number {
-    color: #ff9e64;
-}
-
-.warning-box {
-    background: rgba(255, 193, 7, 0.1);
-    border-left: 4px solid #ffc107;
-    padding: 1rem;
-    border-radius: 6px;
-    margin: 1.5rem 0;
-}
-
-.info-box {
-    background: rgba(33, 150, 243, 0.1);
-    border-left: 4px solid #2196f3;
-    padding: 1rem;
-    border-radius: 6px;
-    margin: 1.5rem 0;
-}
-
-.copy-btn {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #c0caf5;
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-}
-
-.copy-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.nav-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 2px solid var(--border-color);
-}
-
-.nav-links a {
-    flex: 1;
-    padding: 1rem;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--primary-color);
-    transition: all 0.2s ease;
-}
-
-.nav-links a:hover {
-    background: rgba(var(--primary-rgb), 0.1);
-    transform: translateY(-2px);
-}
-
-@media (max-width: 1024px) {
-    .docs-layout {
-        grid-template-columns: 1fr;
-    }
-    .docs-sidebar {
-        position: static;
-        height: auto;
-        margin-bottom: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .docs-layout {
-        padding: 1rem;
-        gap: 1rem;
-    }
-    .docs-content h1 {
-        font-size: 2rem;
-    }
-}
-</style>
+<!-- Load the documentation CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/other.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="docs-layout">
+    
+    <!-- SIDEBAR -->
     <aside class="docs-sidebar">
         <h3>SELECT Guide</h3>
         <ul>
@@ -244,6 +30,7 @@ Matches the design structure of insert.html.
         </ul>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <main class="docs-content">
         <h1>SELECT Command</h1>
         <p><strong>Data Query Language (DQL)</strong> — Retrieve, filter, sort, and paginate data from tables.</p>
@@ -351,10 +138,17 @@ SELECT * FROM users LIMIT 10 OFFSET 10;</code></pre>
 
         <section id="aggregates">
             <h2>Aggregates & Expressions</h2>
+            <p>Aggregates perform calculations on a set of values and return a single result.</p>
 
             <h3>Counting Rows</h3>
             <p>Count the total number of rows matching a condition:</p>
             <pre><code>SELECT COUNT(*) FROM users WHERE active = TRUE;</code></pre>
+
+            <h3>Math Aggregates</h3>
+            <p>Calculate the sum, maximum, or minimum values of a column:</p>
+            <pre><code>SELECT SUM(salary) FROM employees;
+SELECT MAX(score) FROM players;
+SELECT MIN(price) FROM products;</code></pre>
 
             <h3>Evaluating Expressions</h3>
             <p>MaazDB can evaluate mathematical and logical expressions directly:</p>
@@ -363,38 +157,38 @@ SELECT * FROM users LIMIT 10 OFFSET 10;</code></pre>
 
         <section id="comparison">
             <h2>DML Comparison</h2>
-            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+            <table class="custom-table">
                 <thead>
-                    <tr style="background: rgba(var(--primary-rgb), 0.1);">
-                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Command</th>
-                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Purpose</th>
-                        <th style="padding: 1rem; text-align: left; border: 1px solid var(--border-color);">Complexity</th>
+                    <tr>
+                        <th>Command</th>
+                        <th>Purpose</th>
+                        <th>Complexity</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>SELECT (PK)</strong></td>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Read by ID</td>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>O(1)</strong></td>
-                    </tr>
-                    <tr style="background: rgba(0,0,0,0.02);">
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>SELECT (Scan)</strong></td>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Read by Filter</td>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);">O(n)</td>
+                        <td><strong>SELECT (PK)</strong></td>
+                        <td>Read by ID</td>
+                        <td><strong>O(1)</strong></td>
                     </tr>
                     <tr>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);"><strong>INSERT</strong></td>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);">Create</td>
-                        <td style="padding: 1rem; border: 1px solid var(--border-color);">O(1)</td>
+                        <td><strong>SELECT (Scan)</strong></td>
+                        <td>Read by Filter</td>
+                        <td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>INSERT</strong></td>
+                        <td>Create</td>
+                        <td>O(1)</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
-        <div class="nav-links">
-            <a href="{{ url_for('main.insert') }}">← INSERT</a>
-            <a href="{{ url_for('main.docs') }}">📖 Documentation</a>
-            <a href="{{ url_for('main.update') }}">UPDATE →</a>
+        <!-- Bottom Navigation -->
+        <div style="display: flex; justify-content: space-between; margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border);">
+            <a href="{{ url_for('main.insert') }}" class="btn-nav" style="background: var(--bg-card); color: var(--text-main) !important; border: 1px solid var(--border); box-shadow: none;">&larr; Prev: INSERT</a>
+            <a href="{{ url_for('main.update') }}" class="btn-nav">Next: UPDATE &rarr;</a>
         </div>
     </main>
 </div>
@@ -430,17 +224,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Syntax Highlighting
-    const keywords = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'NOT', 'IS', 'NULL', 'ORDER', 'BY', 'ASC', 'DESC', 'LIMIT', 'OFFSET', 'COUNT', 'TRUE', 'FALSE'];
+    const keywords = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'NOT', 'IS', 'NULL', 'ORDER', 'BY', 'ASC', 'DESC', 'LIMIT', 'OFFSET', 'COUNT', 'MAX', 'MIN', 'SUM', 'TRUE', 'FALSE'];
     const codeBlocks = document.querySelectorAll('pre code');
     
     codeBlocks.forEach(block => {
         let html = block.innerHTML;
-        
-        // Highlight Keywords
         const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
         html = html.replace(keywordRegex, '<span class="sql-keyword">$1</span>');
-        
-
         block.innerHTML = html;
     });
 

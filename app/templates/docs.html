@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/other.css') }}">
 <div class="docs-layout">
     
     <!-- SIDEBAR NAVIGATION -->
@@ -11,6 +12,7 @@
             <li><a href="#installation">Installation</a></li>
             <li><a href="#protocol">Protocol</a></li>
             <li><a href="#auth">Authentication</a></li>
+            <li><a href="#ecosystem">Ecosystem & Drivers</a></li>
         </ul>
 
         <h3>Database Management</h3>
@@ -47,7 +49,7 @@
 
         <section id="intro">
             <h1>MaazDB Documentation</h1>
-            <p><strong>Version:</strong> {{ version or '11.9.0' }}<br>
+            <p><strong>Version:</strong> {{ version or '12.0.0' }}<br>
             <strong>Default Port:</strong> 8888<br>
             <strong>Protocol:</strong> TCP / Binary Length-Prefixed</p>
             
@@ -62,19 +64,19 @@
             <h3>Linux (Debian/Ubuntu/Kali)</h3>
             <div class="install-badge">
                 <i class="fab fa-linux"></i>
-                <code>sudo dpkg -i maazdb_11.9.0_linux_amd64.deb</code>
+                <code>sudo dpkg -i maazdb_{{ version or '12.0.0' }}_linux_amd64.deb</code>
             </div>
             
             <h3>macOS</h3>
             <div class="install-badge">
                 <i class="fab fa-apple"></i>
-                <code>Open MaazDB_11.9.0_macOS.dmg</code>
+                <code>Open MaazDB_{{ version or '12.0.0' }}_macOS.dmg</code>
             </div>
             
             <h3>Windows</h3>
             <div class="install-badge">
                 <i class="fab fa-windows"></i>
-                <code>Run MaazDB_Setup_Windows_x64_1190.exe</code>
+                <code>Run MaazDB_Setup_Windows_x64.exe</code>
             </div>
         </section>
 
@@ -95,24 +97,21 @@
         <!-- 2. AUTHENTICATION -->
         <section id="auth">
             <h2>2. Authentication</h2>
+            <p>If you've used older versions of MaazDB, you might remember having to send a <code>LOGIN</code> SQL query to authenticate. We've completely revamped this process to make it much more secure and developer-friendly!</p>
+            <p>Now, authentication happens entirely under the hood the moment your driver connects to the database. You simply pass your credentials (host, port, username, and password) directly into your language's driver connection method. This ensures that your session is securely authenticated from the very first packet, preventing unauthorized access before any SQL is even parsed.</p>
             
-            <h3>Login</h3>
-            <p>Authenticates the current session. Must be the first command sent.</p>
-            
-            <span class="code-label">Syntax</span>
-            <pre><code>LOGIN &lt;username&gt; PASSWORD '&lt;password&gt;';</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>LOGIN admin PASSWORD 'admin';</code></pre>
+            <span class="code-label">Conceptual Example (Using a Client Driver)</span>
+            <pre><code>// No more LOGIN queries! Just pass credentials to your driver:
+const db = new MaazDB();
+await db.connect("127.0.0.1", 8888, "admin", "admin");</code></pre>
+        </section>
 
-            <h3>Create User</h3>
-            <p>Registers a new user in the system.</p>
-            
-            <span class="code-label">Syntax</span>
-            <pre><code>CREATE USER &lt;username&gt; PASSWORD '&lt;password&gt;';</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>CREATE USER john PASSWORD 'secret123';</code></pre>
+        <!-- ECOSYSTEM & DRIVERS -->
+        <section id="ecosystem">
+            <h2>Ecosystem & Official Drivers</h2>
+            <p>MaazDB isn't just a standalone database; it's a growing ecosystem. We know that writing raw TCP sockets isn't fun, so we've built native, highly-optimized drivers for your favorite programming languages.</p>
+            <p>Whether you are building a web backend in Node.js, a high-performance system in Rust, or doing data analysis in Python, we have an official library ready for you. These drivers handle all the complex binary protocol packing, TLS encryption, and connection pooling automatically.</p>
+            <a href="{{ url_for('main.overview') }}" class="btn btn-primary" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: var(--accent, #007bff); color: white; text-decoration: none; border-radius: 5px;">Explore Official Drivers & Libraries &rarr;</a>
         </section>
 
         <!-- 3. DATABASE MANAGEMENT -->
@@ -122,17 +121,10 @@
             <h3>Create Database</h3>
             <span class="code-label">Syntax</span>
             <pre><code>CREATE DATABASE &lt;db_name&gt;;</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>CREATE DATABASE shop_db;</code></pre>
 
             <h3>Use Database</h3>
-            <p>Selects the active database for subsequent queries.</p>
             <span class="code-label">Syntax</span>
             <pre><code>USE &lt;db_name&gt;;</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>USE shop_db;</code></pre>
 
             <h3>Show Databases</h3>
             <span class="code-label">Syntax</span>
@@ -141,311 +133,164 @@
             <h3>Drop Database</h3>
             <span class="code-label">Syntax</span>
             <pre><code>DROP DATABASE &lt;db_name&gt;;</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>DROP DATABASE shop_db;</code></pre>
         </section>
 
         <!-- 4. SCHEMA (DDL) -->
         <section id="types">
             <h2>4. Data Types</h2>
             <table class="custom-table">
-                <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+                <thead><tr><th>Type</th><th>Description</th></tr></thead>
                 <tbody>
-                    <tr><td><code>SERIAL</code></td><td>Auto-incrementing Integer (Primary Key only)</td><td><code>id SERIAL PRIMARY KEY</code></td></tr>
-                    <tr><td><code>INT</code></td><td>Standard 32-bit Integer</td><td><code>age INT</code></td></tr>
-                    <tr><td><code>DOUBLE</code></td><td>64-bit Floating point</td><td><code>price DOUBLE</code></td></tr>
-                    <tr><td><code>TEXT</code></td><td>UTF-8 String</td><td><code>name TEXT</code></td></tr>
-                    <tr><td><code>BOOL</code></td><td>Boolean (TRUE/FALSE)</td><td><code>active BOOL</code></td></tr>
-                    <tr><td><code>TIMESTAMP</code></td><td>Date and time</td><td><code>'2024-01-29 14:30:00'</code></td></tr>
-                    <tr><td><code>UUID</code></td><td>Universally Unique Identifier</td><td><code>uuid UUID</code></td></tr>
+                    <tr><td><code>SERIAL</code></td><td>Auto-incrementing Integer (Primary Key only)</td></tr>
+                    <tr><td><code>INT</code></td><td>Standard 32-bit Integer</td></tr>
+                    <tr><td><code>DOUBLE</code></td><td>64-bit Floating point</td></tr>
+                    <tr><td><code>TEXT</code></td><td>UTF-8 String</td></tr>
+                    <tr><td><code>BOOL</code></td><td>Boolean (TRUE/FALSE)</td></tr>
+                    <tr><td><code>TIMESTAMP</code></td><td>Date and time</td></tr>
+                    <tr><td><code>UUID</code></td><td>Universally Unique Identifier</td></tr>
                 </tbody>
             </table>
         </section>
 
         <section id="create-table">
             <h3>Create Table</h3>
-            <p>Defines a new table structure.</p>
-            
             <span class="code-label">Syntax</span>
             <pre><code>CREATE TABLE &lt;table_name&gt; (
     &lt;col_name&gt; &lt;type&gt; [PRIMARY KEY],
-    &lt;col_name&gt; &lt;type&gt;,
     ...
-);</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    age INT,
-    salary DOUBLE,
-    active BOOL,
-    created TIMESTAMP,
-    uuid UUID
 );</code></pre>
         </section>
 
         <section id="foreign-keys">
             <h3>Foreign Keys</h3>
-            <p>Enforces referential integrity between tables.</p>
-            
             <span class="code-label">Syntax</span>
             <pre><code>CREATE TABLE &lt;table_name&gt; (
     ...
     FOREIGN KEY (&lt;local_col&gt;) REFERENCES &lt;parent_table&gt;(&lt;parent_col&gt;)
 );</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>CREATE TABLE orders (
-    order_id SERIAL PRIMARY KEY,
-    user_id INT,
-    amount DOUBLE,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);</code></pre>
         </section>
 
         <section id="table-mgmt">
             <h3>Table Management</h3>
-            
             <h4>Show Tables</h4>
-            <span class="code-label">Syntax</span>
             <pre><code>SHOW TABLES;</code></pre>
-            
             <h4>Describe Table</h4>
-            <span class="code-label">Syntax</span>
             <pre><code>DESCRIBE &lt;table_name&gt;;</code></pre>
-            
             <h4>Drop Table</h4>
-            <span class="code-label">Syntax</span>
             <pre><code>DROP TABLE &lt;table_name&gt;;</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>DROP TABLE users;</code></pre>
         </section>
 
         <!-- 5. DATA MANIPULATION (DML) -->
         <section id="insert">
             <h2>5. Data Manipulation (DML)</h2>
-            
             <h3>Insert</h3>
-            <p>Adds new rows. Do not include <code>SERIAL</code> columns.</p>
-            
+            <p>Adds new rows to a table. Do not include <code>SERIAL</code> columns in your insert statement, as they auto-increment.</p>
             <span class="code-label">Syntax</span>
             <pre><code>INSERT INTO &lt;table_name&gt; (&lt;col1&gt;, &lt;col2&gt;) VALUES (&lt;val1&gt;, &lt;val2&gt;);</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>INSERT INTO users (name, age, active) VALUES ('Alice', 30, TRUE);</code></pre>
-            <a href="{{ url_for('main.insert') }}" style="color: var(--accent); text-decoration: underline;">Learn more here</a>
+            <a href="{{ url_for('main.insert') }}" style="color: var(--accent, #007bff); text-decoration: underline; font-weight: bold;">Learn more about INSERT &rarr;</a>
         </section>
 
         <section id="select">
             <h3>Select</h3>
             <p>Retrieves data with powerful filtering capabilities.</p>
-            
-            <h4>Basic Select</h4>
             <span class="code-label">Syntax</span>
             <pre><code>SELECT &lt;cols&gt; FROM &lt;table_name&gt; [WHERE condition];</code></pre>
             
-            <span class="code-label">Example 1 (Basic)</span>
-            <pre><code>SELECT * FROM users WHERE age > 25;</code></pre>
+            <h4>Aggregate Functions</h4>
+            <p>Aggregate functions perform a calculation on a set of values and return a single value. They are incredibly useful for data analysis.</p>
+            <table class="custom-table">
+                <thead><tr><th>Function</th><th>Description</th></tr></thead>
+                <tbody>
+                    <tr><td><code>COUNT(column)</code></td><td>Returns the total number of rows matching the criteria.</td></tr>
+                    <tr><td><code>SUM(column)</code></td><td>Returns the total sum of a numeric column.</td></tr>
+                    <tr><td><code>MAX(column)</code></td><td>Returns the largest (maximum) value of the selected column.</td></tr>
+                    <tr><td><code>MIN(column)</code></td><td>Returns the smallest (minimum) value of the selected column.</td></tr>
+                </tbody>
+            </table>
             
-            <span class="code-label">Example 2 (Smart Select - O(1) lookup)</span>
-            <pre><code>SELECT * FROM users WHERE id = 1;</code></pre>
-            
-            <span class="code-label">Example 3 (Complex)</span>
-            <pre><code>SELECT name, salary FROM users 
-WHERE active = TRUE 
-ORDER BY salary DESC 
-LIMIT 10 OFFSET 5;</code></pre>
-            
-            <h4>Expressions & Aggregates</h4>
             <span class="code-label">Example</span>
-            <pre><code>SELECT COUNT(*) as total_users FROM users;
-SELECT 1 + 1 as result, 'Hello' as greeting, TRUE as flag;</code></pre>
-            <a href="{{ url_for('main.select') }}" style="color: var(--accent); text-decoration: underline;">Learn more here</a>
+            <pre><code>-- Get the total number of users and the sum of all salaries
+SELECT COUNT(*) as total_users, SUM(salary) as total_payroll FROM users;
+
+-- Find the highest and lowest salary in the company
+SELECT MAX(salary) as highest_salary, MIN(salary) as lowest_salary FROM users;</code></pre>
+            <a href="{{ url_for('main.select') }}" style="color: var(--accent, #007bff); text-decoration: underline; font-weight: bold;">Learn more about SELECT &rarr;</a>
         </section>
 
         <section id="update">
             <h3>Update</h3>
-            <p>Modifies existing data based on a condition.</p>
-            
+            <p>Modifies existing data based on a specific condition.</p>
             <span class="code-label">Syntax</span>
             <pre><code>UPDATE &lt;table_name&gt; SET &lt;col&gt; = &lt;val&gt; WHERE &lt;condition&gt;;</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>UPDATE users SET salary = 55000.00 WHERE name = 'Alice';</code></pre>
-            <a href="{{ url_for('main.update') }}" style="color: var(--accent); text-decoration: underline;">Learn more here</a>
+            <a href="{{ url_for('main.update') }}" style="color: var(--accent, #007bff); text-decoration: underline; font-weight: bold;">Learn more about UPDATE &rarr;</a>
         </section>
 
         <section id="delete">
             <h3>Delete</h3>
-            <p>Removes rows based on a condition.</p>
-            
+            <p>Removes rows from a table based on a condition.</p>
             <span class="code-label">Syntax</span>
             <pre><code>DELETE FROM &lt;table_name&gt; WHERE &lt;condition&gt;;</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>DELETE FROM users WHERE name = 'Charlie';</code></pre>
-             <a href="{{ url_for('main.delete') }}" style="color: var(--accent); text-decoration: underline;">Learn more here</a>
+            <a href="{{ url_for('main.delete') }}" style="color: var(--accent, #007bff); text-decoration: underline; font-weight: bold;">Learn more about DELETE &rarr;</a>
         </section>
 
         <!-- 6. BACKUP & RESTORE -->
         <section id="backup">
             <h2>6. Disaster Recovery</h2>
-            
             <h3>Backup</h3>
-            <p>Creates a snapshot of the current database state.</p>
-            <span class="code-label">Syntax</span>
             <pre><code>BACKUP '&lt;snapshot_name&gt;';</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>BACKUP 'snapshot_v1';</code></pre>
-
             <h3>Show Backups</h3>
-            <span class="code-label">Syntax</span>
             <pre><code>SHOW BACKUPS;</code></pre>
-
             <h3>Restore</h3>
-            <p>Reverts database to a snapshot. <strong>Overwrites current data.</strong></p>
-            <span class="code-label">Syntax</span>
             <pre><code>RESTORE '&lt;snapshot_name&gt;';</code></pre>
-            
-            <span class="code-label">Example</span>
-            <pre><code>RESTORE 'snapshot_v1';</code></pre>
         </section>
 
         <!-- 7. COMMENTS & LITERALS -->
         <section id="comments">
             <h2>7. Comments & Literals</h2>
-            
             <h3>Comments</h3>
-            <span class="code-label">Single-line (-- or //)</span>
-            <pre><code>-- This is a comment
-SELECT * FROM users; // This is also a comment</code></pre>
-            
-            <span class="code-label">Multi-line (/* */)</span>
-            <pre><code>/* 
-   This is a multi-line
-   comment block 
-*/
-SELECT * FROM users;</code></pre>
-            
-            <h3>Literals</h3>
-            <span class="code-label">Strings</span>
-            <pre><code>'Hello World'
-"MaazDB"</code></pre>
-            
-            <span class="code-label">Numbers & Booleans</span>
-            <pre><code>42
-3.14
-TRUE
-FALSE
-NULL</code></pre>
+            <pre><code>-- This is a single-line comment
+/* This is a
+   multi-line comment */</code></pre>
         </section>
 
         <!-- 8. TEST SUITE -->
         <section id="test-suite">
             <h2>Complete Test Suite Example</h2>
-            <p>Below is a comprehensive test suite demonstrating all major features of MaazDB v11.9:</p>
-            
-            <div class="code-tabs">
-                <button class="tab active" data-tab="tab1" type="button">Full Test SQL</button>
-                <button class="tab" data-tab="tab2" type="button">File Test SQL</button>
-            </div>
+            <p>Below is a comprehensive test suite demonstrating all major features of MaazDB. You can run this directly in your client to verify your setup.</p>
+            <pre><code>-- MaazDB Comprehensive Test Suite
+-- Note: Authentication is handled by the client driver.
 
-            <div id="tab1" class="tab-content active">
-                <pre><code>-- MaazDB v11.9 Comprehensive Test Suite
--- Demonstrates all major features
-
--- 1. Authentication
-LOGIN admin PASSWORD 'admin';
-
--- 2. Database Management
+-- 1. Database Management
 CREATE DATABASE full_test_db;
 USE full_test_db;
 
--- 3. DDL with Foreign Keys
+-- 2. DDL (Schema Creation)
 CREATE TABLE employees (
     id SERIAL PRIMARY KEY,
     name TEXT,
     role TEXT,
     salary DOUBLE,
-    is_active BOOL,
-    joined_at TIMESTAMP
+    is_active BOOL
 );
 
--- 4. INSERT with various data types
-INSERT INTO employees (name, role, salary, is_active, joined_at) 
-VALUES ('Alice', 'Engineer', 85000.00, TRUE, '2023-01-15 09:00:00');
+-- 3. DML (Data Insertion)
+INSERT INTO employees (name, role, salary, is_active) VALUES ('Alice', 'Engineer', 85000.00, TRUE);
+INSERT INTO employees (name, role, salary, is_active) VALUES ('Bob', 'Manager', 95000.50, TRUE);
+INSERT INTO employees (name, role, salary, is_active) VALUES ('Charlie', 'Intern', 30000.00, FALSE);
 
-INSERT INTO employees (name, role, salary, is_active, joined_at) 
-VALUES ('Bob', 'Manager', 95000.50, TRUE, '2022-05-20 10:30:00');
+-- 4. SELECT with Aggregates
+SELECT COUNT(*) as total_staff FROM employees;
+SELECT SUM(salary) as total_payroll FROM employees;
+SELECT MAX(salary) as highest_paid FROM employees;
+SELECT MIN(salary) as lowest_paid FROM employees;
 
-INSERT INTO employees (name, role, salary, is_active, joined_at) 
-VALUES ('Charlie', 'Intern', 30000.00, FALSE, '2024-01-10 08:15:00');
-
--- 5. SELECT queries
-SELECT * FROM employees;
-SELECT name, salary FROM employees WHERE salary > 50000;
-
--- 6. UPDATE operations
+-- 5. UPDATE & DELETE
 UPDATE employees SET salary = 90000.00 WHERE name = 'Alice';
-SELECT name, salary FROM employees WHERE name = 'Alice';
-
--- 7. DELETE operations
 DELETE FROM employees WHERE name = 'Charlie';
-SELECT COUNT(*) FROM employees;
 
--- 8. Foreign Key relationships
-CREATE TABLE projects (
-    pid SERIAL PRIMARY KEY,
-    title TEXT,
-    lead_id INT,
-    FOREIGN KEY (lead_id) REFERENCES employees(id)
-);
-
-INSERT INTO projects (title, lead_id) VALUES ('Project X', 1);
-SELECT * FROM projects;
-
--- 9. Backup & Restore
-BACKUP 'full_backup_test';
-DROP TABLE projects;
-DROP TABLE employees;
-RESTORE 'full_backup_test';
-SELECT COUNT(*) FROM employees;
-
--- 10. Cleanup
+-- 6. Cleanup
 USE system;
 DROP DATABASE full_test_db;</code></pre>
-            </div>
-
-            <div id="tab2" class="tab-content">
-                <pre><code>-- File System Test Suite
-LOGIN admin PASSWORD 'admin';
-CREATE DATABASE file_test_db;
-USE file_test_db;
-
-CREATE TABLE products (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    price DOUBLE
-);
-
-INSERT INTO products (name, price) VALUES ('Laptop', 999.99);
-INSERT INTO products (name, price) VALUES ('Mouse', 25.50);
-INSERT INTO products (name, price) VALUES ('Keyboard', 45.00);
-
-SELECT * FROM products;
-UPDATE products SET price = 899.99 WHERE name = 'Laptop';
-DELETE FROM products WHERE name = 'Mouse';
-
-BACKUP 'file_test_backup';
-SELECT COUNT(*) FROM products;
-
-USE system;
-DROP DATABASE file_test_db;</code></pre>
-            </div>
         </section>
     </main>
 </div>
@@ -454,43 +299,6 @@ DROP DATABASE file_test_db;</code></pre>
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Tab functionality
-    const tabs = document.querySelectorAll('.tab');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function(e) {
-            e.preventDefault();
-            const tabId = this.getAttribute('data-tab');
-            
-            // Remove active class from all tabs
-            tabs.forEach(t => t.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-            
-            // Add active class to clicked tab and corresponding content
-            this.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        });
-    });
-    
-    // Syntax Highlighting
-    const codeBlocks = document.querySelectorAll('pre code');
-    
-    const keywords = [
-        'LOGIN', 'CREATE', 'DATABASE', 'USE', 'TABLE', 'DROP', 'INSERT', 'INTO', 'VALUES',
-        'UPDATE', 'SET', 'WHERE', 'DELETE', 'FROM', 'SELECT', 'ORDER', 'BY', 'LIMIT', 'OFFSET',
-        'BACKUP', 'RESTORE', 'SHOW', 'DESCRIBE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES',
-        'SERIAL', 'INT', 'DOUBLE', 'TEXT', 'BOOL', 'TIMESTAMP', 'UUID', 'PASSWORD', 'USER',
-        'AND', 'OR', 'NOT', 'IS', 'NULL', 'TRUE', 'FALSE', 'COUNT', 'AS', 'ASC', 'DESC'
-    ];
-    
-    codeBlocks.forEach(block => {
-        let html = block.innerHTML;
-        const keywordRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
-        html = html.replace(keywordRegex, '<span class="sql-keyword">$1</span>');
-        block.innerHTML = html;
-    });
-
     // Scroll Spy for Sidebar
     const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
     const sections = document.querySelectorAll('section[id]');
@@ -512,28 +320,6 @@ document.addEventListener('DOMContentLoaded', function() {
             link.classList.remove('active');
             if (link.getAttribute('href') === `#${current}`) {
                 link.classList.add('active');
-            }
-        });
-    });
-    
-    // Copy to Clipboard
-    const copyButtons = document.querySelectorAll('pre');
-    
-    copyButtons.forEach(pre => {
-        const button = document.createElement('button');
-        button.className = 'copy-btn';
-        button.innerHTML = '<i class="far fa-copy"></i> Copy';
-        pre.style.position = 'relative';
-        pre.appendChild(button);
-        
-        button.addEventListener('click', async () => {
-            const code = pre.querySelector('code').innerText;
-            try {
-                await navigator.clipboard.writeText(code);
-                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => button.innerHTML = '<i class="far fa-copy"></i> Copy', 2000);
-            } catch (err) {
-                console.error('Failed to copy:', err);
             }
         });
     });

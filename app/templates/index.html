@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 <!-- HERO SECTION -->
 <header class="hero">
     <div class="container hero-content">
@@ -284,8 +285,7 @@
         // The sequence of events in the terminal
         // type: 'input' (user typing) or 'output' (db response)
         const sequence = [
-            { type: 'input', text: "LOGIN admin PASSWORD 'admin';" },
-            { type: 'output', html: "Connected to MaazDB v11.9.0 @ localhost:8888<br>Session ID: #9921-AF<br><br>" },
+
             
             { type: 'input', text: "CREATE TABLE users (id SERIAL, name TEXT);" },
             { type: 'output', html: "<span class='output-success'>OK</span>: Table 'users' created.<br><span class='output-time'>Time: 0.002s</span><br><br>" },

@@ -8,6 +8,7 @@ Matches the design structure of insert.html, select.html, and delete.html.
 {% extends "base.html" %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/other.css') }}">
 <style>
 .docs-layout {
     display: grid;

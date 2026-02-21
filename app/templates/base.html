@@ -11,7 +11,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    
     <!-- This allows child pages to inject other.css or index.css -->
     {% block head %}{% endblock %}
 </head>
@@ -23,10 +22,76 @@
                 <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" alt="Logo"> 
                 <span>MaazDB</span>
             </a>
+            
+            <!-- Hamburger Menu Button for Mobile -->
+            <button class="mobile-toggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
             <ul class="nav-links">
                 <li><a href="{{ url_for('main.index') }}">Home</a></li>
-                <li><a href="{{ url_for('main.docs') }}">Documentation</a></li>
-                <li><a href="{{ url_for('main.overview') }}">Ecosystem</a></li>
+                
+                <!-- DOCUMENTATION MEGA MENU -->
+                <li class="nav-item-dropdown">
+                    <a href="{{ url_for('main.docs') }}">Documentation <i class="fas fa-chevron-down dropdown-icon"></i></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-grid">
+                            <div class="mega-column">
+                                <h4>Getting Started</h4>
+                                <a href="{{ url_for('main.docs') }}#intro"><i class="fas fa-book-open"></i> Introduction</a>
+                                <a href="{{ url_for('main.docs') }}#installation"><i class="fas fa-download"></i> Installation</a>
+                                <a href="{{ url_for('main.docs') }}#protocol"><i class="fas fa-network-wired"></i> Protocol</a>
+                                <a href="{{ url_for('main.docs') }}#auth"><i class="fas fa-shield-alt"></i> Authentication</a>
+                            </div>
+                            <div class="mega-column">
+                                <h4>Schema & Tables</h4>
+                                
+                                <a href="{{ url_for('main.docs') }}#db-USE"><i class="fas fa-network-wired"></i> USE Command</a>
+                                <a href="{{ url_for('main.docs') }}#db-mgmt"><i class="fas fa-database"></i> Databases</a>
+                                <a href="{{ url_for('main.docs') }}#types"><i class="fas fa-shapes"></i> Data Types</a>
+                                <a href="{{ url_for('main.docs') }}#create-table"><i class="fas fa-table"></i> Create Table</a>
+                                <a href="{{ url_for('main.docs') }}#foreign-keys"><i class="fas fa-key"></i> Foreign Keys</a>
+                            </div>
+                            <div class="mega-column">
+                                <h4>Data Operations</h4>
+                                <a href="{{ url_for('main.docs') }}#insert"><i class="fas fa-plus-circle"></i> Insert Data</a>
+                                <a href="{{ url_for('main.docs') }}#select"><i class="fas fa-search"></i> Select & Query</a>
+                                <a href="{{ url_for('main.docs') }}#update"><i class="fas fa-edit"></i> Update Data</a>
+                                <a href="{{ url_for('main.docs') }}#delete"><i class="fas fa-trash-alt"></i> Delete Data</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- ECOSYSTEM MEGA MENU -->
+                <li class="nav-item-dropdown">
+                    <a href="{{ url_for('main.overview') }}">Ecosystem <i class="fas fa-chevron-down dropdown-icon"></i></a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-grid">
+                            <div class="mega-column">
+                                <h4>Official Drivers</h4>
+                                <a href="{{ url_for('main.overview') }}#driver-python"><i class="fab fa-python" style="color: #3776AB;"></i> Python</a>
+                                <a href="{{ url_for('main.overview') }}#driver-node"><i class="fab fa-node-js" style="color: #68A063;"></i> Node.js</a>
+                                <a href="{{ url_for('main.overview') }}#driver-rust"><i class="fab fa-rust" style="color: #DEA584;"></i> Rust</a>
+                            </div>
+                            <div class="mega-column">
+                                <h4>Coming Soon</h4>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fab fa-golang"></i> Go</a>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fab fa-java"></i> Java</a>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fab fa-php"></i> PHP</a>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fas fa-gem"></i> Ruby</a>
+                            </div>
+                            <div class="mega-column">
+                                <h4>Coming Soon</h4>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fab fa-microsoft"></i> C# / .NET</a>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fas fa-cube"></i> C++</a>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fab fa-swift"></i> Swift</a>
+                                <a href="{{ url_for('main.overview') }}" class="coming-soon-link"><i class="fas fa-robot"></i> Kotlin</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
                 <li><a href="{{ url_for('main.index') }}#download" class="btn-nav">Get v{{ version }}</a></li>
             </ul>
         </div>
@@ -43,13 +108,13 @@
                         <span>MaazDB</span>
                     </div>
                     <p>The "Red Dragon" database engine: High-performance LSM storage meets relational integrity.</p>
-                    <div class="social-links" style="display: flex; gap: 15px; font-size: 1.2rem; margin-top: 15px;">
+                    <div class="social-links">
                         <a href="https://github.com/42Wor" target="_blank"><i class="fab fa-github"></i></a>
                         <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://x.com/wwork4287" target="_blank"><i class="fab fa-twitter"></i></a>
                         <a href="https://instagram.com/maa.zwaheed" target="_blank"><i class="fab fa-instagram"></i></a>
                         <a href="https://huggingface.co/Maazwaheed" target="_blank">
-                           <img src="{{ url_for('static', filename='images/hf-logo.svg') }}" style="width: 20px; height: 20px; vertical-align: middle;" />
+                           <img src="{{ url_for('static', filename='images/hf-logo.svg') }}" alt="HuggingFace" />
                         </a>
                     </div>
                 </div>
@@ -69,26 +134,58 @@
                         <li><a href="https://portal.mbktech.org/@maaz.waheed" target="_blank">Portal</a></li>
                     </ul>
                 </div>
-<div class="footer-col">
-    <h4>Support</h4>
-    <ul>
-        <li>
-            <a href="mailto:wwork4287@gmail.com">Contact Support</a>
-        </li>
-        <li>
-            <a href="https://wa.me/923410099882" target="_blank">+92 3410099882</a>
-        </li>
-    </ul>
-</div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="mailto:wwork4287@gmail.com">Contact Support</a></li>
+                        <li><a href="https://wa.me/923410099882" target="_blank">+92 3410099882</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Maaz Waheed. MaazDB v11.9 - All Rights Reserved.</p>
+                <p>&copy; 2025 Maaz Waheed. MaazDB - All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    {% block scripts %}
-    
-    {% endblock %}
+    <!-- Script to toggle mobile menu and dropdowns -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Main Mobile Menu Toggle (Hamburger)
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const icon = mobileToggle.querySelector('i');
+
+            mobileToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // 2. Mobile Dropdown Toggle (Mega Menus)
+            const dropdownIcons = document.querySelectorAll('.nav-item-dropdown .dropdown-icon');
+            
+            dropdownIcons.forEach(function(dropdownIcon) {
+                dropdownIcon.addEventListener('click', function(e) {
+                    // Only apply this logic on mobile screens
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault(); // Prevent the link from redirecting
+                        e.stopPropagation(); // Stop the click from bubbling up
+                        
+                        // Toggle the 'mobile-open' class on the parent <li>
+                        const parentLi = this.closest('.nav-item-dropdown');
+                        parentLi.classList.toggle('mobile-open');
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -3,6 +3,10 @@
 {% block head %}
 <!-- This ensures the basic documentation font styles are available -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/other.css') }}">
+
+<!-- Prism.js Syntax Highlighter Theme (Tomorrow Night - Great for Dark Mode) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
 <style>
     /* Enable smooth scrolling for the anchor links */
     html {
@@ -263,12 +267,16 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 4rem;
-        align-items: start;
+        align-items: stretch; /* Ensures both columns are equal height */
         scroll-margin-top: 100px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    .driver-info { display: flex; flex-direction: column; }
+    .driver-info { 
+        display: flex; 
+        flex-direction: column; 
+        height: 100%;
+    }
 
     .driver-header {
         display: flex;
@@ -343,13 +351,84 @@
         color: white;
     }
 
-    /* Code Section */
+    /* =========================================
+       4. DRIVER ACTIONS & VISUALS (Layout Balancing)
+       ========================================= */
+    .driver-actions {
+        margin-top: auto; /* Pushes links and badges to the bottom of the left column */
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .driver-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .meta-badge {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .driver-visuals {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        height: 100%;
+    }
+
+    /* Pro Tip Box */
+    .pro-tip-box {
+        background: rgba(59, 130, 246, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.15);
+        border-left: 4px solid var(--accent);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-top: auto; /* Pushes pro tip to the bottom of the right column */
+    }
+
+    .pro-tip-box h4 {
+        color: var(--accent);
+        margin: 0 0 0.5rem 0;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .pro-tip-box p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--text-dim);
+        line-height: 1.6;
+    }
+
+    .pro-tip-box strong {
+        color: var(--text-main);
+    }
+
+    /* =========================================
+       5. CODE SECTION (Syntax Highlighted)
+       ========================================= */
     .driver-code {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        background: #000000;
-        padding: 2rem;
+        background: #1d1f21; /* Matches Prism Tomorrow theme */
+        padding: 1.5rem;
         border-radius: 12px;
         border: 1px solid var(--border);
         box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
@@ -365,36 +444,57 @@
         padding-bottom: 0.5rem;
     }
 
+    /* Make code blocks scrollable */
     .driver-code pre {
-        background: transparent;
-        margin: 0;
-        border: none;
-        overflow-x: auto;
-        white-space: pre-wrap;
-        word-wrap: break-word;
+        margin: 0 !important;
+        padding: 1rem !important;
+        background: #151618 !important;
+        border-radius: 8px;
+        border: 1px solid #2d3139;
+        max-height: 320px; 
+        overflow-y: auto;
     }
     
     .driver-code code {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.9rem;
-        color: #e5e5e5;
-        line-height: 1.5;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+        font-size: 0.85rem !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Custom Scrollbar for Code Blocks */
+    .driver-code pre::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    .driver-code pre::-webkit-scrollbar-track {
+        background: #151618;
+        border-radius: 8px;
+    }
+    .driver-code pre::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 8px;
+    }
+    .driver-code pre::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 
     /* =========================================
-       4. RESPONSIVE DESIGN
+       6. RESPONSIVE DESIGN
        ========================================= */
     @media (max-width: 992px) {
         .eco-hero-container { grid-template-columns: 1fr; text-align: center; }
         .eco-hero-text { margin: 0 auto; }
         .eco-stats { justify-content: center; }
-        .eco-hero-visual { display: none; /* Hide complex graphic on mobile */ }
+        .eco-hero-visual { display: none; }
         
         .driver-card-full {
             grid-template-columns: 1fr;
             padding: 2rem;
             gap: 2rem;
         }
+        .driver-actions { margin-top: 1rem; }
+        .pro-tip-box { margin-top: 0; }
+        .driver-code pre { max-height: 400px; }
     }
 
     @media (max-width: 768px) {
@@ -408,7 +508,7 @@
 
 {% block content %}
 <!-- ==========================================
-     HERO SECTION (NEW)
+     HERO SECTION
      ========================================== -->
 <header class="eco-hero">
     <div class="container eco-hero-container">
@@ -434,35 +534,21 @@
         </div>
 
         <div class="eco-hero-visual">
-            <!-- SVG Lines connecting blocks to center -->
             <svg class="connection-lines" xmlns="http://www.w3.org/2000/svg">
                 <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="#334155" stroke-width="2" stroke-dasharray="5,5" />
                 <line x1="50%" y1="50%" x2="15%" y2="80%" stroke="#334155" stroke-width="2" stroke-dasharray="5,5" />
                 <line x1="50%" y1="50%" x2="85%" y2="30%" stroke="#334155" stroke-width="2" stroke-dasharray="5,5" />
-                <line x1="50%" y1="50%" x2="80%" y2="75%" stroke="#334155" stroke-width="2" stroke-dasharray="5,5" />
             </svg>
 
-            <!-- Central Core -->
             <div class="core-db">
                 <img src="{{ url_for('static', filename='images/maazdb-logo.png') }}" alt="MaazDB Core">
             </div>
 
-            <!-- Floating Blocks -->
-            <div class="float-block fb-python">
-                <i class="fab fa-python" style="color: #3776AB;"></i> Python
-            </div>
-            <div class="float-block fb-node">
-                <i class="fab fa-node-js" style="color: #68A063;"></i> Node.js
-            </div>
-            <div class="float-block fb-rust">
-                <i class="fab fa-rust" style="color: #DEA584;"></i> Rust
-            </div>
-            <div class="float-block fb-go">
-                <i class="fab fa-golang" style="color: #00ADD8;"></i> Go
-            </div>
-            <div class="float-block fb-java">
-                <i class="fab fa-java" style="color: #f89820;"></i> Java
-            </div>
+            <div class="float-block fb-python"><i class="fab fa-python" style="color: #3776AB;"></i> Python</div>
+            <div class="float-block fb-node"><i class="fab fa-node-js" style="color: #68A063;"></i> Node.js</div>
+            <div class="float-block fb-rust"><i class="fab fa-rust" style="color: #DEA584;"></i> Rust</div>
+            <div class="float-block fb-go"><i class="fab fa-golang" style="color: #00ADD8;"></i> Go</div>
+            <div class="float-block fb-java"><i class="fab fa-java" style="color: #f89820;"></i> Java</div>
         </div>
     </div>
 </header>
@@ -473,7 +559,6 @@
          TOP GRID: ALL LANGUAGES
          ========================================== -->
     <div class="eco-grid-compact">
-        <!-- ACTIVE LANGUAGES (Clickable, scrolls to section) -->
         <a href="#driver-python" class="eco-block active">
             <i class="fab fa-python brand-python"></i>
             <span>Python</span>
@@ -487,7 +572,6 @@
             <span>Rust</span>
         </a>
 
-        <!-- COMING SOON LANGUAGES (Dimmed) -->
         <div class="eco-block coming-soon"><i class="fab fa-golang" style="color: #00ADD8;"></i><span>Go</span></div>
         <div class="eco-block coming-soon"><i class="fab fa-java" style="color: #f89820;"></i><span>Java</span></div>
         <div class="eco-block coming-soon"><i class="fab fa-php" style="color: #777BB4;"></i><span>PHP</span></div>
@@ -513,6 +597,7 @@
 
         <!-- PYTHON DRIVER -->
         <div id="driver-python" class="driver-card-full">
+            <!-- Left Column -->
             <div class="driver-info">
                 <div class="driver-header">
                     <i class="fab fa-python brand-python"></i>
@@ -527,42 +612,75 @@
                     <li><i class="fas fa-check-circle"></i> Automatic Big-Endian binary packing</li>
                     <li><i class="fas fa-check-circle"></i> DB-API 2.0 compliance (Coming soon)</li>
                 </ul>
-                <div class="driver-links">
-                    <a href="https://github.com/42Wor/maazdb-py" target="_blank"><i class="fab fa-github"></i> View Source</a>
-                    <a href="https://pypi.org/project/maazdb-py/" target="_blank"><i class="fab fa-python"></i> Install via PyPI</a>
+                
+                <!-- Actions pushed to the bottom of the left column -->
+                <div class="driver-actions">
+                    <div class="driver-links">
+                        <a href="https://github.com/42Wor/maazdb-py" target="_blank"><i class="fab fa-github"></i> View Source</a>
+                        <a href="https://pypi.org/project/maazdb-py/" target="_blank"><i class="fab fa-python"></i> Install via PyPI</a>
+                    </div>
+                    <div class="driver-meta">
+                        <span class="meta-badge"><i class="fas fa-tag"></i> v1.0.0</span>
+                        <span class="meta-badge"><i class="fas fa-balance-scale"></i> MIT</span>
+                        <span class="meta-badge"><i class="fab fa-python"></i> Python 3.8+</span>
+                    </div>
                 </div>
             </div>
-            <div class="driver-code">
-                <div class="code-block-wrapper">
-                    <h4>Installation</h4>
-                    <pre><code>pip install maazdb-py</code></pre>
-                </div>
-                <div class="code-block-wrapper">
-                    <h4>Usage Example</h4>
-                    <pre><code>from maazdb import MaazDB
 
-# Using Context Managers ensures the socket 
-# is safely closed even if an error occurs.
-with MaazDB() as db:
-    # Connect securely via TLS 1.3
-    db.connect("127.0.0.1", 8888, "admin", "password")
-    
-    # Execute queries
+            <!-- Right Column -->
+            <div class="driver-visuals">
+                <div class="driver-code">
+                    <div class="code-block-wrapper">
+                        <h4>Installation</h4>
+<pre><code class="language-bash">pip install maazdb-py</code></pre>
+                    </div>
+                    <div class="code-block-wrapper">
+                        <h4>Usage Example</h4>
+<pre><code class="language-python">from maazdb import MaazDB
+
+# 1. Initialize the client
+db = MaazDB()
+
+try:
+    # 2. Connect securely
+    db.connect(
+        host="127.0.0.1",
+        port=8888,
+        user="admin", 
+        password="admin"
+    ) 
+    print("✓ Connected to MaazDB")
+
+    # 3. Execute SQL
     db.query("CREATE DATABASE analytics;")
     db.query("USE analytics;")
-    db.query("CREATE TABLE logs (id SERIAL, msg TEXT);")
+    db.query("CREATE TABLE logs (id SERIAL PRIMARY KEY, message TEXT);")
     
-    # Insert and Fetch
-    db.query("INSERT INTO logs (msg) VALUES ('System OK');")
+    # 4. Insert and Fetch
+    db.query("INSERT INTO logs (message) VALUES ('System started');")
     results = db.query("SELECT * FROM logs;")
-    
-    print(f"Results:\n{results}")</code></pre>
+    print(f"Results:\n{results}")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+    # 5. Always close the connection
+    db.close()</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Pro Tip pushed to the bottom of the right column -->
+                <div class="pro-tip-box">
+                    <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                    <p>Use the <strong>Context Manager</strong> (<code>with MaazDB() as db:</code>) in your production code. It guarantees that your TLS socket is safely closed and resources are freed, even if an exception occurs during execution.</p>
                 </div>
             </div>
         </div>
 
         <!-- NODE.JS DRIVER -->
         <div id="driver-node" class="driver-card-full">
+            <!-- Left Column -->
             <div class="driver-info">
                 <div class="driver-header">
                     <i class="fab fa-node-js brand-node"></i>
@@ -577,50 +695,83 @@ with MaazDB() as db:
                     <li><i class="fas fa-check-circle"></i> Built-in connection pooling</li>
                     <li><i class="fas fa-check-circle"></i> Full TypeScript definitions included</li>
                 </ul>
-                <div class="driver-links">
-                    <a href="https://github.com/42Wor/maazdb-js" target="_blank"><i class="fab fa-github"></i> View Source</a>
-                    <a href="https://www.npmjs.com/package/maazdb-js" target="_blank"><i class="fab fa-npm"></i> Install via npm</a>
+                
+                <!-- Actions pushed to the bottom of the left column -->
+                <div class="driver-actions">
+                    <div class="driver-links">
+                        <a href="https://github.com/42Wor/maazdb-js" target="_blank"><i class="fab fa-github"></i> View Source</a>
+                        <a href="https://www.npmjs.com/package/maazdb-js" target="_blank"><i class="fab fa-npm"></i> Install via npm</a>
+                    </div>
+                    <div class="driver-meta">
+                        <span class="meta-badge"><i class="fas fa-tag"></i> v1.0.0</span>
+                        <span class="meta-badge"><i class="fas fa-balance-scale"></i> MIT</span>
+                        <span class="meta-badge"><i class="fab fa-node-js"></i> Node 14.x+</span>
+                    </div>
                 </div>
             </div>
-            <div class="driver-code">
-                <div class="code-block-wrapper">
-                    <h4>Installation</h4>
-                    <pre><code>npm install maazdb-js
+
+            <!-- Right Column -->
+            <div class="driver-visuals">
+                <div class="driver-code">
+                    <div class="code-block-wrapper">
+                        <h4>Installation</h4>
+<pre><code class="language-bash">npm install maazdb-js
 # or using yarn
 yarn add maazdb-js</code></pre>
-                </div>
-                <div class="code-block-wrapper">
-                    <h4>Usage Example</h4>
-                    <pre><code>const MaazDB = require('maazdb-js');
+                    </div>
+                    <div class="code-block-wrapper">
+                        <h4>Usage Example</h4>
+<pre><code class="language-javascript">const MaazDB = require('maazdb-js');
 
 async function main() {
+    // 1. Initialize the client
     const db = new MaazDB();
 
     try {
-        // Connect securely (TLS is handled automatically)
-        await db.connect("127.0.0.1", 8888, "admin", "admin");
+        // 2. Connect securely (TLS is handled automatically)
+        await db.connect(
+            "127.0.0.1",
+            8888, 
+            "admin", 
+            "admin"
+        );
         console.log("✓ Connected to MaazDB");
 
+        // 3. Run SQL commands
+        await db.query("CREATE DATABASE web_app;");
         await db.query("USE web_app;");
-        await db.query("INSERT INTO users (name) VALUES ('Maaz');");
+        
+        // 4. Insert Data
+        await db.query("CREATE TABLE users (id SERIAL PRIMARY KEY, username TEXT);");
+        await db.query("INSERT INTO users (username) VALUES ('maaz_dev');");
 
+        // 5. Fetch Results
         const results = await db.query("SELECT * FROM users;");
-        console.log("Data:", results);
+        console.log("Results:", results);
 
     } catch (error) {
         console.error("Database Error:", error.message);
     } finally {
+        // 6. Close connection
         db.close();
     }
 }
 
 main();</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Pro Tip pushed to the bottom of the right column -->
+                <div class="pro-tip-box">
+                    <h4><i class="fas fa-bolt"></i> Performance Tip</h4>
+                    <p>For high-traffic web servers, initialize the <strong>MaazDB connection pool</strong> at the top level of your application rather than creating a new connection per HTTP request. This eliminates TLS handshake overhead.</p>
                 </div>
             </div>
         </div>
 
         <!-- RUST DRIVER -->
         <div id="driver-rust" class="driver-card-full">
+            <!-- Left Column -->
             <div class="driver-info">
                 <div class="driver-header">
                     <i class="fab fa-rust brand-rust"></i>
@@ -635,40 +786,67 @@ main();</code></pre>
                     <li><i class="fas fa-check-circle"></i> Modern TLS 1.3 support via rustls</li>
                     <li><i class="fas fa-check-circle"></i> Type-safe query building</li>
                 </ul>
-                <div class="driver-links">
-                    <a href="https://github.com/42Wor/maazdb-rs" target="_blank"><i class="fab fa-github"></i> View Source</a>
-                    <a href="https://crates.io/crates/maazdb-rs" target="_blank"><i class="fas fa-cube"></i> View on Crates.io</a>
+                
+                <!-- Actions pushed to the bottom of the left column -->
+                <div class="driver-actions">
+                    <div class="driver-links">
+                        <a href="https://github.com/42Wor/maazdb-rs" target="_blank"><i class="fab fa-github"></i> View Source</a>
+                        <a href="https://crates.io/crates/maazdb-rs" target="_blank"><i class="fas fa-cube"></i> View on Crates.io</a>
+                    </div>
+                    <div class="driver-meta">
+                        <span class="meta-badge"><i class="fas fa-tag"></i> v0.1.0</span>
+                        <span class="meta-badge"><i class="fas fa-balance-scale"></i> Apache 2.0</span>
+                        <span class="meta-badge"><i class="fab fa-rust"></i> Rust 1.65+</span>
+                    </div>
                 </div>
             </div>
-            <div class="driver-code">
-                <div class="code-block-wrapper">
-                    <h4>Cargo.toml</h4>
-                    <pre><code>[dependencies]
+
+            <!-- Right Column -->
+            <div class="driver-visuals">
+                <div class="driver-code">
+                    <div class="code-block-wrapper">
+                        <h4>Cargo.toml</h4>
+<pre><code class="language-toml">[dependencies]
 maazdb-rs = "0.1.0"
 tokio = { version = "1.0", features = ["full"] }</code></pre>
-                </div>
-                <div class="code-block-wrapper">
-                    <h4>Usage Example</h4>
-                    <pre><code>use maazdb_rs::{MaazDB, Result};
+                    </div>
+                    <div class="code-block-wrapper">
+                        <h4>Usage Example</h4>
+<pre><code class="language-rust">use maazdb_rs::{MaazDB, Result};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // Establish a Secure Connection
-    let mut db = MaazDB::connect("127.0.0.1", 8888, "admin", "admin").await?;
+    // 1. Establish a Secure Connection
+    let mut db = MaazDB::connect(
+        "127.0.0.1",
+        8888, 
+        "admin", 
+        "admin"
+    ).await?;
+    
     println!("✓ Connected to MaazDB via TLS 1.3");
 
-    // Execute SQL Commands
+    // 2. Execute SQL Commands
     db.query("CREATE DATABASE store_prod;").await?;
     db.query("USE store_prod;").await?;
+    db.query("CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT);").await?;
+
+    // 3. Insert Data
+    db.query("INSERT INTO users (name) VALUES ('Maaz');").await?;
     
-    // Insert and Fetch
-    db.query("INSERT INTO items (name) VALUES ('Laptop');").await?;
-    let results = db.query("SELECT * FROM items;").await?;
-    
+    // 4. Fetch Results
+    let results = db.query("SELECT * FROM users;").await?;
     println!("--- Query Results ---\n{}", results);
 
     Ok(())
 }</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Pro Tip pushed to the bottom of the right column -->
+                <div class="pro-tip-box">
+                    <h4><i class="fas fa-shield-alt"></i> Security Tip</h4>
+                    <p>The Rust driver uses <strong>rustls</strong> by default to avoid OpenSSL dependencies. Ensure your system's root certificates are up to date, or provide a custom certificate path in the connection builder for self-signed deployments.</p>
                 </div>
             </div>
         </div>
@@ -680,4 +858,12 @@ async fn main() -> Result<()> {
 {% block scripts %}
 <!-- Load the syntax highlighting script so the code blocks look nice -->
 <script src="{{ url_for('static', filename='js/docs.js') }}"></script>
+
+<!-- Prism.js Core and Languages for Syntax Highlighting -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-toml.min.js"></script>
 {% endblock %}

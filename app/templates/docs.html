@@ -243,40 +243,41 @@ console_enabled = false</code></pre>
                 style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: var(--accent, #007bff); color: white; text-decoration: none; border-radius: 5px;">Explore
                 Official Drivers & Libraries &rarr;</a>
         </section>
-        <section id="db-USE"> <!-- DISTRIBUTED ARCHITECTURE & USE COMMAND EXPLANATION -->
-            <h2>4. Database Management</h2>
-            <div id="USE"
-                style="margin-top: 2rem; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 4px;">
-
-                <h3 style="margin-top: 0; color: #60a5fa;"><i class="fas fa-network-wired"></i> The Distributed Cluster
-                    Vision</h3>
+<section id="db-USE">
+            <h2>4. Database Management & Architecture</h2>
+            
+            <div id="USE" style="margin-top: 2rem; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #3b82f6; padding: 1.5rem; border-radius: 4px;">
+                
+                <h3 style="margin-top: 0; color: #60a5fa;">
+                    <i class="fas fa-network-wired"></i> Multi-Tenancy & Distributed Mesh
+                </h3>
 
                 <p>
-                    MaazDB is architected for a future <strong>Distributed Cluster Mesh</strong>. Whether running on a
-                    <strong>single machine or across multiple nodes</strong>, it is designed to be lightweight,
-                    scalable, and extremely fast—targeting <strong>7x+ the speed of PostgreSQL</strong>.
+                    MaazDB is architected as a <strong>Multi-Tenant System</strong>. This means a single MaazDB cluster can simultaneously serve multiple different applications (tenants) while keeping their data completely isolated.
                 </p>
 
                 <p>
-                    The <code>USE</code> command enables <strong>Zero-Downtime Context Switching</strong>. This allows
-                    clients to maintain a single, efficient connection while instantly routing queries to different
-                    storage units without reconnection overhead.
+                    The <code>USE</code> command is the bridge between the <strong>Logical Layer</strong> (your specific application's workspace) and the <strong>Physical Layer</strong> (the distributed nodes).
                 </p>
 
-                <p><strong>Future Capabilities:</strong></p>
+                <p><strong>Why this architecture is powerful:</strong></p>
                 <ul style="margin-bottom: 1.5rem; padding-left: 1.2rem; color: #cbd5e1; line-height: 1.6;">
-                    <li>Horizontal Scaling (Sharding)</li>
-                    <li>Unified Access Point</li>
-                    <li>Connection Efficiency</li>
-                    <li>Smart Failover</li>
+                    <li><strong>Multi-Tenancy:</strong> Host data for App A and App B on the same servers without mixing them.</li>
+                    <li><strong>Smart Routing:</strong> The <code>USE</code> command tells the Coordinator node exactly which Shard Map to look at.</li>
+                    <li><strong>Resource Efficiency:</strong> Multiple apps share the same CPU/RAM resources, saving infrastructure costs.</li>
+                    <li><strong>Zero-Downtime Switching:</strong> Instantly switch contexts between databases without closing the network connection.</li>
                 </ul>
 
-                <span class="code-label">Switch Context Syntax</span>
+                <span class="code-label">Syntax</span>
                 <pre style="margin-top: 0.5rem;"><code>USE &lt;db_name&gt;;</code></pre>
+            </div>
 
+            <span class="code-label">Example</span>
+            <pre><code>USE ecommerce_app;
+-- The system now routes all queries to the 'ecommerce' shards
 
-            </div> <span class="code-label">Example</span>
-            <pre><code>USE my_database;</code></pre>
+USE blog_app;
+-- The system instantly switches routing to the 'blog' shards</code></pre>
         </section>
         <section id="db-mgmt">
 
